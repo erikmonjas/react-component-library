@@ -1,25 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Tabs from './Tabs';
+import Tab from './Tabs/Tab';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Tabs tabList={[{ title: 'Tab 0' }, { title: 'Tab 1' }, { title: 'Tab 2' }]}>
+      {currentTab => (
+        <>
+          <Tab currentTab={currentTab} order={0}>
+            <p>I'm tab 0</p>
+          </Tab>
+          <Tab currentTab={currentTab} order={1}>
+            <p>I'm tab 1</p>
+          </Tab>
+          <Tab currentTab={currentTab} order={2}>
+            <p>I'm tab 2</p>
+          </Tab>
+        </>
+      )}
+    </Tabs>
   );
 }
 
