@@ -17,12 +17,24 @@ const Input = ({
   const [currentValue, setCurrentValue] = useState(getInitialValue());
   const [isValid, setValid] = useState(true);
 
+  useEffect(() => {
+    const initialState = {
+      [name]: {
+        value: getInitialValue(),
+        required: required,
+        valid: validate(getInitialValue()),
+      },
+    };
+
+    handleChange(initialState);
+  }, []);
+
   const validate = value => {
     if (required && !value.length) {
       return false;
     }
 
-    if (value.length < minLength) {
+    if (value.length < parseInt(minLength)) {
       if (required) {
         return false;
       } else {
@@ -40,11 +52,15 @@ const Input = ({
   };
 
   const validateState = () => {
+    handleChange({
+      [name]: { value: currentValue, required: required, valid: validate(currentValue) },
+    });
+
     if (required && !currentValue.length) {
       return setValid(false);
     }
 
-    if (currentValue.length < minLength) {
+    if (currentValue.length < parseInt(minLength)) {
       if (required) {
         return setValid(false);
       } else {
@@ -68,17 +84,10 @@ const Input = ({
     });
   };
 
-  useEffect(() => {
-    const initialState = {
-      [name]: {
-        value: getInitialValue(),
-        required: required,
-        valid: validate(getInitialValue()),
-      },
-    };
-
-    handleChange(initialState);
-  }, []);
+  const handleKeyPress = () => {
+    validate(currentValue);
+    validateState();
+  };
 
   return (
     <>
@@ -93,7 +102,7 @@ const Input = ({
         maxLength={maxLength}
         minLength={minLength}
         onBlur={validateState}
-        onKeyUp={e => e.key === 'Enter' && validateState()}
+        onKeyPress={e => e.key === 'Enter' && handleKeyPress()}
       />
       {!isValid && errorMessage && <span>{errorMessage}</span>}
     </>

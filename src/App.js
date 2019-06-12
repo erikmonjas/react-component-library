@@ -33,9 +33,15 @@ const App = () => {
       <div className='form-demo'>
         <h2>Form</h2>
         <Form submitAction={submitAction} invalidAction={invalidAction}>
-          {(handleChange, formValues) => (
+          {(handleChange, formValues, formInvalid) => (
             <>
-              <Input handleChange={handleChange} name='texto' label='Texto' defaultValue={'Hola'} />
+              <Input
+                handleChange={handleChange}
+                name='texto'
+                label='Texto'
+                defaultValue={'Hola'}
+                minLength='5'
+              />
               <Input
                 handleChange={handleChange}
                 name='otroTexto'
@@ -44,7 +50,7 @@ const App = () => {
                 errorMessage='Error'
                 valid={!!formValues.otroTexto && formValues.otroTexto.value.includes('hi')}
               />
-              <button type='submit' formNoValidate>
+              <button type='submit' formNoValidate disabled={formInvalid}>
                 Submit
               </button>
             </>

@@ -5,8 +5,13 @@ import { formReducer } from '../../hooks/formReducer';
 const Form = ({ children, submitAction, invalidAction, initialValues = {} }) => {
   const [formValues, dispatch] = useReducer(formReducer, initialValues);
 
-  const handleSubmit = e => {
+  const handleChange = mutation => {
+    dispatch({ type: 'FORM_CHANGE', payload: mutation });
+  };
+
+  const handleSubmit = async e => {
     e.preventDefault();
+
     const invalidKeys = Object.keys(formValues).filter(element => {
       if (formValues[element].valid === false) {
         return element;
@@ -22,10 +27,6 @@ const Form = ({ children, submitAction, invalidAction, initialValues = {} }) => 
     } else {
       submitAction(formValues);
     }
-  };
-
-  const handleChange = mutation => {
-    dispatch({ type: 'FORM_CHANGE', payload: mutation });
   };
 
   return <form onSubmit={handleSubmit}>{children(handleChange, formValues)}</form>;
