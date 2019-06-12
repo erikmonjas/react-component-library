@@ -10,6 +10,7 @@ const Input = ({
   maxLength,
   minLength,
   errorMessage,
+  valid,
 }) => {
   const getInitialValue = () => (defaultValue ? defaultValue : '');
 
@@ -30,6 +31,11 @@ const Input = ({
         }
       }
     }
+
+    if (!valid) {
+      return false;
+    }
+
     return true;
   };
 
@@ -47,6 +53,11 @@ const Input = ({
         }
       }
     }
+
+    if (!valid) {
+      return setValid(false);
+    }
+
     return setValid(true);
   };
 
@@ -98,10 +109,12 @@ Input.propTypes = {
   maxLength: PropTypes.string,
   minLength: PropTypes.string,
   errorMessage: PropTypes.string,
+  valid: PropTypes.bool,
 };
 
 Input.defaultProps = {
   required: false,
+  valid: true,
 };
 
 export default Input;

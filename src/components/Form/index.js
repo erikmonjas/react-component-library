@@ -2,8 +2,8 @@ import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { formReducer } from '../../hooks/formReducer';
 
-const Form = ({ children, submitAction, invalidAction }) => {
-  const [formValues, dispatch] = useReducer(formReducer, {});
+const Form = ({ children, submitAction, invalidAction, initialValues = {} }) => {
+  const [formValues, dispatch] = useReducer(formReducer, initialValues);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -28,12 +28,13 @@ const Form = ({ children, submitAction, invalidAction }) => {
     dispatch({ type: 'FORM_CHANGE', payload: mutation });
   };
 
-  return <form onSubmit={handleSubmit}>{children(handleChange)}</form>;
+  return <form onSubmit={handleSubmit}>{children(handleChange, formValues)}</form>;
 };
 
 Form.propTypes = {
   submitAction: PropTypes.func.isRequired,
   invalidAction: PropTypes.func.isRequired,
+  initialValues: PropTypes.object,
 };
 
 export default Form;
