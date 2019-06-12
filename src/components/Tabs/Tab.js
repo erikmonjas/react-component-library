@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Tab = ({ currentTab, order, children }) => {
   return (
@@ -6,6 +7,11 @@ const Tab = ({ currentTab, order, children }) => {
       {children}
     </div>
   );
+};
+
+Tab.propTypes = {
+  currentTab: PropTypes.number.isRequired,
+  order: PropTypes.number.isRequired,
 };
 
 export default Tab;

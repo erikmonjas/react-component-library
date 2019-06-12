@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import './tabs.scss';
 
 const Tabs = ({ defaultTab, tabList, children }) => {
-  const [currentTab, setCurrentTab] = useState(defaultTab ? defaultTab : 0);
+  const [currentTab, setCurrentTab] = useState(defaultTab);
 
   const displacement = 100 / tabList.length;
 
@@ -36,6 +37,19 @@ const Tabs = ({ defaultTab, tabList, children }) => {
       </div>
     </div>
   );
+};
+
+Tabs.propTypes = {
+  defaultTab: PropTypes.number,
+  tabList: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+    }),
+  ).isRequired,
+};
+
+Tabs.defaultProps = {
+  defaultTab: 0,
 };
 
 export default Tabs;
