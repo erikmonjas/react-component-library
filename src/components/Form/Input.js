@@ -11,6 +11,7 @@ const Input = ({
   minLength,
   errorMessage,
   valid,
+  invalids,
 }) => {
   const getInitialValue = () => (defaultValue ? defaultValue : '');
 
@@ -28,6 +29,13 @@ const Input = ({
 
     handleChange(initialState);
   }, []);
+
+  useEffect(() => {
+    const inputInvalid = invalids.find(invalid => invalid[name])
+    if (!!inputInvalid && inputInvalid.hasOwnProperty(name)) {
+      setValid(false)
+    };
+  }, [invalids])
 
   const validate = value => {
     if (required && !value.length) {
@@ -79,12 +87,13 @@ const Input = ({
 
   const handleInputChange = e => {
     setCurrentValue(e.target.value);
+    setValid(true);
     handleChange({
       [name]: { value: e.target.value, required: required, valid: validate(e.target.value) },
     });
   };
 
-  const handleKeyPress = () => {
+  const handleEnter = () => {
     validate(currentValue);
     validateState();
   };
@@ -102,7 +111,7 @@ const Input = ({
         maxLength={maxLength}
         minLength={minLength}
         onBlur={validateState}
-        onKeyPress={e => e.key === 'Enter' && handleKeyPress()}
+        onKeyPress={e => e.key === 'Enter' && handleEnter()}
       />
       {!isValid && errorMessage && <span>{errorMessage}</span>}
     </>
@@ -119,6 +128,7 @@ Input.propTypes = {
   minLength: PropTypes.string,
   errorMessage: PropTypes.string,
   valid: PropTypes.bool,
+  invalids: PropTypes.array.isRequired,
 };
 
 Input.defaultProps = {

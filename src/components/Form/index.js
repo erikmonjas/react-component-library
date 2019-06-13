@@ -1,9 +1,10 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import PropTypes from 'prop-types';
 import { formReducer } from '../../hooks/formReducer';
 
 const Form = ({ children, submitAction, invalidAction, initialValues = {} }) => {
   const [formValues, dispatch] = useReducer(formReducer, initialValues);
+  const [invalids, setInvalids] = useState([]);
 
   const handleChange = mutation => {
     dispatch({ type: 'FORM_CHANGE', payload: mutation });
@@ -18,18 +19,20 @@ const Form = ({ children, submitAction, invalidAction, initialValues = {} }) => 
       }
     });
 
-    const invalids = invalidKeys.map(invalid => {
+    const newInvalids = invalidKeys.map(invalid => {
       return { [invalid]: formValues[invalid] };
     });
 
-    if (invalids.length > 0) {
-      invalidAction(invalids);
+    setInvalids(newInvalids);
+
+    if (newInvalids.length > 0) {
+      invalidAction(newInvalids);
     } else {
       submitAction(formValues);
     }
   };
 
-  return <form onSubmit={handleSubmit}>{children(handleChange, formValues)}</form>;
+  return <form onSubmit={handleSubmit}>{children(handleChange, formValues, invalids)}</form>;
 };
 
 Form.propTypes = {

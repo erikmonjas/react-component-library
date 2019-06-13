@@ -33,24 +33,27 @@ const App = () => {
       <div className='form-demo'>
         <h2>Form</h2>
         <Form submitAction={submitAction} invalidAction={invalidAction}>
-          {(handleChange, formValues, formInvalid) => (
+          {(handleChange, formValues, invalids) => (
             <>
               <Input
                 handleChange={handleChange}
+                invalids={invalids}
                 name='texto'
                 label='Texto'
-                defaultValue={'Hola'}
+                errorMessage='Error'
+                defaultValue={'Default value'}
                 minLength='5'
               />
               <Input
                 handleChange={handleChange}
+                invalids={invalids}
                 name='otroTexto'
                 label='Otro texto'
                 minLength='4'
                 errorMessage='Error'
                 valid={!!formValues.otroTexto && formValues.otroTexto.value.includes('hi')}
               />
-              <button type='submit' formNoValidate disabled={formInvalid}>
+              <button type='submit' formNoValidate>
                 Submit
               </button>
             </>
