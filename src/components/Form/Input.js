@@ -33,9 +33,9 @@ const Input = ({
   useEffect(() => {
     const inputInvalid = invalids.find(invalid => invalid[name])
     if (!!inputInvalid && inputInvalid.hasOwnProperty(name)) {
-      setValid(false)
+      setValid(false);
     };
-  }, [invalids])
+  }, [invalids]);
 
   const validate = value => {
     if (required && !value.length) {

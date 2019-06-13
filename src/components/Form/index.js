@@ -1,10 +1,9 @@
-import React, { useReducer, useState } from 'react';
-import PropTypes from 'prop-types';
-import { formReducer } from '../../hooks/formReducer';
+import { useReducer } from 'react';
+import { formValuesReducer, formInvalidsReducer } from '../../hooks/formReducer';
 
-const Form = ({ children, submitAction, invalidAction, initialValues = {} }) => {
-  const [formValues, dispatch] = useReducer(formReducer, initialValues);
-  const [invalids, setInvalids] = useState([]);
+const useFormState = ({initialValues = {}, invalidAction, submitAction}) => {
+  const [formValues, dispatch] = useReducer(formValuesReducer, initialValues);
+  const [invalids, dispatchInvalids] = useReducer(formInvalidsReducer, [])
 
   const handleChange = mutation => {
     dispatch({ type: 'FORM_CHANGE', payload: mutation });
@@ -23,7 +22,7 @@ const Form = ({ children, submitAction, invalidAction, initialValues = {} }) => 
       return { [invalid]: formValues[invalid] };
     });
 
-    setInvalids(newInvalids);
+    dispatchInvalids({ type: 'FORM_CHECK', payload: newInvalids });
 
     if (newInvalids.length > 0) {
       invalidAction(newInvalids);
@@ -32,13 +31,7 @@ const Form = ({ children, submitAction, invalidAction, initialValues = {} }) => 
     }
   };
 
-  return <form onSubmit={handleSubmit}>{children(handleChange, formValues, invalids)}</form>;
-};
+  return { handleChange, formValues, invalids }
+}
 
-Form.propTypes = {
-  submitAction: PropTypes.func.isRequired,
-  invalidAction: PropTypes.func.isRequired,
-  initialValues: PropTypes.object,
-};
-
-export default Form;
+export default useFormState;
