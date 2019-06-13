@@ -38,8 +38,8 @@ const App = () => {
               <Input
                 handleChange={handleChange}
                 invalids={invalids}
-                name='texto'
-                label='Texto'
+                name='text'
+                label='text'
                 errorMessage='Error'
                 defaultValue={'Default value'}
                 minLength='5'
@@ -47,12 +47,25 @@ const App = () => {
               <Input
                 handleChange={handleChange}
                 invalids={invalids}
-                name='otroTexto'
+                name='otherText'
                 label='Otro texto'
                 minLength='4'
                 errorMessage='Error'
-                valid={!!formValues.otroTexto &&
-                  formValues.otroTexto.value.includes('hi')
+                valid={
+                  !!formValues.otherText &&
+                  formValues.otherText.value.includes('hi')
+                }
+              />
+              <Input
+                handleChange={handleChange}
+                invalids={invalids}
+                name='number'
+                label='Number'
+                errorMessage='Error'
+                type='number'
+                valid={
+                  !!formValues.number &&
+                  parseFloat(formValues.number.value) > 10.5
                 }
               />
               <button type='submit' formNoValidate>

@@ -12,11 +12,14 @@ const Input = ({
   errorMessage,
   valid,
   invalids,
+  type,
 }) => {
   const getInitialValue = () => (defaultValue ? defaultValue : '');
 
   const [currentValue, setCurrentValue] = useState(getInitialValue());
   const [isValid, setValid] = useState(true);
+
+  const numberRegEx = /^\d*\.?(?:\d{1,2})?$/;
 
   useEffect(() => {
     const initialState = {
@@ -86,11 +89,13 @@ const Input = ({
   };
 
   const handleInputChange = e => {
-    setCurrentValue(e.target.value);
-    setValid(true);
-    handleChange({
-      [name]: { value: e.target.value, required: required, valid: validate(e.target.value) },
-    });
+    if (type === 'number' && e.target.value === '' || numberRegEx.test(e.target.value)) {
+      setCurrentValue(e.target.value);
+      setValid(true);
+      handleChange({
+        [name]: { value: e.target.value, required: required, valid: validate(e.target.value) },
+      });
+    }
   };
 
   const handleEnter = () => {
@@ -129,11 +134,13 @@ Input.propTypes = {
   errorMessage: PropTypes.string,
   valid: PropTypes.bool,
   invalids: PropTypes.array.isRequired,
+  type: PropTypes.string,
 };
 
 Input.defaultProps = {
   required: false,
   valid: true,
+  type: 'text',
 };
 
 export default Input;
