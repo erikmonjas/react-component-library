@@ -1,0 +1,66 @@
+$componentName: input;
+
+.#{$componentName} {
+    position: relative;
+    display: inline;
+    display: inline-flex;
+    color: #afafaf;
+}
+
+.#{$componentName}--active {
+    .#{$componentName}__label {
+        bottom: 100%;
+        color: dodgerblue;
+    }
+    .#{$componentName}__input {
+        border-bottom-color: dodgerblue;
+    }
+}
+
+.#{$componentName}--has-content{
+    .#{$componentName}__label {
+        bottom: 100%;
+    }
+}
+
+.#{$componentName}--has-error {
+    .#{$componentName}__input {
+        border-bottom-color: red;
+    }
+    .#{$componentName}__label {
+        color: red;
+    }
+}
+
+.#{$componentName}--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.#{$componentName}__label{
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    transition: bottom 0.166s ease;
+}
+
+.#{$componentName}__input {
+    border: none;
+    border-bottom: 2px solid #afafaf;
+    background-color: transparent;
+    height: 20px;
+}
+
+.#{$componentName}__error-message {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    color: red;
+}
+
+
+
+
+.#{$componentName} {
+    margin: 30px;
+}

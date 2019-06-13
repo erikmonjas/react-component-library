@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import './input.scss';
 
 const Input = ({
   handleChange,
@@ -13,13 +14,23 @@ const Input = ({
   valid,
   invalids,
   type,
+  disabled
 }) => {
   const getInitialValue = () => (defaultValue ? defaultValue : '');
 
   const [currentValue, setCurrentValue] = useState(getInitialValue());
   const [isValid, setValid] = useState(true);
+  const [isActive, setActive] = useState(false);
 
   const numberRegEx = /^\d*\.?(?:\d{1,2})?$/;
+
+  const inputActions = value => {
+    setCurrentValue(value);
+    setValid(true);
+    handleChange({
+      [name]: { value: value, required: required, valid: validate(value) },
+    });
+  }
 
   useEffect(() => {
     const initialState = {
@@ -41,6 +52,10 @@ const Input = ({
   }, [invalids]);
 
   const validate = value => {
+    if (disabled) {
+      return true;
+    }
+
     if (required && !value.length) {
       return false;
     }
@@ -67,6 +82,10 @@ const Input = ({
       [name]: { value: currentValue, required: required, valid: validate(currentValue) },
     });
 
+    if (disabled) {
+      return setValid(true);
+    }
+
     if (required && !currentValue.length) {
       return setValid(false);
     }
@@ -89,12 +108,12 @@ const Input = ({
   };
 
   const handleInputChange = e => {
-    if (type === 'number' && e.target.value === '' || numberRegEx.test(e.target.value)) {
-      setCurrentValue(e.target.value);
-      setValid(true);
-      handleChange({
-        [name]: { value: e.target.value, required: required, valid: validate(e.target.value) },
-      });
+    if (type === 'number') {
+      if (e.target.value === '' || numberRegEx.test(e.target.value)) {
+        inputActions(e.target.value);
+      }
+    } else {
+      inputActions(e.target.value);
     }
   };
 
@@ -103,11 +122,28 @@ const Input = ({
     validateState();
   };
 
+  const handleFocus = () => {
+    setActive(true)
+  }
+  
+  const handleBlur = () => {
+    validateState()
+    setActive(false)
+  }
+
   return (
-    <>
-      {label && <label htmlFor={name}>{label}</label>}
+    <div 
+      className={
+        `input ${isActive && 'input--active'}
+        ${currentValue.length > 0 && 'input--has-content'}
+        ${!isValid && 'input--has-error'} ${disabled && 'input--disabled'}`
+      }
+    >
+      {label && <label className={`input__label`} htmlFor={name}>{label}</label>}
       <input
+        className='input__input'
         type='text'
+        disabled={disabled}
         id={name}
         name={name}
         value={currentValue}
@@ -115,11 +151,14 @@ const Input = ({
         required={required}
         maxLength={maxLength}
         minLength={minLength}
-        onBlur={validateState}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
         onKeyPress={e => e.key === 'Enter' && handleEnter()}
       />
-      {!isValid && errorMessage && <span>{errorMessage}</span>}
-    </>
+      {!isValid && errorMessage && (
+        <span className='input__error-message'>{errorMessage}</span>
+      )}
+    </div>
   );
 };
 
@@ -135,12 +174,14 @@ Input.propTypes = {
   valid: PropTypes.bool,
   invalids: PropTypes.array.isRequired,
   type: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 Input.defaultProps = {
   required: false,
   valid: true,
   type: 'text',
+  disabled: false,
 };
 
 export default Input;

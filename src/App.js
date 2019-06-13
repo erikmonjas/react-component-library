@@ -43,6 +43,7 @@ const App = () => {
                 errorMessage='Error'
                 defaultValue={'Default value'}
                 minLength='5'
+                disabled
               />
               <Input
                 handleChange={handleChange}
