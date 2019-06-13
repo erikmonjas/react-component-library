@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
-import { formValuesReducer, formInvalidsReducer } from '../../hooks/formReducer';
+import { formValuesReducer, formInvalidsReducer } from './formReducer';
 
-const useFormState = ({initialValues = {}, invalidAction, submitAction}) => {
+const useFormHook = ({initialValues = {}, invalidAction, submitAction}) => {
   const [formValues, dispatch] = useReducer(formValuesReducer, initialValues);
   const [invalids, dispatchInvalids] = useReducer(formInvalidsReducer, [])
 
@@ -31,7 +31,7 @@ const useFormState = ({initialValues = {}, invalidAction, submitAction}) => {
     }
   };
 
-  return { handleChange, formValues, invalids }
+  return { handleSubmit, handleChange, formValues, invalids }
 }
 
-export default useFormState;
+export default useFormHook;

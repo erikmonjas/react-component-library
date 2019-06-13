@@ -1,7 +1,7 @@
 import React from 'react';
 import Tabs from './components/Tabs';
 import Tab from './components/Tabs/Tab';
-import useFormState from './components/Form';
+import useFormHook from './hooks/formHook';
 import Input from './components/Form/Input';
 
 const App = () => {
@@ -9,7 +9,7 @@ const App = () => {
 
   const invalidAction = invalids => console.log('Invalid', invalids);
 
-  const { handleChange, formValues, invalids } = useFormState({ submitAction, invalidAction })
+  const { handleSubmit, handleChange, formValues, invalids } = useFormHook({ submitAction, invalidAction })
 
   return (
     <>
@@ -34,10 +34,9 @@ const App = () => {
 
       <div className='form-demo'>
         <h2>Form</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
               <Input
                 handleChange={handleChange}
-                formValues={formValues}
                 invalids={invalids}
                 name='texto'
                 label='Texto'
@@ -47,16 +46,13 @@ const App = () => {
               />
               <Input
                 handleChange={handleChange}
-                formValues={formValues}
                 invalids={invalids}
                 name='otroTexto'
                 label='Otro texto'
                 minLength='4'
                 errorMessage='Error'
                 valid={!!formValues.otroTexto &&
-                  !!formValues.texto &&
-                  formValues.otroTexto.value.includes('hi') &&
-                  formValues.texto.value !== 'Default value'
+                  formValues.otroTexto.value.includes('hi')
                 }
               />
               <button type='submit' formNoValidate>
