@@ -12,6 +12,8 @@ const Select = ({
 }) => {
   const [value, setValue] = useState(defaultValue);
   const [valid, setValid] = useState(true);
+  const [isShowing, setShowing] = useState(false);
+  const [isActive, setActive] = useState(false);
 
   useEffect(() => {
     const initialState = {
@@ -33,6 +35,7 @@ const Select = ({
   const handleClick = (e, option) => {
     e.preventDefault();
     setValue(option.value);
+    setShowing(false);
     validateState(option.value);
     handleChange({
       [name]: { value: option.value, valid: validate(option.value) }
@@ -56,11 +59,26 @@ const Select = ({
   };
 
   return (
-    <div className={`select ${!valid && "select--has-error"}`}>
-      <div className="select__box">
+    <div
+      className={`select ${!valid ? "select--has-error" : ""} ${
+        isActive ? "select--active" : ""
+      }`}
+      tabIndex="0"
+      onFocus={() => {
+        setActive(true);
+      }}
+      onBlur={() => {
+        setActive(false);
+      }}
+    >
+      <div className="select__box" onClick={() => setShowing(!isShowing)}>
         <p>{value.length > 0 ? value : initText}</p>
       </div>
-      <div className="select__options">
+      <div
+        className={`select__options ${
+          isShowing ? "select__options--showing" : ""
+        }`}
+      >
         {options.map(option => (
           <button
             key={option.value}

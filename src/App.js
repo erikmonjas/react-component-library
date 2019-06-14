@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles.scss";
 import Tabs from "./components/Tabs";
 import Tab from "./components/Tabs/Tab";
 import useFormHook from "./hooks/formHook";
