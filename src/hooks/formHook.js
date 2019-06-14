@@ -1,12 +1,12 @@
-import { useReducer } from 'react';
-import { formValuesReducer, formInvalidsReducer } from './formReducer';
+import { useReducer } from "react";
+import { formValuesReducer, formInvalidsReducer } from "./formReducer";
 
-const useFormHook = ({initialValues = {}, invalidAction, submitAction}) => {
+const useFormHook = ({ initialValues = {}, invalidAction, submitAction }) => {
   const [formValues, dispatch] = useReducer(formValuesReducer, initialValues);
-  const [invalids, dispatchInvalids] = useReducer(formInvalidsReducer, [])
+  const [invalids, dispatchInvalids] = useReducer(formInvalidsReducer, []);
 
   const handleChange = mutation => {
-    dispatch({ type: 'FORM_CHANGE', payload: mutation });
+    dispatch({ type: "FORM_CHANGE", payload: mutation });
   };
 
   const handleSubmit = async e => {
@@ -22,7 +22,7 @@ const useFormHook = ({initialValues = {}, invalidAction, submitAction}) => {
       return { [invalid]: formValues[invalid] };
     });
 
-    dispatchInvalids({ type: 'FORM_CHECK', payload: newInvalids });
+    dispatchInvalids({ type: "FORM_CHECK", payload: newInvalids });
 
     if (newInvalids.length > 0) {
       invalidAction(newInvalids);
@@ -31,7 +31,7 @@ const useFormHook = ({initialValues = {}, invalidAction, submitAction}) => {
     }
   };
 
-  return { handleSubmit, handleChange, formValues, invalids }
-}
+  return { handleSubmit, handleChange, formValues, invalids };
+};
 
 export default useFormHook;
