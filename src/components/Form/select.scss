@@ -42,6 +42,7 @@ $componentName: select;
   left: 0;
   color: #afafaf;
   transition: bottom 0.166s ease;
+  cursor: pointer;
 }
 
 .#{$componentName}__box {
@@ -54,7 +55,7 @@ $componentName: select;
   cursor: pointer;
   p {
     position: absolute;
-    top: 7px;
+    top: 2px;
     left: 10px;
     margin: 0;
     width: max-content;
@@ -81,13 +82,32 @@ $componentName: select;
   top: 100%;
   left: 0;
   display: none;
+  width: 100%;
+  background-color: rgb(248, 248, 248);
   &--showing {
     display: block;
   }
 }
 
 .#{$componentName}__option {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  min-height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
   &--active {
-    background-color: dodgerblue;
+    color: dodgerblue;
+    background-color: rgb(232, 232, 232);
+  }
+  &:hover {
+    background-color: rgb(240, 240, 240);
+  }
+  &:focus {
+    outline: none;
+    background-color: rgb(240, 240, 240);
   }
 }

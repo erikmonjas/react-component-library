@@ -12,6 +12,15 @@ const Select = ({ options, defaultValue = '', handleChange, name, invalids, labe
   const [isActive, setActive] = useState(false);
   const [currentValuePosition, setPosition] = useState(null);
 
+  const changeActions = value => {
+    setValue(value);
+    setOptionIndex(value);
+    validateState(value);
+    handleChange({
+      [name]: { value: value, valid: validate(value) },
+    });
+  };
+
   useEffect(() => {
     setOptionIndex(defaultValue);
 
@@ -43,13 +52,8 @@ const Select = ({ options, defaultValue = '', handleChange, name, invalids, labe
 
   const handleClick = (e, option) => {
     e.preventDefault();
-    setValue(option.value);
-    setOptionIndex(option.value);
+    changeActions(option.value);
     setShowing(false);
-    validateState(option.value);
-    handleChange({
-      [name]: { value: option.value, valid: validate(option.value) },
-    });
   };
 
   const validate = value => {
@@ -73,6 +77,32 @@ const Select = ({ options, defaultValue = '', handleChange, name, invalids, labe
     if (e.key === 'Enter') {
       setShowing(!optionsShowing);
     }
+    if (e.key === 'Tab') {
+      setShowing(false);
+    }
+    if (e.key === 'ArrowDown') {
+      let newPosition = 0;
+      if (currentValuePosition === options.length - 1) {
+        newPosition = 0;
+      } else {
+        newPosition = currentValuePosition + 1;
+      }
+      setPosition(newPosition);
+      changeActions(options[newPosition].value);
+    }
+
+    if (e.key === 'ArrowUp') {
+      let newPosition = 0;
+      if (currentValuePosition === 0) {
+        newPosition = options.length - 1;
+      } else if (currentValuePosition === -1) {
+        newPosition = options.length - 1;
+      } else {
+        newPosition = currentValuePosition - 1;
+      }
+      setPosition(newPosition);
+      changeActions(options[newPosition].value);
+    }
   };
 
   const handleOptions = () => {
@@ -86,7 +116,6 @@ const Select = ({ options, defaultValue = '', handleChange, name, invalids, labe
 
   const handleClickOutside = () => {
     setShowing(false);
-    console.log('click out');
     window.removeEventListener('click', handleClickOutside);
   };
 
@@ -99,13 +128,15 @@ const Select = ({ options, defaultValue = '', handleChange, name, invalids, labe
       onFocus={() => {
         setActive(true);
       }}
-      onBlur={e => {
+      onBlur={() => {
         setActive(false);
       }}
       onKeyDown={e => handleKeyPress(e)}>
-      <p className='select__label'>{label}</p>
+      <p className='select__label' onClick={handleOptions}>
+        {label}
+      </p>
       <div className='select__box' onClick={handleOptions}>
-        <p>{value}</p>
+        <p>{options[value] ? options[value].text : ''}</p>
       </div>
       <div className={`select__options ${optionsShowing ? 'select__options--showing' : ''}`}>
         {options.map((option, index) => (
