@@ -32,8 +32,7 @@ const Select = ({ options, defaultValue = '', handleChange, name, invalids, labe
   }, [invalids]);
 
   useEffect(() => {
-    window.addEventListener('click', setShowing(false));
-    window.removeEventListener('click', () => {});
+    window.addEventListener('click', handleClickOutside);
   }, [isActive]);
 
   const setOptionIndex = value => {
@@ -83,6 +82,12 @@ const Select = ({ options, defaultValue = '', handleChange, name, invalids, labe
   const handleClickInside = () => {
     setShowing(true);
     window.removeEventListener('click', handleClickInside, false);
+  };
+
+  const handleClickOutside = () => {
+    setShowing(false);
+    console.log('click out');
+    window.removeEventListener('click', handleClickOutside);
   };
 
   return (
