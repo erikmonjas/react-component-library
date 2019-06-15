@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import "./select.scss";
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import './select.scss';
 
-const Select = ({
-  initText,
-  options,
-  defaultValue = "",
-  handleChange,
-  name,
-  invalids
-}) => {
-  const [value, setValue] = useState(defaultValue);
+const Select = ({ options, defaultValue = '', handleChange, name, invalids, label }) => {
+  const defaultValueIndex = options.findIndex(option => option.value === defaultValue);
+  const initialValue = defaultValueIndex >= 0 ? defaultValue : '';
+
+  const [value, setValue] = useState(initialValue);
   const [valid, setValid] = useState(true);
-  const [isShowing, setShowing] = useState(false);
+  const [optionsShowing, setShowing] = useState(false);
   const [isActive, setActive] = useState(false);
+  const [currentValuePosition, setPosition] = useState(null);
 
   useEffect(() => {
+    setOptionIndex(defaultValue);
+
     const initialState = {
       [name]: {
-        value: defaultValue,
-        valid: validate(defaultValue)
-      }
+        value: initialValue,
+        valid: validate(initialValue),
+      },
     };
     handleChange(initialState);
   }, []);
@@ -32,13 +31,25 @@ const Select = ({
     }
   }, [invalids]);
 
+  useEffect(() => {
+    window.addEventListener('click', setShowing(false));
+    window.removeEventListener('click', () => {});
+  }, [isActive]);
+
+  const setOptionIndex = value => {
+    const optionIndex = options.findIndex(option => option.value === value);
+
+    setPosition(optionIndex);
+  };
+
   const handleClick = (e, option) => {
     e.preventDefault();
     setValue(option.value);
+    setOptionIndex(option.value);
     setShowing(false);
     validateState(option.value);
     handleChange({
-      [name]: { value: option.value, valid: validate(option.value) }
+      [name]: { value: option.value, valid: validate(option.value) },
     });
   };
 
@@ -58,33 +69,47 @@ const Select = ({
     }
   };
 
+  const handleKeyPress = e => {
+    console.log(e.key);
+    if (e.key === 'Enter') {
+      setShowing(!optionsShowing);
+    }
+  };
+
+  const handleOptions = () => {
+    window.addEventListener('click', handleClickInside, false);
+  };
+
+  const handleClickInside = () => {
+    setShowing(true);
+    window.removeEventListener('click', handleClickInside, false);
+  };
+
   return (
     <div
-      className={`select ${!valid ? "select--has-error" : ""} ${
-        isActive ? "select--active" : ""
+      className={`select ${!valid ? 'select--has-error' : ''} ${isActive ? 'select--active' : ''} ${
+        value.length > 0 ? 'select--has-content' : ''
       }`}
-      tabIndex="0"
+      tabIndex='0'
       onFocus={() => {
         setActive(true);
       }}
-      onBlur={() => {
+      onBlur={e => {
         setActive(false);
       }}
-    >
-      <div className="select__box" onClick={() => setShowing(!isShowing)}>
-        <p>{value.length > 0 ? value : initText}</p>
+      onKeyDown={e => handleKeyPress(e)}>
+      <p className='select__label'>{label}</p>
+      <div className='select__box' onClick={handleOptions}>
+        <p>{value}</p>
       </div>
-      <div
-        className={`select__options ${
-          isShowing ? "select__options--showing" : ""
-        }`}
-      >
-        {options.map(option => (
+      <div className={`select__options ${optionsShowing ? 'select__options--showing' : ''}`}>
+        {options.map((option, index) => (
           <button
             key={option.value}
-            className="select__option"
-            onClick={e => handleClick(e, option)}
-          >
+            className={`select__option ${
+              index === currentValuePosition ? 'select__option--active' : ''
+            }`}
+            onClick={e => handleClick(e, option)}>
             {option.text}
           </button>
         ))}
@@ -94,21 +119,21 @@ const Select = ({
 };
 
 Select.propTypes = {
-  initText: PropTypes.string,
+  label: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       text: PropTypes.string,
-      value: PropTypes.string
-    })
+      value: PropTypes.string,
+    }),
   ).isRequired,
   defaultValue: PropTypes.string,
   handleChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  invalids: PropTypes.array.isRequired
+  invalids: PropTypes.array.isRequired,
 };
 
 Select.defaultProps = {
-  initText: "Choose an option"
+  label: '',
 };
 
 export default Select;

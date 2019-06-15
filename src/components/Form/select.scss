@@ -3,24 +3,52 @@ $componentName: select;
 .#{$componentName} {
   display: inline-flex;
   position: relative;
+  &:focus {
+    outline: none;
+  }
 }
 
 .#{$componentName}--has-error {
   .#{$componentName}__box {
     border-color: red;
   }
+  .#{$componentName}__label {
+    color: red;
+  }
 }
 
 .#{$componentName}--active {
   .#{$componentName}__box {
     border-color: dodgerblue;
+    &:after {
+      color: dodgerblue;
+    }
   }
+  .#{$componentName}__label {
+    bottom: 100%;
+    color: dodgerblue;
+  }
+}
+
+.#{$componentName}--has-content {
+  .#{$componentName}__label {
+    bottom: 100%;
+  }
+}
+
+.#{$componentName}__label {
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  color: #afafaf;
+  transition: bottom 0.166s ease;
 }
 
 .#{$componentName}__box {
   position: relative;
-  border: 2px solid #afafaf;
-  height: 35px;
+  border: none;
+  border-bottom: 2px solid #afafaf;
+  height: 25px;
   width: 200px;
   overflow: hidden;
   cursor: pointer;
@@ -32,18 +60,19 @@ $componentName: select;
     width: max-content;
   }
   &:after {
-    content: ">";
+    content: '>';
     position: absolute;
     right: 5px;
     top: 50%;
     transform: translateY(-50%) rotate(90deg);
-    font-size: 14px;
+    font-size: 90%;
     width: 15px;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #fff;
+    color: #afafaf;
   }
 }
 
@@ -54,5 +83,11 @@ $componentName: select;
   display: none;
   &--showing {
     display: block;
+  }
+}
+
+.#{$componentName}__option {
+  &--active {
+    background-color: dodgerblue;
   }
 }

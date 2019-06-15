@@ -19,6 +19,7 @@ $componentName: tabs;
   }
   &:focus {
     outline: none;
+    background-color: rgb(247, 247, 247);
   }
   &--active {
     color: dodgerblue;

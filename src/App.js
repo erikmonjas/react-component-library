@@ -1,34 +1,32 @@
-import React from "react";
-import "./styles.scss";
-import Tabs from "./components/Tabs";
-import Tab from "./components/Tabs/Tab";
-import useFormHook from "./hooks/formHook";
-import Input from "./components/Form/Input";
-import Select from "./components/Form/Select";
+import React from 'react';
+import './styles.scss';
+import Tabs from './components/Tabs';
+import Tab from './components/Tabs/Tab';
+import useFormHook from './hooks/formHook';
+import Input from './components/Form/Input';
+import Select from './components/Form/Select';
 
 const App = () => {
-  const submitAction = formValues => console.log("Valid", formValues);
+  const submitAction = formValues => console.log('Valid', formValues);
 
-  const invalidAction = invalids => console.log("Invalid", invalids);
+  const invalidAction = invalids => console.log('Invalid', invalids);
 
   const selectOptions = [
-    { text: "Option 0", value: "0" },
-    { text: "Option 1", value: "1" },
-    { text: "Option 2", value: "2" }
+    { text: 'Option 0', value: '0' },
+    { text: 'Option 1', value: '1' },
+    { text: 'Option 2', value: '2' },
   ];
 
   const { handleSubmit, handleChange, formValues, invalids } = useFormHook({
     submitAction,
-    invalidAction
+    invalidAction,
   });
 
   return (
     <>
-      <div className="tabs-demo">
+      <div className='tabs-demo'>
         <h2>Tabs</h2>
-        <Tabs
-          tabList={[{ title: "Tab 0" }, { title: "Tab 1" }, { title: "Tab 2" }]}
-        >
+        <Tabs tabList={[{ title: 'Tab 0' }, { title: 'Tab 1' }, { title: 'Tab 2' }]}>
           {currentTab => (
             <>
               <Tab currentTab={currentTab} order={0}>
@@ -45,50 +43,45 @@ const App = () => {
         </Tabs>
       </div>
 
-      <div className="form-demo">
+      <div className='form-demo'>
         <h2>Form</h2>
         <form onSubmit={handleSubmit}>
           <Input
             handleChange={handleChange}
             invalids={invalids}
-            name="text"
-            label="text"
-            errorMessage="Error"
-            defaultValue={"Default value"}
-            minLength="5"
+            name='text'
+            label='text'
+            errorMessage='Error'
+            defaultValue={'Default value'}
+            minLength='5'
             disabled
           />
           <Input
             handleChange={handleChange}
             invalids={invalids}
-            name="otherText"
-            label="Other text"
-            minLength="4"
-            errorMessage="Error"
-            valid={
-              !!formValues.otherText &&
-              formValues.otherText.value.includes("hi")
-            }
+            name='otherText'
+            label='Other text'
+            minLength='4'
+            errorMessage='Error'
+            valid={!!formValues.otherText && formValues.otherText.value.includes('hi')}
           />
           <Input
             handleChange={handleChange}
             invalids={invalids}
-            name="number"
-            label="Number"
-            errorMessage="Error"
-            type="number"
-            valid={
-              !!formValues.number && parseFloat(formValues.number.value) > 10.5
-            }
+            name='number'
+            label='Number'
+            errorMessage='Error'
+            type='number'
+            valid={!!formValues.number && parseFloat(formValues.number.value) > 10.5}
           />
           <Select
             handleChange={handleChange}
             invalids={invalids}
-            initText="Initial text"
+            label='Initial text'
             options={selectOptions}
-            name="select"
+            name='select'
           />
-          <button type="submit" formNoValidate>
+          <button type='submit' formNoValidate>
             Submit
           </button>
         </form>
