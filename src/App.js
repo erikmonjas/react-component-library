@@ -80,6 +80,7 @@ const App = () => {
             label='Initial text'
             options={selectOptions}
             name='select'
+            errorMessage='Error select'
           />
           <button type='submit' formNoValidate>
             Submit

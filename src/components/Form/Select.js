@@ -2,7 +2,15 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './select.scss';
 
-const Select = ({ options, defaultValue = '', handleChange, name, invalids, label }) => {
+const Select = ({
+  options,
+  defaultValue = '',
+  handleChange,
+  name,
+  invalids,
+  label,
+  errorMessage,
+}) => {
   const defaultValueIndex = options.findIndex(option => option.value === defaultValue);
   const initialValue = defaultValueIndex >= 0 ? defaultValue : '';
 
@@ -73,7 +81,6 @@ const Select = ({ options, defaultValue = '', handleChange, name, invalids, labe
   };
 
   const handleKeyPress = e => {
-    console.log(e.key);
     if (e.key === 'Enter') {
       setShowing(!optionsShowing);
     }
@@ -130,6 +137,7 @@ const Select = ({ options, defaultValue = '', handleChange, name, invalids, labe
       }}
       onBlur={() => {
         setActive(false);
+        changeActions(value);
       }}
       onKeyDown={e => handleKeyPress(e)}>
       <p className='select__label' onClick={handleOptions}>
@@ -139,17 +147,19 @@ const Select = ({ options, defaultValue = '', handleChange, name, invalids, labe
         <p>{options[value] ? options[value].text : ''}</p>
       </div>
       <div className={`select__options ${optionsShowing ? 'select__options--showing' : ''}`}>
-        {options.map((option, index) => (
-          <button
-            key={option.value}
-            className={`select__option ${
-              index === currentValuePosition ? 'select__option--active' : ''
-            }`}
-            onClick={e => handleClick(e, option)}>
-            {option.text}
-          </button>
-        ))}
+        {optionsShowing &&
+          options.map((option, index) => (
+            <button
+              key={option.value}
+              className={`select__option ${
+                index === currentValuePosition ? 'select__option--active' : ''
+              }`}
+              onClick={e => handleClick(e, option)}>
+              {option.text}
+            </button>
+          ))}
       </div>
+      {!valid && <p className='select__error-message'>{errorMessage}</p>}
     </div>
   );
 };
@@ -166,10 +176,12 @@ Select.propTypes = {
   handleChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   invalids: PropTypes.array.isRequired,
+  errorMessage: PropTypes.string,
 };
 
 Select.defaultProps = {
   label: '',
+  errorMessage: '',
 };
 
 export default Select;

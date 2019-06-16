@@ -9,7 +9,7 @@ const useFormHook = ({ initialValues = {}, invalidAction, submitAction }) => {
     dispatch({ type: 'FORM_CHANGE', payload: mutation });
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     const invalidKeys = Object.keys(formValues).filter(element => {

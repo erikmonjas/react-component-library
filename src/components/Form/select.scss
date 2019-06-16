@@ -15,6 +15,9 @@ $componentName: select;
   .#{$componentName}__label {
     color: red;
   }
+  .#{$componentName}__error-message {
+    color: red;
+  }
 }
 
 .#{$componentName}--active {
@@ -81,12 +84,9 @@ $componentName: select;
   position: absolute;
   top: 100%;
   left: 0;
-  display: none;
   width: 100%;
   background-color: rgb(248, 248, 248);
-  &--showing {
-    display: block;
-  }
+  z-index: 2;
 }
 
 .#{$componentName}__option {
@@ -110,4 +110,10 @@ $componentName: select;
     outline: none;
     background-color: rgb(240, 240, 240);
   }
+}
+
+.#{$componentName}__error-message {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
 }
