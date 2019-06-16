@@ -82,6 +82,16 @@ const App = () => {
             name='select'
             errorMessage='Error select'
           />
+          <Select
+            handleChange={handleChange}
+            invalids={invalids}
+            label='Initial text'
+            options={selectOptions}
+            name='disabledSelect'
+            errorMessage='Error select'
+            defaultValue='1'
+            disabled
+          />
           <button type='submit' formNoValidate>
             Submit
           </button>

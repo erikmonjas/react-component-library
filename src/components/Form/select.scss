@@ -39,6 +39,17 @@ $componentName: select;
   }
 }
 
+.#{$componentName}--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  .#{$componentName}__box {
+    cursor: not-allowed;
+  }
+  .#{$componentName}__label {
+    cursor: default;
+  }
+}
+
 .#{$componentName}__label {
   position: absolute;
   bottom: 5px;

@@ -10,6 +10,7 @@ const Select = ({
   invalids,
   label,
   errorMessage,
+  disabled,
 }) => {
   const wrapper = useRef(null);
 
@@ -69,6 +70,9 @@ const Select = ({
   };
 
   const validate = value => {
+    if (disabled) {
+      return true;
+    }
     if (!!options.find(option => option.value === value)) {
       return true;
     } else {
@@ -77,6 +81,9 @@ const Select = ({
   };
 
   const validateState = incomingValue => {
+    if (disabled) {
+      return setValid(true);
+    }
     if (!!options.find(option => option.value === incomingValue)) {
       return setValid(true);
     } else {
@@ -128,8 +135,13 @@ const Select = ({
 
   const handleClickOutside = e => {
     setShowing(false);
-    setActive(true);
-    wrapper.current.focus();
+    if (!!e.target.classList[0] && e.target.classList[0].includes('select')) {
+      wrapper.current.focus();
+      setActive(true);
+    } else {
+      wrapper.current.blur();
+      setActive(false);
+    }
     window.removeEventListener('click', handleClickOutside);
   };
 
@@ -138,8 +150,8 @@ const Select = ({
       ref={wrapper}
       className={`select ${!valid ? 'select--has-error' : ''} ${isActive ? 'select--active' : ''} ${
         value.length > 0 ? 'select--has-content' : ''
-      }`}
-      tabIndex='0'
+      } ${disabled ? 'select--disabled' : ''}`}
+      tabIndex={disabled ? '' : '0'}
       onFocus={() => {
         setActive(true);
       }}
@@ -148,10 +160,10 @@ const Select = ({
         changeActions(value);
       }}
       onKeyDown={e => handleKeyPress(e)}>
-      <p className='select__label' onClick={handleOptions}>
+      <p className='select__label' onClick={disabled ? null : handleOptions}>
         {label}
       </p>
-      <div className='select__box' onClick={handleOptions}>
+      <div className='select__box' onClick={disabled ? null : handleOptions}>
         <p>{options[value] ? options[value].text : ''}</p>
       </div>
       <div className={`select__options ${optionsShowing ? 'select__options--showing' : ''}`}>
@@ -185,11 +197,13 @@ Select.propTypes = {
   name: PropTypes.string.isRequired,
   invalids: PropTypes.array.isRequired,
   errorMessage: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 Select.defaultProps = {
   label: '',
   errorMessage: '',
+  disabled: false,
 };
 
 export default Select;

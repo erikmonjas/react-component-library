@@ -35,6 +35,9 @@ $componentName: input;
 .#{$componentName}--disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  .#{$componentName}__input {
+    cursor: not-allowed;
+  }
 }
 
 .#{$componentName}__label {
