@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import './select.scss';
 
@@ -11,6 +11,8 @@ const Select = ({
   label,
   errorMessage,
 }) => {
+  const wrapper = useRef(null);
+
   const defaultValueIndex = options.findIndex(option => option.value === defaultValue);
   const initialValue = defaultValueIndex >= 0 ? defaultValue : '';
 
@@ -126,17 +128,14 @@ const Select = ({
 
   const handleClickOutside = e => {
     setShowing(false);
-    console.log('click out');
-    if (e.target.classList[0] === 'select__option') {
-      // document.querySelector('.select').focus();
-    } else {
-      setActive(false);
-      return window.removeEventListener('click', handleClickOutside);
-    }
+    setActive(true);
+    wrapper.current.focus();
+    window.removeEventListener('click', handleClickOutside);
   };
 
   return (
     <div
+      ref={wrapper}
       className={`select ${!valid ? 'select--has-error' : ''} ${isActive ? 'select--active' : ''} ${
         value.length > 0 ? 'select--has-content' : ''
       }`}
