@@ -129,12 +129,11 @@ const Select = ({
 
   const handleClickInside = () => {
     window.removeEventListener('click', handleClickInside, false);
-    setShowing(true);
     setActive(true);
+    setShowing(true);
   };
 
   const handleClickOutside = e => {
-    setShowing(false);
     if (!!e.target.classList[0] && e.target.classList[0].includes('select')) {
       wrapper.current.focus();
       setActive(true);
@@ -142,6 +141,7 @@ const Select = ({
       wrapper.current.blur();
       setActive(false);
     }
+    setShowing(false);
     window.removeEventListener('click', handleClickOutside);
   };
 
@@ -166,9 +166,9 @@ const Select = ({
       <div className='select__box' onClick={disabled ? null : handleOptions}>
         <p>{options[value] ? options[value].text : ''}</p>
       </div>
-      <div className={`select__options ${optionsShowing ? 'select__options--showing' : ''}`}>
-        {optionsShowing &&
-          options.map((option, index) => (
+      {optionsShowing && (
+        <div className={`select__options ${optionsShowing ? 'select__options--showing' : ''}`}>
+          {options.map((option, index) => (
             <button
               key={option.value}
               className={`select__option ${
@@ -178,8 +178,9 @@ const Select = ({
               {option.text}
             </button>
           ))}
-      </div>
-      {!valid && <p className='select__error-message'>{errorMessage}</p>}
+        </div>
+      )}
+      {!valid && !optionsShowing && <p className='select__error-message'>{errorMessage}</p>}
     </div>
   );
 };
