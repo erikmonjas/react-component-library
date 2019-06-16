@@ -49,8 +49,10 @@ const Select = ({
   }, [invalids]);
 
   useEffect(() => {
-    window.addEventListener('click', handleClickOutside);
-  }, [isActive]);
+    if (!!optionsShowing) {
+      window.addEventListener('click', handleClickOutside);
+    }
+  }, [optionsShowing]);
 
   const setOptionIndex = value => {
     const optionIndex = options.findIndex(option => option.value === value);
@@ -117,13 +119,20 @@ const Select = ({
   };
 
   const handleClickInside = () => {
-    setShowing(true);
     window.removeEventListener('click', handleClickInside, false);
+    setShowing(true);
+    setActive(true);
   };
 
-  const handleClickOutside = () => {
+  const handleClickOutside = e => {
     setShowing(false);
-    window.removeEventListener('click', handleClickOutside);
+    console.log('click out');
+    if (e.target.classList[0] === 'select__option') {
+      // document.querySelector('.select').focus();
+    } else {
+      setActive(false);
+      return window.removeEventListener('click', handleClickOutside);
+    }
   };
 
   return (
