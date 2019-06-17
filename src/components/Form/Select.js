@@ -160,10 +160,18 @@ const Select = ({
         changeActions(value);
       }}
       onKeyDown={e => handleKeyPress(e)}>
-      <p className='select__label' onClick={disabled ? null : handleOptions}>
+      <p
+        className='select__label'
+        onClick={disabled ? null : handleOptions}
+        htmlFor={name + 'Label'}>
         {label}
       </p>
-      <div className='select__box' onClick={disabled ? null : handleOptions}>
+      <div
+        className='select__box'
+        onClick={disabled ? null : handleOptions}
+        role='listbox'
+        id={name}
+        aria-labelledby={name + 'Label'}>
         <p>{options[value] ? options[value].text : ''}</p>
       </div>
       {optionsShowing && (
@@ -174,6 +182,8 @@ const Select = ({
               className={`select__option ${
                 index === currentValuePosition ? 'select__option--active' : ''
               }`}
+              role='option'
+              aria-selected={index === currentValuePosition ? 'true' : 'false'}
               onClick={e => handleClick(e, option)}>
               {option.text}
             </button>
