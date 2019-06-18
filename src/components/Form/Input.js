@@ -11,7 +11,7 @@ const Input = ({
   maxLength,
   minLength,
   errorMessage,
-  valid,
+  validationFunction,
   type,
   disabled
 }) => {
@@ -71,14 +71,12 @@ const Input = ({
       }
     }
 
-    if (!valid) {
-      return false;
-    }
+    validationFunction(value);
 
     return true;
   };
 
-  const validateState = () => {
+  const validateState = value => {
     handleChange({
       [name]: {
         value: currentValue,
@@ -105,7 +103,7 @@ const Input = ({
       }
     }
 
-    if (!valid) {
+    if (!validationFunction(value)) {
       return setValid(false);
     }
 
@@ -124,7 +122,7 @@ const Input = ({
 
   const handleEnter = () => {
     validate(currentValue);
-    validateState();
+    validateState(currentValue);
   };
 
   const handleFocus = () => {
@@ -132,7 +130,7 @@ const Input = ({
   };
 
   const handleBlur = () => {
-    validateState();
+    validateState(currentValue);
     setActive(false);
   };
 
@@ -179,14 +177,14 @@ Input.propTypes = {
   maxLength: PropTypes.string,
   minLength: PropTypes.string,
   errorMessage: PropTypes.string,
-  valid: PropTypes.bool,
+  validationFunction: PropTypes.func,
   type: PropTypes.string,
   disabled: PropTypes.bool
 };
 
 Input.defaultProps = {
   required: false,
-  valid: true,
+  validationFunction: () => true,
   type: "text",
   disabled: false
 };
