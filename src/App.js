@@ -123,6 +123,19 @@ const App = () => {
             Submit
           </button>
         </Form>
+
+        <Form submitAction={submitAction} invalidAction={invalidAction}>
+          <Input
+            name="otherText"
+            label="Other text"
+            minLength="4"
+            errorMessage="Error"
+            validationFunction={otherTextValidationFunction}
+          />
+          <button type="submit" formNoValidate>
+            Submit
+          </button>
+        </Form>
       </div>
     </>
   );

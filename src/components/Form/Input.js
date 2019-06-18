@@ -71,9 +71,7 @@ const Input = ({
       }
     }
 
-    validationFunction(value);
-
-    return true;
+    return validationFunction(value);
   };
 
   const validateState = value => {
