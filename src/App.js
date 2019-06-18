@@ -52,11 +52,18 @@ const App = () => {
             errorMessage='Error'
             defaultValue={'Default value'}
             minLength='5'
-            disabled
           />
           <Input
             name='otherText'
             label='Other text'
+            minLength='4'
+            errorMessage='Error'
+            validationFunction={otherTextValidationFunction}
+          />
+          <Input
+            name='requiredText'
+            label='Required text'
+            required
             minLength='4'
             errorMessage='Error'
             validationFunction={otherTextValidationFunction}

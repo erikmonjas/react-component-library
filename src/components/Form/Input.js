@@ -62,10 +62,20 @@ const Input = ({
     }
 
     if (value.length < parseInt(minLength)) {
-      return false;
+      if (required) {
+        return false;
+      } else {
+        if (value.length > 0) {
+          return false;
+        }
+      }
     }
 
-    return validationFunction(value);
+    if (required || value.length > 0) {
+      return validationFunction(value);
+    }
+
+    return true;
   };
 
   const validateState = value => {
@@ -86,11 +96,19 @@ const Input = ({
     }
 
     if (currentValue.length < parseInt(minLength)) {
-      return setValid(false);
+      if (required) {
+        return setValid(false);
+      } else {
+        if (currentValue.length > 0) {
+          return setValid(false);
+        }
+      }
     }
 
-    if (!validationFunction(value)) {
-      return setValid(false);
+    if (required || value.length > 0) {
+      if (!validationFunction(value)) {
+        return setValid(false);
+      }
     }
 
     return setValid(true);
