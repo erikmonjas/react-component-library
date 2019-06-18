@@ -5,7 +5,7 @@ $componentName: input;
   display: inline-flex;
   color: #afafaf;
   height: 25px;
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 .#{$componentName}--active {
@@ -46,6 +46,7 @@ $componentName: input;
   bottom: 5px;
   left: 0;
   transition: bottom 0.166s ease;
+  cursor: auto;
 }
 
 .#{$componentName}__input {

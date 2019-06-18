@@ -1,18 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import './select.scss';
+import { FormContext } from '../../hooks/formHook';
 
-const Select = ({
-  options,
-  defaultValue = '',
-  handleChange,
-  name,
-  invalids,
-  label,
-  errorMessage,
-  disabled,
-}) => {
+const Select = ({ options, defaultValue = '', name, label, errorMessage, disabled }) => {
   const wrapper = useRef(null);
+  const { handleChange, invalids } = useContext(FormContext);
 
   const defaultValueIndex = options.findIndex(option => option.value === defaultValue);
   const initialValue = defaultValueIndex >= 0 ? defaultValue : '';
@@ -33,15 +26,17 @@ const Select = ({
   };
 
   useEffect(() => {
-    setOptionIndex(defaultValue);
+    if (!disabled) {
+      setOptionIndex(defaultValue);
 
-    const initialState = {
-      [name]: {
-        value: initialValue,
-        valid: validate(initialValue),
-      },
-    };
-    handleChange(initialState);
+      const initialState = {
+        [name]: {
+          value: initialValue,
+          valid: validate(initialValue),
+        },
+      };
+      handleChange(initialState);
+    }
   }, []);
 
   useEffect(() => {
@@ -204,9 +199,7 @@ Select.propTypes = {
     }),
   ).isRequired,
   defaultValue: PropTypes.string,
-  handleChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  invalids: PropTypes.array.isRequired,
   errorMessage: PropTypes.string,
   disabled: PropTypes.bool,
 };
