@@ -2,27 +2,24 @@ import React from "react";
 import "./styles.scss";
 import Tabs from "./components/Tabs";
 import Tab from "./components/Tabs/Tab";
-import useFormHook from "./hooks/formHook";
 import Input from "./components/Form/Input";
 import Select from "./components/Form/Select";
 import Checkbox from "./components/Form/Checkbox";
-import Form, { FormContext } from "./components/Form/index";
+import Demo, { DemoContext } from "./components/Form/DemoContext";
+import Form from "./components/Form";
 
 const App = () => {
   const submitAction = formValues => console.log("Valid", formValues);
 
   const invalidAction = invalids => console.log("Invalid", invalids);
 
+  const otherTextValidationFunction = value => value.includes("hi");
+
   const selectOptions = [
     { text: "Option 0", value: "0" },
     { text: "Option 1", value: "1" },
     { text: "Option 2", value: "2" }
   ];
-
-  const { handleSubmit, handleChange, formValues, invalids } = useFormHook({
-    submitAction,
-    invalidAction
-  });
 
   return (
     <>
@@ -49,7 +46,7 @@ const App = () => {
 
       <div className="form-demo">
         <h2>Form</h2>
-        <form onSubmit={handleSubmit}>
+        {/* <form onSubmit={handleSubmit}>
           <Input
             handleChange={handleChange}
             invalids={invalids}
@@ -110,9 +107,21 @@ const App = () => {
           <button type="submit" formNoValidate>
             Submit
           </button>
-        </form>
-        <Form>
-          <FormContext.Consumer>{value => <p>{value}</p>}</FormContext.Consumer>
+        </form> */}
+        <Demo>
+          <DemoContext.Consumer>{value => <p>{value}</p>}</DemoContext.Consumer>
+        </Demo>
+        <Form submitAction={submitAction} invalidAction={invalidAction}>
+          <Input
+            name="otherText"
+            label="Other text"
+            minLength="4"
+            errorMessage="Error"
+            validationFunction={otherTextValidationFunction}
+          />
+          <button type="submit" formNoValidate>
+            Submit
+          </button>
         </Form>
       </div>
     </>

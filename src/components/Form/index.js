@@ -1,18 +1,17 @@
-import React, { useState, useContext } from "react";
+import React from "react";
+import useFormHook, { FormContext } from "../../hooks/formHook";
 
-export const FormContext = React.createContext("");
-
-const Form = ({ children }) => {
-  const [state, setState] = useState("");
-
-  const handleChange = e => {
-    setState(e.target.value);
-  };
+const Form = ({ children, submitAction, invalidAction, ...rest }) => {
+  const { handleSubmit, formValues, invalids, handleChange } = useFormHook({
+    submitAction,
+    invalidAction
+  });
 
   return (
-    <FormContext.Provider value={state}>
-      <input type="text" onChange={handleChange} />
-      {children}
+    <FormContext.Provider value={{ formValues, invalids, handleChange }}>
+      <form {...rest} onSubmit={handleSubmit}>
+        {children}
+      </form>
     </FormContext.Provider>
   );
 };
