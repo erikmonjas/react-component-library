@@ -6,6 +6,7 @@ import useFormHook from "./hooks/formHook";
 import Input from "./components/Form/Input";
 import Select from "./components/Form/Select";
 import Checkbox from "./components/Form/Checkbox";
+import Form, { FormContext } from "./components/Form/index";
 
 const App = () => {
   const submitAction = formValues => console.log("Valid", formValues);
@@ -110,6 +111,9 @@ const App = () => {
             Submit
           </button>
         </form>
+        <Form>
+          <FormContext.Consumer>{value => <p>{value}</p>}</FormContext.Consumer>
+        </Form>
       </div>
     </>
   );
