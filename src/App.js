@@ -101,7 +101,6 @@ const App = () => {
           <Checkbox
             name="otherCheckbox"
             label="Checkbox text"
-            required
             errorMessage="This checkbox is required"
           />
           <button type="submit" formNoValidate>
