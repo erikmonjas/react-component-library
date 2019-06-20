@@ -76,7 +76,7 @@ $componentName: select;
     width: max-content;
   }
   &:after {
-    content: '>';
+    content: ">";
     position: absolute;
     right: 5px;
     top: 50%;
@@ -99,6 +99,7 @@ $componentName: select;
   width: 100%;
   border: 2px solid rgb(248, 248, 248);
   z-index: 2;
+  background-color: #fff;
 }
 
 .#{$componentName}__option {

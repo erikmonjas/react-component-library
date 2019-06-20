@@ -1,0 +1,39 @@
+$componentName: checkbox;
+
+.#{$componentName} {
+  display: inline-flex;
+  position: relative;
+  height: 20px;
+  align-items: center;
+  background-color: mediumspringgreen;
+}
+
+.#{$componentName}--has-error {
+  color: red;
+}
+.#{$componentName}--active {
+  color: dodgerblue;
+}
+
+.#{$componentName}__input {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.#{$componentName}__label {
+  padding-left: 35px;
+}
+
+.#{$componentName}__square {
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid #afafaf;
+}
+
+.#{$componentName}__square--checked {
+  background-color: dodgerblue;
+}

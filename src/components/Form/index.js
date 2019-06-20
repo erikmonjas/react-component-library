@@ -12,6 +12,7 @@ const Form = ({ children, submitAction, invalidAction, ...rest }) => {
       <form {...rest} onSubmit={handleSubmit}>
         {children}
       </form>
+      {JSON.stringify(invalids)}
     </FormContext.Provider>
   );
 };
