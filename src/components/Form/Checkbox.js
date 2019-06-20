@@ -3,7 +3,14 @@ import PropTypes from "prop-types";
 import "./checkbox.scss";
 import { FormContext } from "../../hooks/formHook";
 
-const Checkbox = ({ name, label, defaultChecked, required, disabled }) => {
+const Checkbox = ({
+  name,
+  label,
+  defaultChecked,
+  required,
+  disabled,
+  errorMessage
+}) => {
   const { handleChange, invalids } = useContext(FormContext);
 
   const [checked, setChecked] = useState(defaultChecked);
@@ -103,6 +110,9 @@ const Checkbox = ({ name, label, defaultChecked, required, disabled }) => {
         {label}
         <span className="checkbox__square" />
       </label>
+      {!isValid && errorMessage && (
+        <p className="checkbox__error-message">{errorMessage}</p>
+      )}
     </div>
   );
 };
@@ -114,12 +124,14 @@ Checkbox.prototypes = {
   label: PropTypes.string,
   defaultChecked: PropTypes.bool,
   required: PropTypes.bool,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  errorMessage: PropTypes.bool
 };
 
 Checkbox.defaultProps = {
   label: "",
   defaultChecked: false,
   required: false,
-  disabled: false
+  disabled: false,
+  errorMessage: ""
 };

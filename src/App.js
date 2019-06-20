@@ -98,7 +98,12 @@ const App = () => {
             defaultChecked
             disabled
           />
-          <Checkbox name="otherCheckbox" label="Checkbox text" required />
+          <Checkbox
+            name="otherCheckbox"
+            label="Checkbox text"
+            required
+            errorMessage="This checkbox is required"
+          />
           <button type="submit" formNoValidate>
             Submit
           </button>

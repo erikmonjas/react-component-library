@@ -3,7 +3,7 @@ $componentName: select;
 .#{$componentName} {
   display: inline-flex;
   position: relative;
-  margin-top: 20px;
+  margin: 20px 0;
   &:focus {
     outline: none;
   }
