@@ -5,14 +5,38 @@ $componentName: checkbox;
   position: relative;
   height: 20px;
   align-items: center;
-  background-color: mediumspringgreen;
+  color: #afafaf;
 }
 
 .#{$componentName}--has-error {
   color: red;
 }
+
 .#{$componentName}--active {
   color: dodgerblue;
+}
+
+.#{$componentName}--checked {
+  .#{$componentName}__square {
+    border: none;
+    &:after {
+      display: block;
+      z-index: 1;
+    }
+    &:before {
+      background-color: dodgerblue;
+      transform: scale(1);
+      transition: transform 0.1666s ease;
+    }
+  }
+}
+
+.#{$componentName}--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  .#{$componentName}__label {
+    cursor: not-allowed;
+  }
 }
 
 .#{$componentName}__input {
@@ -23,6 +47,9 @@ $componentName: checkbox;
 
 .#{$componentName}__label {
   padding-left: 35px;
+  &:focus {
+    outline: none;
+  }
 }
 
 .#{$componentName}__square {
@@ -32,8 +59,26 @@ $componentName: checkbox;
   top: 0;
   left: 0;
   border: 1px solid #afafaf;
-}
-
-.#{$componentName}__square--checked {
-  background-color: dodgerblue;
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: scale(0);
+    transition: all 0.1666s ease;
+  }
+  &:after {
+    content: "";
+    left: 12px;
+    top: 12px;
+    width: 4px;
+    height: 11px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) translate(6px, -4px);
+    display: none;
+  }
 }

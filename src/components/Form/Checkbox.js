@@ -30,15 +30,17 @@ const Checkbox = ({ name, label, defaultChecked, required, disabled }) => {
   }, [invalids]);
 
   const handleCheckboxChange = () => {
-    handleChange({
-      [name]: {
-        value: checked,
-        required: required,
-        valid: validate(!checked)
-      }
-    });
-    validateState(!checked);
-    setChecked(!checked);
+    if (!disabled) {
+      setChecked(!checked);
+      validateState(!checked);
+      handleChange({
+        [name]: {
+          value: checked,
+          required: required,
+          valid: validate(!checked)
+        }
+      });
+    }
   };
 
   const validate = checked => {
@@ -65,30 +67,41 @@ const Checkbox = ({ name, label, defaultChecked, required, disabled }) => {
     return setValid(true);
   };
 
+  const handleKeyPress = e => {
+    e.preventDefault();
+    if (e.key === "Enter") {
+      handleCheckboxChange();
+    }
+  };
+
   return (
     <div
-      className={`checkbox ${!isValid ? "checkbox--has-error" : ""} ${
-        isActive ? "checkbox--active" : ""
-      }`}
+      className={`checkbox ${
+        !isValid && !isActive ? "checkbox--has-error" : ""
+      } ${isActive ? "checkbox--active" : ""} ${
+        checked ? "checkbox--checked" : ""
+      } ${disabled ? "checkbox--disabled" : ""}`}
     >
       <input
         type="checkbox"
         id={name}
         name={name}
-        onChange={handleCheckboxChange}
-        checked={checked}
+        defaultChecked={checked ? "checked" : ""}
         disabled={disabled}
+        className="checkbox__input"
+        tabIndex="-1"
+      />
+      <label
+        htmlFor={name}
+        className="checkbox__label"
+        onClick={handleCheckboxChange}
+        tabIndex={disabled ? "-1" : "0"}
         onFocus={() => setActive(true)}
         onBlur={() => setActive(false)}
-        className="checkbox__input"
-      />
-      <label htmlFor={name} className="checkbox__label">
+        onKeyPress={handleKeyPress}
+      >
         {label}
-        <span
-          className={`checkbox__square ${
-            checked ? "checkbox__square--checked" : ""
-          }`}
-        />
+        <span className="checkbox__square" />
       </label>
     </div>
   );
