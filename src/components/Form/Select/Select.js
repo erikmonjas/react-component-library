@@ -1,14 +1,29 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
-import PropTypes from 'prop-types';
-import './select.scss';
-import { FormContext } from '../../hooks/formHook';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useContext,
+  useCallback
+} from "react";
+import PropTypes from "prop-types";
+import "./select.scss";
+import { FormContext } from "../../../hooks/formHook";
 
-const Select = ({ options, defaultValue = '', name, label, errorMessage, disabled }) => {
+const Select = ({
+  options,
+  defaultValue = "",
+  name,
+  label,
+  errorMessage,
+  disabled
+}) => {
   const wrapper = useRef(null);
   const { handleChange, invalids } = useContext(FormContext);
 
-  const defaultValueIndex = options.findIndex(option => option.value === defaultValue);
-  const initialValue = defaultValueIndex >= 0 ? defaultValue : '';
+  const defaultValueIndex = options.findIndex(
+    option => option.value === defaultValue
+  );
+  const initialValue = defaultValueIndex >= 0 ? defaultValue : "";
 
   const [value, setValue] = useState(initialValue);
   const [valid, setValid] = useState(true);
@@ -21,9 +36,24 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
     setOptionIndex(value);
     validateState(value);
     handleChange({
-      [name]: { value: value, valid: validate(value) },
+      [name]: { value: value, valid: validate(value) }
     });
   };
+
+  const handleClickOutside = useCallback(
+    e => {
+      if (!!e.target.classList[0] && e.target.classList[0].includes("select")) {
+        wrapper.current.focus();
+        setActive(true);
+      } else {
+        wrapper.current.blur();
+        setActive(false);
+      }
+      setShowing(false);
+      window.removeEventListener("click", handleClickOutside);
+    },
+    [wrapper]
+  );
 
   useEffect(() => {
     if (!disabled) {
@@ -32,8 +62,8 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
       const initialState = {
         [name]: {
           value: initialValue,
-          valid: validate(initialValue),
-        },
+          valid: validate(initialValue)
+        }
       };
       handleChange(initialState);
     }
@@ -44,13 +74,13 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
     if (!!selectInvalid && selectInvalid.hasOwnProperty(name)) {
       setValid(false);
     }
-  }, [invalids]);
+  }, [invalids, name]);
 
   useEffect(() => {
     if (!!optionsShowing) {
-      window.addEventListener('click', handleClickOutside);
+      window.addEventListener("click", handleClickOutside);
     }
-  }, [optionsShowing]);
+  }, [optionsShowing, handleClickOutside]);
 
   const setOptionIndex = value => {
     const optionIndex = options.findIndex(option => option.value === value);
@@ -87,13 +117,13 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
   };
 
   const handleKeyPress = e => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       setShowing(!optionsShowing);
     }
-    if (e.key === 'Tab') {
+    if (e.key === "Tab") {
       setShowing(false);
     }
-    if (e.key === 'ArrowDown') {
+    if (e.key === "ArrowDown") {
       let newPosition = 0;
       if (currentValuePosition === options.length - 1) {
         newPosition = 0;
@@ -104,7 +134,7 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
       changeActions(options[newPosition].value);
     }
 
-    if (e.key === 'ArrowUp') {
+    if (e.key === "ArrowUp") {
       let newPosition = 0;
       if (currentValuePosition === 0) {
         newPosition = options.length - 1;
@@ -119,34 +149,24 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
   };
 
   const handleOptions = () => {
-    window.addEventListener('click', handleClickInside, false);
+    window.addEventListener("click", handleClickInside, false);
   };
 
   const handleClickInside = () => {
-    window.removeEventListener('click', handleClickInside, false);
+    window.removeEventListener("click", handleClickInside, false);
     setActive(true);
     setShowing(true);
-  };
-
-  const handleClickOutside = e => {
-    if (!!e.target.classList[0] && e.target.classList[0].includes('select')) {
-      wrapper.current.focus();
-      setActive(true);
-    } else {
-      wrapper.current.blur();
-      setActive(false);
-    }
-    setShowing(false);
-    window.removeEventListener('click', handleClickOutside);
   };
 
   return (
     <div
       ref={wrapper}
-      className={`select ${!valid ? 'select--has-error' : ''} ${isActive ? 'select--active' : ''} ${
-        value.length > 0 ? 'select--has-content' : ''
-      } ${disabled ? 'select--disabled' : ''}`}
-      tabIndex={disabled ? '' : '0'}
+      className={`select ${!valid ? "select--has-error" : ""} ${
+        isActive ? "select--active" : ""
+      } ${value.length > 0 ? "select--has-content" : ""} ${
+        disabled ? "select--disabled" : ""
+      }`}
+      tabIndex={disabled ? "" : "0"}
       onFocus={() => {
         setActive(true);
       }}
@@ -154,38 +174,48 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
         setActive(false);
         changeActions(value);
       }}
-      onKeyDown={e => handleKeyPress(e)}>
+      onKeyDown={e => handleKeyPress(e)}
+    >
       <p
-        className='select__label'
+        className="select__label"
         onClick={disabled ? null : handleOptions}
-        htmlFor={name + 'Label'}>
+        htmlFor={name + "Label"}
+      >
         {label}
       </p>
       <div
-        className='select__box'
+        className="select__box"
         onClick={disabled ? null : handleOptions}
-        role='listbox'
+        role="listbox"
         id={name}
-        aria-labelledby={name + 'Label'}>
-        <p>{options[value] ? options[value].text : ''}</p>
+        aria-labelledby={name + "Label"}
+      >
+        <p>{options[value] ? options[value].text : ""}</p>
       </div>
       {optionsShowing && (
-        <div className={`select__options ${optionsShowing ? 'select__options--showing' : ''}`}>
+        <div
+          className={`select__options ${
+            optionsShowing ? "select__options--showing" : ""
+          }`}
+        >
           {options.map((option, index) => (
             <button
               key={option.value}
               className={`select__option ${
-                index === currentValuePosition ? 'select__option--active' : ''
+                index === currentValuePosition ? "select__option--active" : ""
               }`}
-              role='option'
-              aria-selected={index === currentValuePosition ? 'true' : 'false'}
-              onClick={e => handleClick(e, option)}>
+              role="option"
+              aria-selected={index === currentValuePosition ? "true" : "false"}
+              onClick={e => handleClick(e, option)}
+            >
               {option.text}
             </button>
           ))}
         </div>
       )}
-      {!valid && !optionsShowing && <p className='select__error-message'>{errorMessage}</p>}
+      {!valid && !optionsShowing && (
+        <p className="select__error-message">{errorMessage}</p>
+      )}
     </div>
   );
 };
@@ -195,19 +225,19 @@ Select.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       text: PropTypes.string,
-      value: PropTypes.string,
-    }),
+      value: PropTypes.string
+    })
   ).isRequired,
   defaultValue: PropTypes.string,
   name: PropTypes.string.isRequired,
   errorMessage: PropTypes.string,
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 Select.defaultProps = {
-  label: '',
-  errorMessage: '',
-  disabled: false,
+  label: "",
+  errorMessage: "",
+  disabled: false
 };
 
 export default Select;

@@ -2,9 +2,9 @@ import React from "react";
 import "./styles.scss";
 import Tabs from "./components/Tabs";
 import Tab from "./components/Tabs/Tab";
-import Input from "./components/Form/Input";
-import Select from "./components/Form/Select";
-import Checkbox from "./components/Form/Checkbox";
+import Input from "./components/Form/Input/Input";
+import Select from "./components/Form/Select/Select";
+import Checkbox from "./components/Form/Checkbox/Checkbox";
 import Form from "./components/Form";
 
 const App = () => {
@@ -102,6 +102,7 @@ const App = () => {
             name="otherCheckbox"
             label="Checkbox text"
             errorMessage="This checkbox is required"
+            required
           />
           <button type="submit" formNoValidate>
             Submit

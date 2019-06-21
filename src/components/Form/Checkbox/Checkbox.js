@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./checkbox.scss";
-import { FormContext } from "../../hooks/formHook";
+import { FormContext } from "../../../hooks/formHook";
 
 const Checkbox = ({
   name,
@@ -34,7 +34,7 @@ const Checkbox = ({
     if (!!checkboxInvalid && checkboxInvalid.hasOwnProperty(name)) {
       setValid(false);
     }
-  }, [invalids]);
+  }, [invalids, name]);
 
   const handleCheckboxChange = () => {
     if (!disabled) {
