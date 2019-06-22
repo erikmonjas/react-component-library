@@ -1,16 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import "./checkbox.scss";
-import { FormContext } from "../../../hooks/formHook";
+import React, { useContext, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import './checkbox.scss';
+import { FormContext } from '../../../hooks/formHook';
 
-const Checkbox = ({
-  name,
-  label,
-  defaultChecked,
-  required,
-  disabled,
-  errorMessage
-}) => {
+const Checkbox = ({ name, label, defaultChecked, required, disabled, errorMessage }) => {
   const { handleChange, invalids } = useContext(FormContext);
 
   const [checked, setChecked] = useState(defaultChecked);
@@ -18,15 +11,17 @@ const Checkbox = ({
   const [isActive, setActive] = useState(false);
 
   useEffect(() => {
-    const initialState = {
-      [name]: {
-        value: defaultChecked,
-        required: required,
-        valid: validate(defaultChecked)
-      }
-    };
+    if (!disabled) {
+      const initialState = {
+        [name]: {
+          value: defaultChecked,
+          required: required,
+          valid: validate(defaultChecked),
+        },
+      };
 
-    handleChange(initialState);
+      handleChange(initialState);
+    }
   }, []);
 
   useEffect(() => {
@@ -44,8 +39,8 @@ const Checkbox = ({
         [name]: {
           value: checked,
           required: required,
-          valid: validate(!checked)
-        }
+          valid: validate(!checked),
+        },
       });
     }
   };
@@ -76,43 +71,37 @@ const Checkbox = ({
 
   const handleKeyPress = e => {
     e.preventDefault();
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleCheckboxChange();
     }
   };
 
   return (
     <div
-      className={`checkbox ${
-        !isValid && !isActive ? "checkbox--has-error" : ""
-      } ${isActive ? "checkbox--active" : ""} ${
-        checked ? "checkbox--checked" : ""
-      } ${disabled ? "checkbox--disabled" : ""}`}
-    >
+      className={`checkbox ${!isValid && !isActive ? 'checkbox--has-error' : ''} ${
+        isActive ? 'checkbox--active' : ''
+      } ${checked ? 'checkbox--checked' : ''} ${disabled ? 'checkbox--disabled' : ''}`}>
       <input
-        type="checkbox"
+        type='checkbox'
         id={name}
         name={name}
-        defaultChecked={checked ? "checked" : ""}
+        defaultChecked={checked ? 'checked' : ''}
         disabled={disabled}
-        className="checkbox__input"
-        tabIndex="-1"
+        className='checkbox__input'
+        tabIndex='-1'
       />
       <label
         htmlFor={name}
-        className="checkbox__label"
+        className='checkbox__label'
         onClick={handleCheckboxChange}
-        tabIndex={disabled ? "-1" : "0"}
+        tabIndex={disabled ? '-1' : '0'}
         onFocus={() => setActive(true)}
         onBlur={() => setActive(false)}
-        onKeyPress={handleKeyPress}
-      >
+        onKeyPress={handleKeyPress}>
         {label}
-        <span className="checkbox__square" />
+        <span className='checkbox__square' />
       </label>
-      {!isValid && errorMessage && (
-        <p className="checkbox__error-message">{errorMessage}</p>
-      )}
+      {!isValid && errorMessage && <p className='checkbox__error-message'>{errorMessage}</p>}
     </div>
   );
 };
@@ -121,17 +110,16 @@ export default Checkbox;
 
 Checkbox.prototypes = {
   name: PropTypes.string.isRequired,
-  label: PropTypes.string,
+  label: PropTypes.string.isRequired,
   defaultChecked: PropTypes.bool,
   required: PropTypes.bool,
   disabled: PropTypes.bool,
-  errorMessage: PropTypes.bool
+  errorMessage: PropTypes.bool,
 };
 
 Checkbox.defaultProps = {
-  label: "",
   defaultChecked: false,
   required: false,
   disabled: false,
-  errorMessage: ""
+  errorMessage: '',
 };

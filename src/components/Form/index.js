@@ -1,10 +1,10 @@
-import React from "react";
-import useFormHook, { FormContext } from "../../hooks/formHook";
+import React from 'react';
+import useFormHook, { FormContext } from '../../hooks/formHook';
 
 const Form = ({ children, submitAction, invalidAction, ...rest }) => {
   const { handleSubmit, formValues, invalids, handleChange } = useFormHook({
     submitAction,
-    invalidAction
+    invalidAction,
   });
 
   return (
@@ -12,7 +12,6 @@ const Form = ({ children, submitAction, invalidAction, ...rest }) => {
       <form {...rest} onSubmit={handleSubmit}>
         {children}
       </form>
-      {JSON.stringify(invalids)}
     </FormContext.Provider>
   );
 };
