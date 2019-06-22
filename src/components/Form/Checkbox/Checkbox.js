@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './checkbox.scss';
 import { FormContext } from '../../../hooks/formHook';
 
-const Checkbox = ({ name, label, defaultChecked, required, disabled, errorMessage }) => {
+const Checkbox = ({ name, label, defaultChecked, required, disabled, errorMessage, className }) => {
   const { handleChange, invalids } = useContext(FormContext);
 
   const [checked, setChecked] = useState(defaultChecked);
@@ -80,7 +80,9 @@ const Checkbox = ({ name, label, defaultChecked, required, disabled, errorMessag
     <div
       className={`checkbox ${!isValid && !isActive ? 'checkbox--has-error' : ''} ${
         isActive ? 'checkbox--active' : ''
-      } ${checked ? 'checkbox--checked' : ''} ${disabled ? 'checkbox--disabled' : ''}`}>
+      } ${checked ? 'checkbox--checked' : ''} ${disabled ? 'checkbox--disabled' : ''} ${
+        className ? className : ''
+      }`}>
       <input
         type='checkbox'
         id={name}
@@ -115,6 +117,7 @@ Checkbox.prototypes = {
   required: PropTypes.bool,
   disabled: PropTypes.bool,
   errorMessage: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 Checkbox.defaultProps = {
@@ -122,4 +125,5 @@ Checkbox.defaultProps = {
   required: false,
   disabled: false,
   errorMessage: '',
+  className: '',
 };

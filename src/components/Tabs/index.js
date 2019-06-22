@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './tabs.scss';
+import useTabHook, { TabContext } from '../../hooks/tabHook';
 
-const Tabs = ({ defaultTab, tabList, children }) => {
-  const [currentTab, setCurrentTab] = useState(defaultTab);
+const Tabs = ({ tabList, children, className, defaultTab }) => {
+  const { currentTab, handleTabChange } = useTabHook({ defaultTab });
 
   const displacement = 100 / tabList.length;
 
@@ -18,24 +19,26 @@ const Tabs = ({ defaultTab, tabList, children }) => {
   };
 
   return (
-    <div className='tabs'>
-      <div className='tabs__button-wrapper'>
-        {tabList.map((tabButton, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentTab(index)}
-            className={`tabs__button ${currentTab === index && 'tabs__button--active'}`}>
-            {tabButton.title}
-          </button>
-        ))}
-        <div className='tabs__line' style={lineStyle} />
-      </div>
-      <div className='tabs__slide-wrapper'>
-        <div className='tabs__slide-container' style={slideContainerStyle}>
-          {children(currentTab)}
+    <TabContext.Provider value={currentTab}>
+      <div className={`tabs ${className ? className : ''}`}>
+        <div className='tabs__button-wrapper'>
+          {tabList.map((tabButton, index) => (
+            <button
+              key={index}
+              onClick={() => handleTabChange(index)}
+              className={`tabs__button ${currentTab === index && 'tabs__button--active'}`}>
+              {tabButton.title}
+            </button>
+          ))}
+          <div className='tabs__line' style={lineStyle} />
+        </div>
+        <div className='tabs__slide-wrapper'>
+          <div className='tabs__slide-container' style={slideContainerStyle}>
+            {children}
+          </div>
         </div>
       </div>
-    </div>
+    </TabContext.Provider>
   );
 };
 
@@ -46,9 +49,11 @@ Tabs.propTypes = {
       title: PropTypes.string,
     }),
   ).isRequired,
+  className: PropTypes.string,
 };
 
 Tabs.defaultProps = {
+  className: '',
   defaultTab: 0,
 };
 

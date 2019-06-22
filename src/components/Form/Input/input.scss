@@ -6,6 +6,7 @@ $componentName: input;
   color: #afafaf;
   height: 25px;
   margin: 20px 0;
+  width: 100%;
 }
 
 .#{$componentName}--active {
@@ -42,6 +43,7 @@ $componentName: input;
 }
 
 .#{$componentName}__label {
+  width: 100%;
   position: absolute;
   bottom: 5px;
   left: 0;
@@ -50,6 +52,7 @@ $componentName: input;
 }
 
 .#{$componentName}__input {
+  width: 100%;
   border: none;
   border-bottom: 2px solid #afafaf;
   background-color: transparent;

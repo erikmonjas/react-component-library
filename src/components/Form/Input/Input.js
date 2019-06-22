@@ -14,6 +14,8 @@ const Input = ({
   validationFunction,
   type,
   disabled,
+  wrapperClassName,
+  inputClassName,
 }) => {
   const { handleChange, invalids } = useContext(FormContext);
 
@@ -147,14 +149,16 @@ const Input = ({
     <div
       className={`input ${isActive ? 'input--active' : ''}
         ${currentValue.length > 0 ? 'input--has-content' : ''}
-        ${!isValid ? 'input--has-error' : ''} ${disabled ? 'input--disabled' : ''}`}>
+        ${!isValid ? 'input--has-error' : ''} ${disabled ? 'input--disabled' : ''} ${
+        wrapperClassName ? wrapperClassName : ''
+      }`}>
       {label && (
         <label className={`input__label`} htmlFor={name}>
           {label}
         </label>
       )}
       <input
-        className='input__input'
+        className={`input__input ${inputClassName ? inputClassName : ''}`}
         type='text'
         disabled={disabled}
         id={name}
@@ -184,6 +188,8 @@ Input.propTypes = {
   validationFunction: PropTypes.func,
   type: PropTypes.string,
   disabled: PropTypes.bool,
+  wrapperClassName: PropTypes.string,
+  inputClassName: PropTypes.string,
 };
 
 Input.defaultProps = {
@@ -191,6 +197,8 @@ Input.defaultProps = {
   validationFunction: () => true,
   type: 'text',
   disabled: false,
+  inputClassName: '',
+  wrapperClassName: '',
 };
 
 export default Input;

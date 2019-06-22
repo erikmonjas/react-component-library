@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import PropTypes from 'prop-types';
 import { formValuesReducer, formInvalidsReducer } from './formReducer';
 
 export const FormContext = React.createContext({});
@@ -36,6 +37,16 @@ const useFormHook = ({ initialValues = {}, invalidAction, submitAction }) => {
   };
 
   return { handleSubmit, handleChange, formValues, invalids };
+};
+
+useFormHook.PropTypes = {
+  initialValues: PropTypes.object,
+  invalidAction: PropTypes.func.isRequired,
+  submitAction: PropTypes.func.isRequired,
+};
+
+useFormHook.defaultProps = {
+  initialValues: {},
 };
 
 export default useFormHook;

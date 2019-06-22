@@ -4,6 +4,7 @@ $componentName: select;
   display: inline-flex;
   position: relative;
   margin: 20px 0;
+  width: 100%;
   &:focus {
     outline: none;
   }
@@ -61,13 +62,14 @@ $componentName: select;
 }
 
 .#{$componentName}__box {
+  width: 100%;
   position: relative;
   border: none;
   border-bottom: 2px solid #afafaf;
   height: 25px;
-  width: 200px;
   overflow: hidden;
   cursor: pointer;
+  max-width: 300px;
   p {
     position: absolute;
     top: 2px;
@@ -76,7 +78,7 @@ $componentName: select;
     width: max-content;
   }
   &:after {
-    content: ">";
+    content: '>';
     position: absolute;
     right: 5px;
     top: 50%;
@@ -93,6 +95,7 @@ $componentName: select;
 }
 
 .#{$componentName}__options {
+  max-width: 300px;
   position: absolute;
   top: 100%;
   left: 0;

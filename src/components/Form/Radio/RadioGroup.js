@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import './radio.scss';
 import { FormContext } from '../../../hooks/formHook';
 
-const RadioGroup = ({ radioList, name, defaultRadio = radioList[0].value }) => {
+const RadioGroup = ({
+  radioList,
+  name,
+  defaultRadio = radioList[0].value,
+  groupClassName,
+  radioClassName,
+}) => {
   const { handleChange } = useContext(FormContext);
 
   const [currentRadio, setCurrentRadio] = useState(defaultRadio);
@@ -49,7 +55,7 @@ const RadioGroup = ({ radioList, name, defaultRadio = radioList[0].value }) => {
   return (
     <div
       role='radiogroup'
-      className='radio-group'
+      className={`radio-group ${groupClassName ? groupClassName : ''}`}
       tabIndex='0'
       onFocus={() => setActive(true)}
       onBlur={() => setActive(false)}
@@ -58,7 +64,7 @@ const RadioGroup = ({ radioList, name, defaultRadio = radioList[0].value }) => {
         <div
           className={`radio ${currentRadio === value ? 'radio--selected' : ''} ${
             isActive && currentRadio === value ? 'radio--active' : ''
-          }`}
+          } ${radioClassName ? radioClassName : ''}`}
           key={value}>
           <input
             type='radio'
@@ -87,6 +93,13 @@ RadioGroup.propTypes = {
   ).isRequired,
   name: PropTypes.string.isRequired,
   defaultRadio: PropTypes.string,
+  groupClassName: PropTypes.string,
+  radioClassName: PropTypes.string,
+};
+
+RadioGroup.defaultProps = {
+  groupClassName: '',
+  radioClassName: '',
 };
 
 export default RadioGroup;

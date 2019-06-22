@@ -59,7 +59,7 @@ $componentName: checkbox;
   left: 0;
   border: 1px solid #afafaf;
   &:before {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     top: 0;
@@ -70,14 +70,14 @@ $componentName: checkbox;
     transition: all 0.1666s ease;
   }
   &:after {
-    content: "";
+    content: '';
     left: 12px;
     top: 12px;
-    width: 4px;
+    width: 6px;
     height: 11px;
     border: solid #fff;
     border-width: 0 2px 2px 0;
-    transform: rotate(45deg) translate(6px, -4px);
+    transform: rotate(45deg) translate(7px, -3px);
     display: none;
   }
 }

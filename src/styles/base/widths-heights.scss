@@ -1,0 +1,42 @@
+$media-sizes: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+);
+
+@for $i from 0 through 20 {
+  $j: $i * 5;
+  .width-#{$j} {
+    width: $j * 1% !important;
+  }
+}
+
+@for $i from 0 through 20 {
+  $j: $i * 5;
+  .height-#{$j} {
+    height: $j * 1% !important;
+  }
+}
+
+@each $prefix, $size in $media-sizes {
+  @for $i from 0 through 20 {
+    $j: $i * 5;
+    @media (min-width: $size) {
+      .width-#{$prefix}-#{$j * 5} {
+        width: $j * 1% !important;
+      }
+    }
+  }
+}
+
+@each $prefix, $size in $media-sizes {
+  @for $i from 0 through 20 {
+    $j: $i * 5;
+    @media (min-width: $size) {
+      .height-#{$prefix}-#{$j * 5} {
+        height: $j * 1% !important;
+      }
+    }
+  }
+}

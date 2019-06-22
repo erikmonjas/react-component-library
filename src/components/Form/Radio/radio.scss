@@ -1,7 +1,8 @@
 $componentName: radio;
 
 .radio-group {
-  display: inline;
+  display: inline-block;
+  width: 100%;
   &:focus {
     outline: none;
   }
@@ -23,7 +24,7 @@ $componentName: radio;
   .#{$componentName}__circle {
     border-color: dodgerblue;
     &:after {
-      display: block;
+      transform: translate(-50%, -50%) scale(1);
     }
   }
 }
@@ -52,7 +53,7 @@ $componentName: radio;
   border: 2px solid #afafaf;
   &:after {
     content: '';
-    display: none;
+    display: block;
     width: 11px;
     height: 11px;
     background-color: dodgerblue;
@@ -60,6 +61,7 @@ $componentName: radio;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0);
+    transition: 0.1666s ease;
   }
 }
