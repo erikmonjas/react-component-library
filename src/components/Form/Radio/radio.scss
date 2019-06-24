@@ -6,8 +6,8 @@ $componentName: radio;
   &:focus {
     outline: none;
   }
-  .#{$componentName}:first-of-type {
-    margin-left: 0;
+  .#{$componentName}:last-of-type {
+    margin-right: 0;
   }
 }
 
@@ -17,7 +17,8 @@ $componentName: radio;
   height: 20px;
   align-items: center;
   color: #afafaf;
-  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
 }
 
 .#{$componentName}--selected {
@@ -41,6 +42,7 @@ $componentName: radio;
 
 .#{$componentName}__label {
   padding-left: 30px;
+  cursor: pointer;
 }
 
 .#{$componentName}__circle {
@@ -52,7 +54,7 @@ $componentName: radio;
   border-radius: 50%;
   border: 2px solid #afafaf;
   &:after {
-    content: '';
+    content: "";
     display: block;
     width: 11px;
     height: 11px;

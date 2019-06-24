@@ -7,6 +7,7 @@ $componentName: checkbox;
   align-items: center;
   color: #afafaf;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .#{$componentName}--active {
@@ -46,6 +47,7 @@ $componentName: checkbox;
 
 .#{$componentName}__label {
   padding-left: 30px;
+  cursor: pointer;
   &:focus {
     outline: none;
   }
@@ -59,7 +61,7 @@ $componentName: checkbox;
   left: 0;
   border: 1px solid #afafaf;
   &:before {
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     top: 0;
@@ -70,7 +72,7 @@ $componentName: checkbox;
     transition: all 0.1666s ease;
   }
   &:after {
-    content: '';
+    content: "";
     left: 12px;
     top: 12px;
     width: 6px;
