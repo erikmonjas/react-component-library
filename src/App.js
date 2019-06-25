@@ -1,6 +1,7 @@
 import React from "react";
 import Routes from "./routes";
-import { NavLink, BrowserRouter } from "react-router-dom";
+import { NavLink, BrowserRouter, Link } from "react-router-dom";
+import Logo from "./logo.svg";
 
 const App = () => {
   return (
@@ -9,6 +10,9 @@ const App = () => {
         <div className="row">
           <div className="col-3 col-lg-2 d-flex">
             <ul className="menu">
+              <Link to="/">
+                <img src={Logo} className="home-logo" />
+              </Link>
               <li>
                 <NavLink
                   to="/form"

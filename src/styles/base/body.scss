@@ -14,3 +14,17 @@ a {
 .body-wrapper {
   overflow-x: hidden;
 }
+
+.default-paragraph {
+  color: #afafaf;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.default-link {
+  color: dodgerblue;
+  text-decoration: underline;
+  &:hover {
+    color: dodgerblue;
+  }
+}
