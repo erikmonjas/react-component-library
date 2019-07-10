@@ -9,7 +9,7 @@ const Form = ({ children, submitAction, invalidAction, ...rest }) => {
 
   return (
     <FormContext.Provider value={{ formValues, invalids, handleChange }}>
-      <form {...rest} onSubmit={handleSubmit}>
+      <form {...rest} onSubmit={handleSubmit} noValidate>
         {children}
       </form>
     </FormContext.Provider>

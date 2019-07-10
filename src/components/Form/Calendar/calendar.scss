@@ -1,0 +1,42 @@
+$componentName: calendar;
+
+.#{$componentName}__month-picker {
+  margin-bottom: 20px;
+}
+
+.#{$componentName}__arrow {
+  margin: 3px 10px;
+}
+
+.#{$componentName}__day-name {
+  width: 14.28%;
+  margin-bottom: 10px;
+}
+
+.#{$componentName}__day {
+  width: 14.28%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.#{$componentName}__day--blurred {
+  color: #afafaf;
+}
+
+.#{$componentName}__day-inner {
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.#{$componentName}__day--active {
+  .#{$componentName}__day-inner {
+    color: #ffffff;
+    background-color: dodgerblue;
+    border-radius: 50%;
+  }
+}
