@@ -26,9 +26,15 @@ $componentName: calendar;
 
 .#{$componentName}__month-picker {
   margin-bottom: 20px;
+  color: dodgerblue;
+  p {
+    width: 120px;
+    text-align: center;
+  }
 }
 
 .#{$componentName}__arrow {
+  color: dodgerblue;
   margin: 3px 10px;
 }
 
@@ -45,6 +51,10 @@ $componentName: calendar;
   margin: 5px 0;
 }
 
+.#{$componentName}__day--today .#{$componentName}__day-inner {
+  border: 2px solid dodgerblue;
+}
+
 .#{$componentName}__day--blurred {
   color: #afafaf;
 }
@@ -55,13 +65,18 @@ $componentName: calendar;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.1666s ease;
+  &:hover {
+    transition: background-color 0.1666s ease;
+    background-color: rgb(238, 238, 238);
+  }
 }
 
 .#{$componentName}__day--active {
   .#{$componentName}__day-inner {
     color: #ffffff;
     background-color: dodgerblue;
-    border-radius: 50%;
   }
 }
 
@@ -70,8 +85,14 @@ $componentName: calendar;
     bottom: 100%;
     color: dodgerblue;
   }
-  .#{$componentName}__input {
+  .#{$componentName}__input input {
     border-bottom-color: dodgerblue;
+  }
+}
+
+.#{$componentName}__input-wrapper--has-content {
+  .#{$componentName}__label {
+    bottom: 100%;
   }
 }
 
@@ -105,11 +126,15 @@ $componentName: calendar;
 
 .#{$componentName}__input {
   width: 100%;
-  border: none;
-  border-bottom: 2px solid #afafaf;
-  background-color: transparent;
-  font-size: 100%;
-  &:focus {
-    outline: none;
+  display: inline-flex;
+  input {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #afafaf;
+    background-color: transparent;
+    font-size: 100%;
+    &:focus {
+      outline: none;
+    }
   }
 }

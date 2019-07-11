@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import './calendar.scss';
 
-const Calendar = ({ name, label }) => {
+const Calendar = ({ name, label, todaySelected, format }) => {
   const monthNames = [
     'January',
     'February',
@@ -18,20 +18,87 @@ const Calendar = ({ name, label }) => {
     'December',
   ];
 
+  const numberRegEx = /^\d*\.?(?:\d{1,2})?$/;
+
+  const formatDate = (format, time) => {
+    const monthPlusOne = new Date(time).getMonth() + 1;
+
+    const day =
+      new Date(time).getDate().toString().length === 1
+        ? `0${new Date(time).getDate()}`
+        : new Date(time).getDate();
+    const month = monthPlusOne.toString().length === 1 ? `0${monthPlusOne}` : monthPlusOne;
+    const year = new Date(time).getFullYear();
+
+    if (format === 'dd/mm/yyyy') {
+      return `${day}/${month}/${year}`;
+    } else if (format === 'dd/mm/yy') {
+      return `${day}/${month}/${year.toString().slice(2)}`;
+    } else if (format === 'mm/dd/yyyy') {
+      return `${month}/${day}/${year}`;
+    } else if (format === 'mm/dd/yy') {
+      return `${month}/${day}/${year.toString().slice(2)}`;
+    } else if (format === 'dd-mm-yyyy') {
+      return `${day}-${month}-${year}`;
+    } else if (format === 'dd-mm-yy') {
+      return `${day}-${month}-${year.toString().slice(2)}`;
+    } else if (format === 'mm-dd-yyyy') {
+      return `${month}-${day}-${year}`;
+    } else if (format === 'mm-dd-yy') {
+      return `${month}-${day}-${year.toString().slice(2)}`;
+    } else if (format === 'dd.mm.yyyy') {
+      return `${day}.${month}.${year}`;
+    } else if (format === 'dd.mm.yy') {
+      return `${day}.${month}.${year.toString().slice(2)}`;
+    } else if (format === 'mm.dd.yyyy') {
+      return `${month}.${day}.${year}`;
+    } else if (format === 'mm.dd.yy') {
+      return `${month}.${day}.${year.toString().slice(2)}`;
+    }
+  };
+
   const newDate = new Date();
+
+  const wrapper = useRef(null);
 
   const currentMonth = newDate.getMonth();
   const currentYear = newDate.getFullYear();
   const currentDay = newDate.getDate();
+  const todayTime = new Date(currentYear, currentMonth, currentDay).getTime();
 
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedDay, setSelectedDay] = useState(
-    new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime(),
+    todaySelected ? { time: todayTime, formattedDate: formatDate(format, todayTime) } : null,
   );
   const [isActive, setActive] = useState(false);
   const [datepickerShowing, setDatepickerShowing] = useState(false);
   const [datepickerPostion, setDatepickerPosition] = useState('bottom');
+
+  const handleClickOutside = useCallback(
+    e => {
+      console.log(wrapper.current.contains(e.target));
+
+      if (wrapper.current.contains(e.target)) {
+        if (e.target.classList[0].includes('calendar__label')) {
+          setDatepickerShowing(false);
+          setActive(false);
+        }
+      } else {
+        setDatepickerShowing(false);
+        setActive(false);
+      }
+
+      window.removeEventListener('click', handleClickOutside);
+    },
+    [wrapper],
+  );
+
+  useEffect(() => {
+    if (!!datepickerShowing) {
+      window.addEventListener('click', handleClickOutside);
+    }
+  }, [datepickerShowing, handleClickOutside]);
 
   const getDaysInMonth = (month, year) => {
     const initialDate = new Date(year, month, 1);
@@ -84,9 +151,9 @@ const Calendar = ({ name, label }) => {
   };
 
   const toggleDatePicker = () => {
-    if (getScrollLeft() + getVisibleDistanceToBottomLeft() > 330) {
+    if (getScrollLeft() + getVisibleDistanceToBottomLeft() > 325) {
       setDatepickerPosition('bottom');
-    } else if (getDistanceToTopLeft() < 330) {
+    } else if (getDistanceToTopLeft() < 318) {
       setDatepickerPosition('bottom');
     } else {
       setDatepickerPosition('top');
@@ -129,10 +196,29 @@ const Calendar = ({ name, label }) => {
     setMonthDays(getDaysInMonth(newMonth, newYear));
   };
 
+  const handleDayClick = ({ dayTime }) => {
+    setSelectedDay({ time: dayTime, formattedDate: formatDate(format, dayTime) });
+    setDatepickerShowing(false);
+  };
+
+  const handleInputChange = e => {
+    if (numberRegEx.test(e.target.value)) {
+      setSelectedDay({ time: '', formattedDate: e.target.value });
+      if (e.target.value.length === 2 || e.target.value.length === 5) {
+        setSelectedDay({
+          time: '',
+          formattedDate: e.target.value,
+        });
+      }
+    }
+  };
+
   return (
-    <div className='calendar'>
+    <div className='calendar' ref={wrapper}>
       <div
-        className={`calendar__input-wrapper ${isActive ? 'calendar__input-wrapper--active' : ''}`}>
+        className={`calendar__input-wrapper ${isActive ? 'calendar__input-wrapper--active' : ''} ${
+          selectedDay ? 'calendar__input-wrapper--has-content' : ''
+        }`}>
         <label htmlFor={name} className='calendar__label'>
           {label}
         </label>
@@ -143,13 +229,16 @@ const Calendar = ({ name, label }) => {
             name={name}
             onFocus={() => setActive(true)}
             onBlur={() => setActive(false)}
+            value={selectedDay ? selectedDay.formattedDate : ''}
+            onChange={handleInputChange}
           />
-          <img
-            src='https://s3.amazonaws.com/ionic-marketplace/ionic-multi-date-picker/icon.png'
-            alt='calendar icon'
-            className='calendar__input-image'
-            onClick={toggleDatePicker}
-          />
+          <button type='button' onClick={toggleDatePicker}>
+            <img
+              src='https://s3.amazonaws.com/ionic-marketplace/ionic-multi-date-picker/icon.png'
+              alt='calendar icon'
+              className='calendar__input-image'
+            />
+          </button>
         </div>
       </div>
       <div
@@ -187,10 +276,13 @@ const Calendar = ({ name, label }) => {
         <div className='calendar__week-days d-flex flex-wrap'>
           {selectedMonthDays.map(day => (
             <button
-              className={`calendar__day ${!day.isMonthDay ? 'calendar__day--blurred' : ''} 
-            ${day.dayTime === selectedDay ? 'calendar__day--active' : ''}`}
+              className={`calendar__day ${!day.isMonthDay ? 'calendar__day--blurred' : ''} ${
+                todayTime === day.dayTime ? 'calendar__day--today' : ''
+              }
+            ${selectedDay && day.dayTime === selectedDay.time ? 'calendar__day--active' : ''}`}
               type='button'
-              key={day.dayTime}>
+              key={day.dayTime}
+              onClick={() => handleDayClick(day)}>
               <span className='calendar__day-inner'>{day.dayDate}</span>
             </button>
           ))}
@@ -203,6 +295,12 @@ const Calendar = ({ name, label }) => {
 Calendar.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  todaySelected: PropTypes.bool,
+  format: PropTypes.string.isRequired,
+};
+
+Calendar.defaultProps = {
+  todaySelected: false,
 };
 
 export default Calendar;

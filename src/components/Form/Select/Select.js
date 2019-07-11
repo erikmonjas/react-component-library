@@ -27,7 +27,7 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
 
   const handleClickOutside = useCallback(
     e => {
-      if (!!e.target.classList[0] && e.target.classList[0].includes('select')) {
+      if (wrapper.current.contains(e.target)) {
         wrapper.current.focus();
         setActive(true);
       } else {
