@@ -64,6 +64,7 @@ const FormDemo = () => {
               />
             </div>
           </div>
+
           <div className='row'>
             <div className='col-12 col-md-4'>
               <Input
@@ -95,6 +96,12 @@ const FormDemo = () => {
             </div>
           </div>
 
+          <div className='row'>
+            <div className='col-12'>
+              <Calendar label='Date (dd/mm/yyyy)' name='calendar' />
+            </div>
+          </div>
+
           <div className='row mb-15'>
             <div className='col-4'>
               <RadioGroup radioList={radioList} name='radioGroup' defaultRadio='2' />
@@ -111,7 +118,7 @@ const FormDemo = () => {
 
           <div className='row'>
             <div className='col-12'>
-              <Calendar />
+              <Calendar label='Date (dd/mm/yyyy)' name='date' />
             </div>
           </div>
 

@@ -1,5 +1,29 @@
 $componentName: calendar;
 
+.#{$componentName} {
+  position: relative;
+}
+
+.#{$componentName}__datepicker {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #ffffff;
+  border: 2px solid rgb(248, 248, 248);
+  padding-top: 20px;
+  max-width: 320px;
+  z-index: 9;
+  &--showing {
+    display: block;
+  }
+  &--top {
+    bottom: calc(100% - 20px);
+  }
+  &--bottom {
+    top: calc(100% - 20px);
+  }
+}
+
 .#{$componentName}__month-picker {
   margin-bottom: 20px;
 }
@@ -38,5 +62,54 @@ $componentName: calendar;
     color: #ffffff;
     background-color: dodgerblue;
     border-radius: 50%;
+  }
+}
+
+.#{$componentName}__input-wrapper--active {
+  .#{$componentName}__label {
+    bottom: 100%;
+    color: dodgerblue;
+  }
+  .#{$componentName}__input {
+    border-bottom-color: dodgerblue;
+  }
+}
+
+.#{$componentName}__input-wrapper {
+  position: relative;
+  display: inline-flex;
+  color: #afafaf;
+  height: 25px;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.#{$componentName}__label {
+  width: 100%;
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  transition: bottom 0.166s ease;
+  cursor: text;
+}
+
+.#{$componentName}__input-image {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  bottom: 3px;
+  right: 0;
+  filter: contrast(0.1);
+  cursor: pointer;
+}
+
+.#{$componentName}__input {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #afafaf;
+  background-color: transparent;
+  font-size: 100%;
+  &:focus {
+    outline: none;
   }
 }
