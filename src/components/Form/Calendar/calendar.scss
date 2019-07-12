@@ -85,7 +85,7 @@ $componentName: calendar;
     bottom: 100%;
     color: dodgerblue;
   }
-  .#{$componentName}__input input {
+  .#{$componentName}__input-text {
     border-bottom-color: dodgerblue;
   }
 }
@@ -93,6 +93,15 @@ $componentName: calendar;
 .#{$componentName}__input-wrapper--has-content {
   .#{$componentName}__label {
     bottom: 100%;
+  }
+}
+
+.#{$componentName}__input-wrapper--has-error {
+  .#{$componentName}__label {
+    color: red;
+  }
+  .#{$componentName}__input-text {
+    border-bottom-color: red;
   }
 }
 
@@ -127,7 +136,7 @@ $componentName: calendar;
 .#{$componentName}__input {
   width: 100%;
   display: inline-flex;
-  input {
+  &-text {
     width: 100%;
     border: none;
     border-bottom: 2px solid #afafaf;
@@ -137,4 +146,11 @@ $componentName: calendar;
       outline: none;
     }
   }
+}
+
+.#{$componentName}__input-error-message {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  color: red;
 }

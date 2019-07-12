@@ -18,8 +18,6 @@ const Calendar = ({ name, label, todaySelected, format }) => {
     'December',
   ];
 
-  const numberRegEx = /^\d*\.?(?:\d{1,2})?$/;
-
   const formatDate = (format, time) => {
     const monthPlusOne = new Date(time).getMonth() + 1;
 
@@ -69,20 +67,26 @@ const Calendar = ({ name, label, todaySelected, format }) => {
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedDay, setSelectedDay] = useState(
-    todaySelected ? { time: todayTime, formattedDate: formatDate(format, todayTime) } : null,
+    todaySelected
+      ? { time: todayTime, formattedDate: formatDate(format, todayTime) }
+      : { time: null, formattedDate: '' },
   );
   const [isActive, setActive] = useState(false);
   const [datepickerShowing, setDatepickerShowing] = useState(false);
   const [datepickerPostion, setDatepickerPosition] = useState('bottom');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [hasError, setHasError] = useState(false);
 
   const handleClickOutside = useCallback(
     e => {
-      console.log(wrapper.current.contains(e.target));
-
       if (wrapper.current.contains(e.target)) {
-        if (e.target.classList[0].includes('calendar__label')) {
+        if (
+          e.target.classList.length > 0 &&
+          (e.target.classList[0].includes('calendar__label') ||
+            e.target.classList[0].includes('calendar__input'))
+        ) {
           setDatepickerShowing(false);
-          setActive(false);
+          setActive(true);
         }
       } else {
         setDatepickerShowing(false);
@@ -163,8 +167,7 @@ const Calendar = ({ name, label, todaySelected, format }) => {
   };
 
   const prevMonth = () => {
-    let newMonth = 0;
-    let newYear = 0;
+    let newMonth, newYear;
     if (selectedMonth > 0) {
       newMonth = selectedMonth - 1;
       newYear = selectedYear;
@@ -180,8 +183,7 @@ const Calendar = ({ name, label, todaySelected, format }) => {
   };
 
   const nextMonth = () => {
-    let newMonth = 0;
-    let newYear = 0;
+    let newMonth, newYear;
     if (selectedMonth < 11) {
       newMonth = selectedMonth + 1;
       newYear = selectedYear;
@@ -197,19 +199,94 @@ const Calendar = ({ name, label, todaySelected, format }) => {
   };
 
   const handleDayClick = ({ dayTime }) => {
+    setErrorMessage('');
+    setHasError(false);
     setSelectedDay({ time: dayTime, formattedDate: formatDate(format, dayTime) });
     setDatepickerShowing(false);
   };
 
   const handleInputChange = e => {
-    if (numberRegEx.test(e.target.value)) {
-      setSelectedDay({ time: '', formattedDate: e.target.value });
-      if (e.target.value.length === 2 || e.target.value.length === 5) {
-        setSelectedDay({
-          time: '',
-          formattedDate: e.target.value,
-        });
-      }
+    setErrorMessage('');
+    setHasError(false);
+    setSelectedDay({ time: '', formattedDate: e.target.value });
+  };
+
+  const handleBlur = () => {
+    setActive(false);
+
+    let day, month, year;
+
+    const inputYear = selectedDay.formattedDate.substring(6, 10);
+
+    if (
+      format === 'dd/mm/yyyy' ||
+      format === 'dd/mm/yy' ||
+      format === 'dd.mm.yyyy' ||
+      format === 'dd.mm.yy' ||
+      format === 'dd-mm-yyyy' ||
+      format === 'dd-mm-yy'
+    ) {
+      day = selectedDay.formattedDate.substring(0, 2);
+      month = selectedDay.formattedDate.substring(3, 5);
+    }
+
+    if (
+      format === 'mm/dd/yyyy' ||
+      format === 'mm/dd/yy' ||
+      format === 'mm.dd.yyyy' ||
+      format === 'mm.dd.yy' ||
+      format === 'mm-dd-yyyy' ||
+      format === 'mm-dd-yy'
+    ) {
+      month = selectedDay.formattedDate.substring(0, 2);
+      day = selectedDay.formattedDate.substring(3, 5);
+    }
+
+    if (
+      format === 'mm/dd/yyyy' ||
+      format === 'mm.dd.yyyy' ||
+      format === 'mm-dd-yyyy' ||
+      format === 'dd/mm/yyyy' ||
+      format === 'dd.mm.yyyy' ||
+      format === 'dd-mm-yyyy'
+    ) {
+      year = selectedDay.formattedDate.substring(6, 10);
+    } else {
+      year = `20${selectedDay.formattedDate.substring(6, 8)}`;
+    }
+
+    const monthDays = new Date(year, month, 0).getDate();
+
+    const timeToSet = new Date(year, month - 1, day).getTime();
+
+    if (isNaN(timeToSet)) {
+      setErrorMessage('Invalid Date');
+      setHasError(true);
+    } else if (day > monthDays || day < 1 || month > 12 || month < 1) {
+      setErrorMessage('Invalid Date');
+      setHasError(true);
+    } else if (
+      (format === 'mm/dd/yyyy' && inputYear.length !== 4) ||
+      (format === 'mm.dd.yyyy' && inputYear.length !== 4) ||
+      (format === 'mm-dd-yyyy' && inputYear.length !== 4) ||
+      (format === 'dd/mm/yyyy' && inputYear.length !== 4) ||
+      (format === 'dd.mm.yyyy' && inputYear.length !== 4) ||
+      (format === 'dd-mm-yyyy' && inputYear.length !== 4)
+    ) {
+      setErrorMessage('Invalid Date');
+      setHasError(true);
+    } else if (
+      (format === 'mm/dd/yy' && inputYear.length !== 2) ||
+      (format === 'mm.dd.yy' && inputYear.length !== 2) ||
+      (format === 'mm-dd-yy' && inputYear.length !== 2) ||
+      (format === 'dd/mm/yy' && inputYear.length !== 2) ||
+      (format === 'dd.mm.yy' && inputYear.length !== 2) ||
+      (format === 'dd-mm-yy' && inputYear.length !== 2)
+    ) {
+      setErrorMessage('Invalid Date');
+      setHasError(true);
+    } else {
+      setSelectedDay({ time: timeToSet, formattedDate: selectedDay.formattedDate });
     }
   };
 
@@ -217,8 +294,10 @@ const Calendar = ({ name, label, todaySelected, format }) => {
     <div className='calendar' ref={wrapper}>
       <div
         className={`calendar__input-wrapper ${isActive ? 'calendar__input-wrapper--active' : ''} ${
-          selectedDay ? 'calendar__input-wrapper--has-content' : ''
-        }`}>
+          selectedDay && selectedDay.formattedDate.length > 0
+            ? 'calendar__input-wrapper--has-content'
+            : ''
+        } ${hasError ? 'calendar__input-wrapper--has-error' : ''}`}>
         <label htmlFor={name} className='calendar__label'>
           {label}
         </label>
@@ -228,9 +307,10 @@ const Calendar = ({ name, label, todaySelected, format }) => {
             id={name}
             name={name}
             onFocus={() => setActive(true)}
-            onBlur={() => setActive(false)}
+            onBlur={handleBlur}
             value={selectedDay ? selectedDay.formattedDate : ''}
             onChange={handleInputChange}
+            className='calendar__input-text'
           />
           <button type='button' onClick={toggleDatePicker}>
             <img
@@ -239,6 +319,7 @@ const Calendar = ({ name, label, todaySelected, format }) => {
               className='calendar__input-image'
             />
           </button>
+          <span className='calendar__input-error-message'>{errorMessage}</span>
         </div>
       </div>
       <div
@@ -279,7 +360,7 @@ const Calendar = ({ name, label, todaySelected, format }) => {
               className={`calendar__day ${!day.isMonthDay ? 'calendar__day--blurred' : ''} ${
                 todayTime === day.dayTime ? 'calendar__day--today' : ''
               }
-            ${selectedDay && day.dayTime === selectedDay.time ? 'calendar__day--active' : ''}`}
+            ${(selectedDay && selectedDay.time) === day.dayTime ? 'calendar__day--active' : ''}`}
               type='button'
               key={day.dayTime}
               onClick={() => handleDayClick(day)}>

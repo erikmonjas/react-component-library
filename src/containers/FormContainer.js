@@ -115,7 +115,7 @@ const FormDemo = () => {
               <Calendar label='Date (dd/mm/yyyy)' name='date' format='dd/mm/yyyy' />
             </div>
             <div className='col-4'>
-              <Calendar label='Date (dd/mm/yyyy)' name='calendar' todaySelected format='mm/dd/yy' />
+              <Calendar label='Date (dd/mm/yy)' name='calendar' todaySelected format='mm/dd/yy' />
             </div>
           </div>
 
