@@ -60,11 +60,12 @@ const Calendar = ({
     if (date.length > 0) {
       return dateToTime(format, date);
     } else {
-      return 0;
+      return null;
     }
   };
 
   const wrapper = useRef(null);
+  const datepickerRef = useRef(null);
 
   const minDateTime = getLimitDateTime(minDate);
   const maxDateTime = getLimitDateTime(maxDate);
@@ -77,6 +78,7 @@ const Calendar = ({
   const [datepickerPostion, setDatepickerPosition] = useState("bottom");
   const [errorMessage, setErrorMessage] = useState("");
   const [hasError, setHasError] = useState(false);
+  const [isImageFocused, setImageFocus] = useState(false);
   const [isValid, setValid] = useState(true);
 
   const handleClickOutside = useCallback(
@@ -89,13 +91,13 @@ const Calendar = ({
         ) {
           setDatepickerShowing(false);
           setActive(true);
+          window.removeEventListener("click", handleClickOutside);
         }
       } else {
         setDatepickerShowing(false);
         setActive(false);
+        window.removeEventListener("click", handleClickOutside);
       }
-
-      window.removeEventListener("click", handleClickOutside);
     },
     [wrapper]
   );
@@ -105,6 +107,19 @@ const Calendar = ({
       window.addEventListener("click", handleClickOutside);
     }
   }, [datepickerShowing, handleClickOutside]);
+
+  useEffect(() => {
+    if (datepickerShowing) {
+      const chosenDay = datepickerRef.current.querySelector(
+        ".calendar__day--active"
+      );
+      const todayDay = datepickerRef.current.querySelector(
+        ".calendar__day--today"
+      );
+
+      chosenDay ? chosenDay.focus() : todayDay.focus();
+    }
+  }, [datepickerShowing, datepickerRef]);
 
   const getDaysInMonth = (month, year) => {
     const initialDate = new Date(year, month, 1);
@@ -165,8 +180,6 @@ const Calendar = ({
   };
 
   const toggleDatePicker = () => {
-    setActive(!datepickerShowing);
-
     if (getScrollLeft() + getVisibleDistanceToBottomLeft() > 325) {
       setDatepickerPosition("bottom");
     } else if (getDistanceToTopLeft() < 318) {
@@ -218,6 +231,8 @@ const Calendar = ({
       formattedDate: timeToDate(format, dayTime)
     });
     setDatepickerShowing(false);
+    setActive(false);
+    window.removeEventListener("click", handleClickOutside);
   };
 
   const handleInputChange = e => {
@@ -273,6 +288,36 @@ const Calendar = ({
     }
   };
 
+  const handleDayKeyPress = (e, index) => {
+    const days = datepickerRef.current.querySelectorAll(".calendar__day");
+    if (e.key === "ArrowRight") {
+      if (!!days[index + 1]) {
+        if (days[index + 1].getAttribute("disabled") === null) {
+          days[index + 1].focus();
+        }
+      } else {
+        if (days[0].getAttribute("disabled") === null) {
+          days[0].focus();
+        }
+      }
+    }
+    if (e.key === "ArrowLeft") {
+      if (!!days[index - 1]) {
+        if (days[index - 1].getAttribute("disabled") === null) {
+          days[index - 1].focus();
+        }
+      } else {
+        if (days[days.length - 1].getAttribute("disabled") === null) {
+          days[days.length - 1].focus();
+        }
+      }
+    }
+    if (e.key === "Tab") {
+      e.preventDefault();
+      datepickerRef.current.querySelector(".calendar__arrow--prev").focus();
+    }
+  };
+
   return (
     <div className="calendar" ref={wrapper}>
       <div
@@ -298,11 +343,18 @@ const Calendar = ({
             onChange={handleInputChange}
             className="calendar__input-text"
           />
-          <button type="button" onClick={toggleDatePicker}>
+          <button
+            type="button"
+            onClick={toggleDatePicker}
+            className={`calendar__input-image ${
+              isImageFocused ? "calendar__input-image--focused" : ""
+            }`}
+            onFocus={() => setImageFocus(true)}
+            onBlur={() => setImageFocus(false)}
+          >
             <img
               src="https://s3.amazonaws.com/ionic-marketplace/ionic-multi-date-picker/icon.png"
               alt="calendar icon"
-              className="calendar__input-image"
             />
           </button>
           <span className="calendar__input-error-message">{errorMessage}</span>
@@ -316,6 +368,7 @@ const Calendar = ({
             ? "calendar__datepicker--top"
             : "calendar__datepicker--bottom"
         }`}
+        ref={datepickerRef}
       >
         <div className="calendar__month-picker d-flex align-items-center justify-content-center">
           <button
@@ -346,12 +399,20 @@ const Calendar = ({
           <span className="calendar__day-name">Sun</span>
         </div>
         <div className="calendar__week-days d-flex flex-wrap">
-          {selectedMonthDays.map(day => (
+          {selectedMonthDays.map((day, index) => (
             <button
-              disabled={day.dayTime < minDateTime || day.dayTime > maxDateTime}
+              disabled={
+                (minDateTime !== null && day.dayTime < minDateTime) ||
+                (maxDateTime !== null && day.dayTime > maxDateTime)
+              }
               className={`calendar__day ${
                 !day.isMonthDay ? "calendar__day--blurred" : ""
-              } ${todayTime === day.dayTime ? "calendar__day--today" : ""}
+              } ${todayTime === day.dayTime ? "calendar__day--today" : ""} ${
+                (minDateTime !== null && day.dayTime < minDateTime) ||
+                (maxDateTime !== null && day.dayTime > maxDateTime)
+                  ? "calendar__day--blurred"
+                  : ""
+              }
             ${
               (selectedDay && selectedDay.time) === day.dayTime
                 ? "calendar__day--active"
@@ -360,6 +421,7 @@ const Calendar = ({
               type="button"
               key={day.dayTime}
               onClick={() => handleDayClick(day)}
+              onKeyDown={e => handleDayKeyPress(e, index)}
             >
               <span className="calendar__day-inner">{day.dayDate}</span>
             </button>

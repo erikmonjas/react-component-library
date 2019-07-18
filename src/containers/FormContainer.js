@@ -42,7 +42,6 @@ const FormDemo = () => {
                 errorMessage="Error"
                 defaultValue={"Default value"}
                 minLength="5"
-                disabled
               />
             </div>
             <div className="col-12 col-md-4">
@@ -139,6 +138,16 @@ const FormDemo = () => {
                 defaultValue="10/07/19"
                 format="dd/mm/yy"
                 maxDate={timeToDate("dd/mm/yy", todayTime)}
+              />
+            </div>
+            <div className="col-4">
+              <Calendar
+                label="Date (dd/mm/yy)"
+                name="calendar"
+                defaultValue="10/07/19"
+                format="dd/mm/yy"
+                minDate="06/07/19"
+                maxDate="24/07/19"
               />
             </div>
           </div>
