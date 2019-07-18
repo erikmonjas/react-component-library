@@ -208,6 +208,8 @@ const Calendar = ({ name, label, todaySelected, format, defaultValue }) => {
   };
 
   const toggleDatePicker = () => {
+    setActive(!datepickerShowing)
+
     if (getScrollLeft() + getVisibleDistanceToBottomLeft() > 325) {
       setDatepickerPosition('bottom');
     } else if (getDistanceToTopLeft() < 318) {
