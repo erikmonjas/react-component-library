@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import './calendar.scss';
+import { FormContext } from '../../../hooks/formHook';
+import { formatTime, getYearMonthDate } from '../../../utils/date'
 
 const Calendar = ({ name, label, todaySelected, format, defaultValue }) => {
+  const { handleChange, invalids } = useContext(FormContext);
+
   const monthNames = [
     'January',
     'February',
@@ -18,93 +22,13 @@ const Calendar = ({ name, label, todaySelected, format, defaultValue }) => {
     'December',
   ];
 
-  const formatTime = (format, time) => {
-    const monthPlusOne = new Date(time).getMonth() + 1;
-
-    const day =
-      new Date(time).getDate().toString().length === 1
-        ? `0${new Date(time).getDate()}`
-        : new Date(time).getDate();
-    const month = monthPlusOne.toString().length === 1 ? `0${monthPlusOne}` : monthPlusOne;
-    const year = new Date(time).getFullYear();
-
-    if (format === 'dd/mm/yyyy') {
-      return `${day}/${month}/${year}`;
-    } else if (format === 'dd/mm/yy') {
-      return `${day}/${month}/${year.toString().slice(2)}`;
-    } else if (format === 'mm/dd/yyyy') {
-      return `${month}/${day}/${year}`;
-    } else if (format === 'mm/dd/yy') {
-      return `${month}/${day}/${year.toString().slice(2)}`;
-    } else if (format === 'dd-mm-yyyy') {
-      return `${day}-${month}-${year}`;
-    } else if (format === 'dd-mm-yy') {
-      return `${day}-${month}-${year.toString().slice(2)}`;
-    } else if (format === 'mm-dd-yyyy') {
-      return `${month}-${day}-${year}`;
-    } else if (format === 'mm-dd-yy') {
-      return `${month}-${day}-${year.toString().slice(2)}`;
-    } else if (format === 'dd.mm.yyyy') {
-      return `${day}.${month}.${year}`;
-    } else if (format === 'dd.mm.yy') {
-      return `${day}.${month}.${year.toString().slice(2)}`;
-    } else if (format === 'mm.dd.yyyy') {
-      return `${month}.${day}.${year}`;
-    } else if (format === 'mm.dd.yy') {
-      return `${month}.${day}.${year.toString().slice(2)}`;
-    }
-  };
-
-  const getYearMonthDate = (date) => {
-    let day, month, year;
-
-    if (
-      format === 'dd/mm/yyyy' ||
-      format === 'dd/mm/yy' ||
-      format === 'dd.mm.yyyy' ||
-      format === 'dd.mm.yy' ||
-      format === 'dd-mm-yyyy' ||
-      format === 'dd-mm-yy'
-    ) {
-      day = date.substring(0, 2);
-      month = parseFloat(date.substring(3, 5)) - 1;
-    }
-
-    if (
-      format === 'mm/dd/yyyy' ||
-      format === 'mm/dd/yy' ||
-      format === 'mm.dd.yyyy' ||
-      format === 'mm.dd.yy' ||
-      format === 'mm-dd-yyyy' ||
-      format === 'mm-dd-yy'
-    ) {
-      month = parseFloat(date.substring(0, 2)) - 1;
-      day = date.substring(3, 5);
-    }
-
-    if (
-      format === 'mm/dd/yyyy' ||
-      format === 'mm.dd.yyyy' ||
-      format === 'mm-dd-yyyy' ||
-      format === 'dd/mm/yyyy' ||
-      format === 'dd.mm.yyyy' ||
-      format === 'dd-mm-yyyy'
-    ) {
-      year = date.substring(6, 10);
-    } else {
-      year = `20${date.substring(6, 8)}`;
-    }
-
-    return { year, month, day }
-  }
-
   const getInitialDay = () => {
     if (todaySelected) {
       return { time: todayTime, formattedDate: formatTime(format, todayTime) }
     } else if (!!defaultValue) {
-      const day = getYearMonthDate(defaultValue).day
-      const month = getYearMonthDate(defaultValue).month
-      const year = getYearMonthDate(defaultValue).year
+      const day = getYearMonthDate(format, defaultValue).day
+      const month = getYearMonthDate(format, defaultValue).month
+      const year = getYearMonthDate(format, defaultValue).year
 
       return { time: new Date(year, month, day).getTime(), formattedDate: defaultValue }
     } else {
@@ -129,6 +53,7 @@ const Calendar = ({ name, label, todaySelected, format, defaultValue }) => {
   const [datepickerPostion, setDatepickerPosition] = useState('bottom');
   const [errorMessage, setErrorMessage] = useState('');
   const [hasError, setHasError] = useState(false);
+  const [isValid, setValid] = useState(true);
 
   const handleClickOutside = useCallback(
     e => {
@@ -271,9 +196,9 @@ const Calendar = ({ name, label, todaySelected, format, defaultValue }) => {
 
     const inputYear = selectedDay.formattedDate.substring(6, 10);
 
-    const day = getYearMonthDate(selectedDay.formattedDate).day
-    const month = getYearMonthDate(selectedDay.formattedDate).month
-    const year = getYearMonthDate(selectedDay.formattedDate).year
+    const day = getYearMonthDate(format, selectedDay.formattedDate).day
+    const month = getYearMonthDate(format, selectedDay.formattedDate).month
+    const year = getYearMonthDate(format, selectedDay.formattedDate).year
 
     const monthDays = new Date(year, month + 1, 0).getDate();
 
