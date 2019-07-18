@@ -117,6 +117,9 @@ const FormDemo = () => {
             <div className='col-4'>
               <Calendar label='Date (dd/mm/yy)' name='calendar' todaySelected format='mm/dd/yy' />
             </div>
+            <div className='col-4'>
+              <Calendar label='Date (dd/mm/yy)' name='calendar' defaultValue='10/07/19' format='dd/mm/yy' />
+            </div>
           </div>
 
           <div className='d-flex justify-content-end'>

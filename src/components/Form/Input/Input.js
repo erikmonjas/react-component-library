@@ -76,7 +76,7 @@ const Input = ({
 
       handleChange(initialState);
     }
-  }, []);
+  }, [disabled, getInitialValue, handleChange, name, required, validate]);
 
   useEffect(() => {
     const inputInvalid = invalids.find(invalid => invalid[name]);
@@ -151,7 +151,7 @@ const Input = ({
         ${currentValue.length > 0 ? 'input--has-content' : ''}
         ${!isValid ? 'input--has-error' : ''} ${disabled ? 'input--disabled' : ''} ${
         wrapperClassName ? wrapperClassName : ''
-      }`}>
+        }`}>
       {label && (
         <label className={`input__label`} htmlFor={name}>
           {label}

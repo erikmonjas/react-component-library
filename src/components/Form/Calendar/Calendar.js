@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import './calendar.scss';
 
-const Calendar = ({ name, label, todaySelected, format }) => {
+const Calendar = ({ name, label, todaySelected, format, defaultValue }) => {
   const monthNames = [
     'January',
     'February',
@@ -18,7 +18,7 @@ const Calendar = ({ name, label, todaySelected, format }) => {
     'December',
   ];
 
-  const formatDate = (format, time) => {
+  const formatTime = (format, time) => {
     const monthPlusOne = new Date(time).getMonth() + 1;
 
     const day =
@@ -55,6 +55,63 @@ const Calendar = ({ name, label, todaySelected, format }) => {
     }
   };
 
+  const getYearMonthDate = (date) => {
+    let day, month, year;
+
+    if (
+      format === 'dd/mm/yyyy' ||
+      format === 'dd/mm/yy' ||
+      format === 'dd.mm.yyyy' ||
+      format === 'dd.mm.yy' ||
+      format === 'dd-mm-yyyy' ||
+      format === 'dd-mm-yy'
+    ) {
+      day = date.substring(0, 2);
+      month = parseFloat(date.substring(3, 5)) - 1;
+    }
+
+    if (
+      format === 'mm/dd/yyyy' ||
+      format === 'mm/dd/yy' ||
+      format === 'mm.dd.yyyy' ||
+      format === 'mm.dd.yy' ||
+      format === 'mm-dd-yyyy' ||
+      format === 'mm-dd-yy'
+    ) {
+      month = parseFloat(date.substring(0, 2)) - 1;
+      day = date.substring(3, 5);
+    }
+
+    if (
+      format === 'mm/dd/yyyy' ||
+      format === 'mm.dd.yyyy' ||
+      format === 'mm-dd-yyyy' ||
+      format === 'dd/mm/yyyy' ||
+      format === 'dd.mm.yyyy' ||
+      format === 'dd-mm-yyyy'
+    ) {
+      year = date.substring(6, 10);
+    } else {
+      year = `20${date.substring(6, 8)}`;
+    }
+
+    return { year, month, day }
+  }
+
+  const getInitialDay = () => {
+    if (todaySelected) {
+      return { time: todayTime, formattedDate: formatTime(format, todayTime) }
+    } else if (!!defaultValue) {
+      const day = getYearMonthDate(defaultValue).day
+      const month = getYearMonthDate(defaultValue).month
+      const year = getYearMonthDate(defaultValue).year
+
+      return { time: new Date(year, month, day).getTime(), formattedDate: defaultValue }
+    } else {
+      return { time: null, formattedDate: '' }
+    }
+  }
+
   const newDate = new Date();
 
   const wrapper = useRef(null);
@@ -66,11 +123,7 @@ const Calendar = ({ name, label, todaySelected, format }) => {
 
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [selectedDay, setSelectedDay] = useState(
-    todaySelected
-      ? { time: todayTime, formattedDate: formatDate(format, todayTime) }
-      : { time: null, formattedDate: '' },
-  );
+  const [selectedDay, setSelectedDay] = useState(getInitialDay())
   const [isActive, setActive] = useState(false);
   const [datepickerShowing, setDatepickerShowing] = useState(false);
   const [datepickerPostion, setDatepickerPosition] = useState('bottom');
@@ -201,7 +254,7 @@ const Calendar = ({ name, label, todaySelected, format }) => {
   const handleDayClick = ({ dayTime }) => {
     setErrorMessage('');
     setHasError(false);
-    setSelectedDay({ time: dayTime, formattedDate: formatDate(format, dayTime) });
+    setSelectedDay({ time: dayTime, formattedDate: formatTime(format, dayTime) });
     setDatepickerShowing(false);
   };
 
@@ -214,55 +267,20 @@ const Calendar = ({ name, label, todaySelected, format }) => {
   const handleBlur = () => {
     setActive(false);
 
-    let day, month, year;
-
     const inputYear = selectedDay.formattedDate.substring(6, 10);
 
-    if (
-      format === 'dd/mm/yyyy' ||
-      format === 'dd/mm/yy' ||
-      format === 'dd.mm.yyyy' ||
-      format === 'dd.mm.yy' ||
-      format === 'dd-mm-yyyy' ||
-      format === 'dd-mm-yy'
-    ) {
-      day = selectedDay.formattedDate.substring(0, 2);
-      month = selectedDay.formattedDate.substring(3, 5);
-    }
+    const day = getYearMonthDate(selectedDay.formattedDate).day
+    const month = getYearMonthDate(selectedDay.formattedDate).month
+    const year = getYearMonthDate(selectedDay.formattedDate).year
 
-    if (
-      format === 'mm/dd/yyyy' ||
-      format === 'mm/dd/yy' ||
-      format === 'mm.dd.yyyy' ||
-      format === 'mm.dd.yy' ||
-      format === 'mm-dd-yyyy' ||
-      format === 'mm-dd-yy'
-    ) {
-      month = selectedDay.formattedDate.substring(0, 2);
-      day = selectedDay.formattedDate.substring(3, 5);
-    }
+    const monthDays = new Date(year, month + 1, 0).getDate();
 
-    if (
-      format === 'mm/dd/yyyy' ||
-      format === 'mm.dd.yyyy' ||
-      format === 'mm-dd-yyyy' ||
-      format === 'dd/mm/yyyy' ||
-      format === 'dd.mm.yyyy' ||
-      format === 'dd-mm-yyyy'
-    ) {
-      year = selectedDay.formattedDate.substring(6, 10);
-    } else {
-      year = `20${selectedDay.formattedDate.substring(6, 8)}`;
-    }
-
-    const monthDays = new Date(year, month, 0).getDate();
-
-    const timeToSet = new Date(year, month - 1, day).getTime();
+    const timeToSet = new Date(year, month, day).getTime();
 
     if (isNaN(timeToSet)) {
       setErrorMessage('Invalid Date');
       setHasError(true);
-    } else if (day > monthDays || day < 1 || month > 12 || month < 1) {
+    } else if (day > monthDays || day < 1 || month > 11 || month < 0) {
       setErrorMessage('Invalid Date');
       setHasError(true);
     } else if (
@@ -297,7 +315,7 @@ const Calendar = ({ name, label, todaySelected, format }) => {
           selectedDay && selectedDay.formattedDate.length > 0
             ? 'calendar__input-wrapper--has-content'
             : ''
-        } ${hasError ? 'calendar__input-wrapper--has-error' : ''}`}>
+          } ${hasError ? 'calendar__input-wrapper--has-error' : ''}`}>
         <label htmlFor={name} className='calendar__label'>
           {label}
         </label>
@@ -325,9 +343,9 @@ const Calendar = ({ name, label, todaySelected, format }) => {
       <div
         className={`calendar__datepicker ${
           datepickerShowing ? 'calendar__datepicker--showing' : ''
-        } ${
+          } ${
           datepickerPostion === 'top' ? 'calendar__datepicker--top' : 'calendar__datepicker--bottom'
-        }`}>
+          }`}>
         <div className='calendar__month-picker d-flex align-items-center justify-content-center'>
           <button
             type='button'
@@ -359,7 +377,7 @@ const Calendar = ({ name, label, todaySelected, format }) => {
             <button
               className={`calendar__day ${!day.isMonthDay ? 'calendar__day--blurred' : ''} ${
                 todayTime === day.dayTime ? 'calendar__day--today' : ''
-              }
+                }
             ${(selectedDay && selectedDay.time) === day.dayTime ? 'calendar__day--active' : ''}`}
               type='button'
               key={day.dayTime}
@@ -378,6 +396,7 @@ Calendar.propTypes = {
   name: PropTypes.string.isRequired,
   todaySelected: PropTypes.bool,
   format: PropTypes.string.isRequired,
+  defaultValue: PropTypes.string
 };
 
 Calendar.defaultProps = {
