@@ -24,7 +24,9 @@ const Calendar = ({
   format,
   defaultValue,
   maxDate,
-  minDate
+  minDate,
+  disabled,
+  required
 }) => {
   const { handleChange, invalids } = useContext(FormContext);
 
@@ -77,9 +79,44 @@ const Calendar = ({
   const [datepickerShowing, setDatepickerShowing] = useState(false);
   const [datepickerPostion, setDatepickerPosition] = useState("bottom");
   const [errorMessage, setErrorMessage] = useState("");
-  const [hasError, setHasError] = useState(false);
   const [isImageFocused, setImageFocus] = useState(false);
   const [isValid, setValid] = useState(true);
+
+  const validate = useCallback(
+    ({ time }) => {
+      if (disabled) {
+        setValid(true);
+        return true;
+      }
+
+      if (required && time === null) {
+        setErrorMessage("Please, enter a date");
+        setValid(false);
+        return false;
+      }
+
+      if (!required && time === null) {
+        setValid(true);
+        return true;
+      }
+
+      if (!!minDate && time < minDateTime) {
+        setValid(false);
+        setErrorMessage(`The date must be equal or posterior to ${minDate}`);
+        return false;
+      }
+
+      if (!!maxDate && time > maxDateTime) {
+        setValid(false);
+        setErrorMessage(`The date must be equal or previous to ${maxDate}`);
+        return false;
+      }
+
+      setValid(true);
+      return true;
+    },
+    [disabled, required, minDateTime, maxDateTime, minDate, maxDate]
+  );
 
   const handleClickOutside = useCallback(
     e => {
@@ -101,6 +138,25 @@ const Calendar = ({
     },
     [wrapper]
   );
+
+  useEffect(() => {
+    if (!disabled) {
+      const initialState = {
+        [name]: {
+          value: selectedDay,
+          required,
+          valid: validate(selectedDay)
+        }
+      };
+
+      handleChange(initialState);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!disabled) {
+    }
+  }, [disabled]);
 
   useEffect(() => {
     if (!!datepickerShowing) {
@@ -225,7 +281,7 @@ const Calendar = ({
 
   const handleDayClick = ({ dayTime }) => {
     setErrorMessage("");
-    setHasError(false);
+    setValid(true);
     setSelectedDay({
       time: dayTime,
       formattedDate: timeToDate(format, dayTime)
@@ -237,7 +293,7 @@ const Calendar = ({
 
   const handleInputChange = e => {
     setErrorMessage("");
-    setHasError(false);
+    setValid(true);
     setSelectedDay({ time: "", formattedDate: e.target.value });
   };
 
@@ -256,10 +312,10 @@ const Calendar = ({
 
     if (isNaN(timeToSet)) {
       setErrorMessage("Invalid Date");
-      setHasError(true);
+      setValid(false);
     } else if (day > monthDays || day < 1 || month > 11 || month < 0) {
       setErrorMessage("Invalid Date");
-      setHasError(true);
+      setValid(false);
     } else if (
       (format === "mm/dd/yyyy" && inputYear.length !== 4) ||
       (format === "mm.dd.yyyy" && inputYear.length !== 4) ||
@@ -269,7 +325,7 @@ const Calendar = ({
       (format === "dd-mm-yyyy" && inputYear.length !== 4)
     ) {
       setErrorMessage("Invalid Date");
-      setHasError(true);
+      setValid(false);
     } else if (
       (format === "mm/dd/yy" && inputYear.length !== 2) ||
       (format === "mm.dd.yy" && inputYear.length !== 2) ||
@@ -279,12 +335,16 @@ const Calendar = ({
       (format === "dd-mm-yy" && inputYear.length !== 2)
     ) {
       setErrorMessage("Invalid Date");
-      setHasError(true);
+      setValid(false);
     } else {
-      setSelectedDay({
+      const dayObject = {
         time: timeToSet,
         formattedDate: selectedDay.formattedDate
-      });
+      };
+
+      validate(dayObject);
+
+      setSelectedDay(dayObject);
     }
   };
 
@@ -319,7 +379,10 @@ const Calendar = ({
   };
 
   return (
-    <div className="calendar" ref={wrapper}>
+    <div
+      className={`calendar ${disabled ? "calendar--disabled" : ""}`}
+      ref={wrapper}
+    >
       <div
         className={`calendar__input-wrapper ${
           isActive ? "calendar__input-wrapper--active" : ""
@@ -327,7 +390,7 @@ const Calendar = ({
           selectedDay && selectedDay.formattedDate.length > 0
             ? "calendar__input-wrapper--has-content"
             : ""
-        } ${hasError ? "calendar__input-wrapper--has-error" : ""}`}
+        } ${isValid ? "" : "calendar__input-wrapper--has-error"}`}
       >
         <label htmlFor={name} className="calendar__label">
           {label}
@@ -342,6 +405,7 @@ const Calendar = ({
             value={selectedDay ? selectedDay.formattedDate : ""}
             onChange={handleInputChange}
             className="calendar__input-text"
+            disabled={disabled}
           />
           <button
             type="button"
@@ -351,12 +415,8 @@ const Calendar = ({
             }`}
             onFocus={() => setImageFocus(true)}
             onBlur={() => setImageFocus(false)}
-          >
-            <img
-              src="https://s3.amazonaws.com/ionic-marketplace/ionic-multi-date-picker/icon.png"
-              alt="calendar icon"
-            />
-          </button>
+            disabled={disabled}
+          />
           <span className="calendar__input-error-message">{errorMessage}</span>
         </div>
       </div>
@@ -439,14 +499,18 @@ Calendar.propTypes = {
   format: PropTypes.string.isRequired,
   defaultValue: PropTypes.string,
   maxDate: PropTypes.string,
-  minDate: PropTypes.string
+  minDate: PropTypes.string,
+  disabled: PropTypes.bool,
+  required: PropTypes.bool
 };
 
 Calendar.defaultProps = {
   todaySelected: false,
   defaultValue: "",
   maxDate: "",
-  minDate: ""
+  minDate: "",
+  disabled: false,
+  required: false
 };
 
 export default Calendar;

@@ -2,6 +2,21 @@ $componentName: calendar;
 
 .#{$componentName} {
   position: relative;
+  &--disabled {
+    cursor: not-allowed;
+    .#{$componentName}__input-wrapper {
+      cursor: not-allowed;
+    }
+    .#{$componentName}__input input {
+      cursor: not-allowed;
+    }
+    .#{$componentName}__input-image {
+      cursor: not-allowed;
+    }
+    .#{$componentName}__label {
+      cursor: not-allowed;
+    }
+  }
 }
 
 .#{$componentName}__datepicker {
@@ -152,13 +167,13 @@ $componentName: calendar;
   right: 0;
   filter: contrast(0.1);
   cursor: pointer;
-  img {
-    width: 100%;
-    background-color: transparent;
-  }
-  &--focused img {
-    border: 1px solid #eeeeee;
+  background-image: url("https://s3.amazonaws.com/ionic-marketplace/ionic-multi-date-picker/icon.png");
+  background-size: 95%;
+  background-position: center;
+  &--focused {
+    background-color: #eeeeee;
     border-radius: 50%;
+    filter: brightness(0.9);
   }
 }
 
