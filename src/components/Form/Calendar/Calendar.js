@@ -87,7 +87,7 @@ const Calendar = ({
   const [isValid, setValid] = useState(true);
   const [isPristine, setPristine] = useState(true);
 
-  const validate = ({ time }) => {
+  const validate = ({ time, formattedDate }) => {
     if (disabled) {
       setValid(true);
       return true;
@@ -102,20 +102,29 @@ const Calendar = ({
       return false;
     }
 
-    if (!required && time === null) {
+    if (!required && time === null && formattedDate.length === 0) {
+      setErrorMessage('');
       setValid(true);
       return true;
     }
 
     if (!!minDate && time < minDateTime) {
       setValid(false);
-      !isPristine && setErrorMessage(underMinDateMessage);
+      if (!isPristine) {
+        time === null ?
+          setErrorMessage(invalidDateMessage) :
+          setErrorMessage(underMinDateMessage);
+      }
       return false;
     }
 
     if (!!maxDate && time > maxDateTime) {
       setValid(false);
-      !isPristine && setErrorMessage(overMaxDateMessage);
+      if (!isPristine) {
+        time === null ?
+          setErrorMessage(invalidDateMessage) :
+          setErrorMessage(overMaxDateMessage);
+      }
       return false;
     }
 
@@ -320,6 +329,17 @@ const Calendar = ({
   };
 
   const handleBlur = () => {
+    const setDate = (object, valid) => {
+      setSelectedDay(object);
+      handleChange({
+        [name]: {
+          value: object,
+          required,
+          valid,
+        }
+      })
+    }
+
     const inputYear = selectedDay.formattedDate.substring(6, 10);
 
     const day = getYearMonthDay(format, selectedDay.formattedDate).day;
@@ -330,21 +350,27 @@ const Calendar = ({
 
     const timeToSet = new Date(year, month, day).getTime();
 
+    const invalidObject = { time: null, formattedDate: selectedDay.formattedDate }
+
     if (isNaN(timeToSet)) {
       if (selectedDay.formattedDate.length > 0) {
         setErrorMessage(invalidDateMessage);
         setValid(false);
+        setDate(invalidObject, false);
       } else {
         if (required) {
           setErrorMessage(invalidDateMessage);
           setValid(false);
+          setDate(invalidObject, false);
         } else {
           setValid(true);
+          setDate(invalidObject, true);
         }
       }
     } else if (day > monthDays || day < 1 || month > 11 || month < 0) {
       setErrorMessage(invalidDateMessage);
       setValid(false);
+      setDate(invalidObject, false);
     } else if (
       (format === "mm/dd/yyyy" && inputYear.length !== 4) ||
       (format === "mm.dd.yyyy" && inputYear.length !== 4) ||
@@ -355,6 +381,7 @@ const Calendar = ({
     ) {
       setErrorMessage(invalidDateMessage);
       setValid(false);
+      setDate(invalidObject, false);
     } else if (
       (format === "mm/dd/yy" && inputYear.length !== 2) ||
       (format === "mm.dd.yy" && inputYear.length !== 2) ||
@@ -365,20 +392,14 @@ const Calendar = ({
     ) {
       setErrorMessage(invalidDateMessage);
       setValid(false);
+      setDate(invalidObject, false);
     } else {
       const dayObject = {
         time: timeToSet,
         formattedDate: selectedDay.formattedDate
       };
 
-      setSelectedDay(dayObject);
-      handleChange({
-        [name]: {
-          value: dayObject,
-          required,
-          valid: validate(dayObject),
-        }
-      })
+      setDate(dayObject, validate(dayObject))
     }
   };
 
