@@ -325,7 +325,7 @@ const Calendar = ({
   const handleInputChange = e => {
     setErrorMessage("");
     setValid(true);
-    setSelectedDay({ time: "", formattedDate: e.target.value });
+    setSelectedDay({ time: "", formattedDate: e.target.value.trim() });
   };
 
   const handleBlur = () => {
@@ -394,9 +394,11 @@ const Calendar = ({
       setValid(false);
       setDate(invalidObject, false);
     } else {
+      const length = format.substring(8, 10) === '' ? 8 : 10
+
       const dayObject = {
         time: timeToSet,
-        formattedDate: selectedDay.formattedDate
+        formattedDate: selectedDay.formattedDate.trim().substring(0, length)
       };
 
       setDate(dayObject, validate(dayObject))
@@ -463,9 +465,9 @@ const Calendar = ({
             name={name}
             onFocus={() => {
               setActive(true);
-              setPristine(false);
             }}
             onBlur={() => {
+              setPristine(false);
               setActive(false);
               handleBlur();
             }}

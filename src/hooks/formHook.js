@@ -10,6 +10,7 @@ const useFormHook = ({ initialValues = {}, invalidAction, submitAction }) => {
 
   const handleChange = mutation => {
     dispatch({ type: 'FORM_CHANGE', payload: mutation });
+    // console.log(mutation)
   };
 
   const handleSubmit = e => {
