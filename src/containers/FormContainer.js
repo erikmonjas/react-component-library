@@ -82,6 +82,7 @@ const FormDemo = () => {
                 options={selectOptions}
                 name="select"
                 errorMessage="Error select"
+                required
               />
             </div>
             <div className="col-12 col-md-4">
@@ -149,6 +150,10 @@ const FormDemo = () => {
                 format="dd/mm/yy"
                 minDate="06/07/19"
                 maxDate="24/07/19"
+                invalidDateMessage="Date not valid"
+                overMaxDateMessage="Max date exceeded"
+                underMinDateMessage="Min date not reached"
+                emptyDateMessage="Enter a date"
               />
             </div>
           </div>
@@ -158,16 +163,11 @@ const FormDemo = () => {
               {value => (
                 <>
                   <button
+                    type="button"
                     className="button"
                     onClick={() => console.log(value.formValues)}
                   >
                     Log values
-                  </button>
-                  <button
-                    className="button ml-10"
-                    onClick={() => console.log(value.invalids)}
-                  >
-                    Log invalids
                   </button>
                 </>
               )}

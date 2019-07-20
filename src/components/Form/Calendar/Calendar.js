@@ -26,7 +26,11 @@ const Calendar = ({
   maxDate,
   minDate,
   disabled,
-  required
+  required,
+  invalidDateMessage = 'Invalid date',
+  overMaxDateMessage = `The date must be equal or previous to ${maxDate}`,
+  underMinDateMessage = `The date must be equal or subsequent to ${minDate}`,
+  emptyDateMessage = 'Please, enter a date'
 }) => {
   const { handleChange, invalids } = useContext(FormContext);
 
@@ -81,42 +85,44 @@ const Calendar = ({
   const [errorMessage, setErrorMessage] = useState("");
   const [isImageFocused, setImageFocus] = useState(false);
   const [isValid, setValid] = useState(true);
+  const [isPristine, setPristine] = useState(true);
 
-  const validate = useCallback(
-    ({ time }) => {
-      if (disabled) {
-        setValid(true);
-        return true;
-      }
-
-      if (required && time === null) {
-        setErrorMessage("Please, enter a date");
-        setValid(false);
-        return false;
-      }
-
-      if (!required && time === null) {
-        setValid(true);
-        return true;
-      }
-
-      if (!!minDate && time < minDateTime) {
-        setValid(false);
-        setErrorMessage(`The date must be equal or posterior to ${minDate}`);
-        return false;
-      }
-
-      if (!!maxDate && time > maxDateTime) {
-        setValid(false);
-        setErrorMessage(`The date must be equal or previous to ${maxDate}`);
-        return false;
-      }
-
+  const validate = ({ time }) => {
+    if (disabled) {
       setValid(true);
       return true;
-    },
-    [disabled, required, minDateTime, maxDateTime, minDate, maxDate]
-  );
+    }
+
+    if (required && time === null) {
+      const calendarInvalid = invalids.find(invalid => invalid[name]);
+      if (!isPristine || !!calendarInvalid) {
+        setErrorMessage(emptyDateMessage);
+      }
+      setValid(false);
+      return false;
+    }
+
+    if (!required && time === null) {
+      setValid(true);
+      return true;
+    }
+
+    if (!!minDate && time < minDateTime) {
+      setValid(false);
+      !isPristine && setErrorMessage(underMinDateMessage);
+      return false;
+    }
+
+    if (!!maxDate && time > maxDateTime) {
+      setValid(false);
+      !isPristine && setErrorMessage(overMaxDateMessage);
+      return false;
+    }
+
+    setErrorMessage('');
+    setValid(true);
+    return true;
+  }
 
   const handleClickOutside = useCallback(
     e => {
@@ -152,6 +158,14 @@ const Calendar = ({
       handleChange(initialState);
     }
   }, []);
+
+  useEffect(() => {
+    const calendarInvalid = invalids.find(invalid => invalid[name]);
+    if (!!calendarInvalid && calendarInvalid.hasOwnProperty(name)) {
+      setPristine(false);
+      validate(selectedDay);
+    }
+  }, [invalids, name, selectedDay]);
 
   useEffect(() => {
     if (!disabled) {
@@ -280,12 +294,20 @@ const Calendar = ({
   };
 
   const handleDayClick = ({ dayTime }) => {
-    setErrorMessage("");
-    setValid(true);
-    setSelectedDay({
+    const dayObject = {
       time: dayTime,
       formattedDate: timeToDate(format, dayTime)
-    });
+    }
+    setErrorMessage("");
+    setValid(true);
+    setSelectedDay(dayObject);
+    handleChange({
+      [name]: {
+        value: dayObject,
+        required,
+        valid: validate(dayObject)
+      }
+    })
     setDatepickerShowing(false);
     setActive(false);
     window.removeEventListener("click", handleClickOutside);
@@ -298,8 +320,6 @@ const Calendar = ({
   };
 
   const handleBlur = () => {
-    setActive(false);
-
     const inputYear = selectedDay.formattedDate.substring(6, 10);
 
     const day = getYearMonthDay(format, selectedDay.formattedDate).day;
@@ -311,10 +331,19 @@ const Calendar = ({
     const timeToSet = new Date(year, month, day).getTime();
 
     if (isNaN(timeToSet)) {
-      setErrorMessage("Invalid Date");
-      setValid(false);
+      if (selectedDay.formattedDate.length > 0) {
+        setErrorMessage(invalidDateMessage);
+        setValid(false);
+      } else {
+        if (required) {
+          setErrorMessage(invalidDateMessage);
+          setValid(false);
+        } else {
+          setValid(true);
+        }
+      }
     } else if (day > monthDays || day < 1 || month > 11 || month < 0) {
-      setErrorMessage("Invalid Date");
+      setErrorMessage(invalidDateMessage);
       setValid(false);
     } else if (
       (format === "mm/dd/yyyy" && inputYear.length !== 4) ||
@@ -324,7 +353,7 @@ const Calendar = ({
       (format === "dd.mm.yyyy" && inputYear.length !== 4) ||
       (format === "dd-mm-yyyy" && inputYear.length !== 4)
     ) {
-      setErrorMessage("Invalid Date");
+      setErrorMessage(invalidDateMessage);
       setValid(false);
     } else if (
       (format === "mm/dd/yy" && inputYear.length !== 2) ||
@@ -334,7 +363,7 @@ const Calendar = ({
       (format === "dd.mm.yy" && inputYear.length !== 2) ||
       (format === "dd-mm-yy" && inputYear.length !== 2)
     ) {
-      setErrorMessage("Invalid Date");
+      setErrorMessage(invalidDateMessage);
       setValid(false);
     } else {
       const dayObject = {
@@ -342,9 +371,14 @@ const Calendar = ({
         formattedDate: selectedDay.formattedDate
       };
 
-      validate(dayObject);
-
       setSelectedDay(dayObject);
+      handleChange({
+        [name]: {
+          value: dayObject,
+          required,
+          valid: validate(dayObject),
+        }
+      })
     }
   };
 
@@ -378,6 +412,12 @@ const Calendar = ({
     }
   };
 
+  const handleInputKey = e => {
+    if (e.key === 'Enter') {
+      handleBlur()
+    }
+  }
+
   return (
     <div
       className={`calendar ${disabled ? "calendar--disabled" : ""}`}
@@ -386,11 +426,11 @@ const Calendar = ({
       <div
         className={`calendar__input-wrapper ${
           isActive ? "calendar__input-wrapper--active" : ""
-        } ${
+          } ${
           selectedDay && selectedDay.formattedDate.length > 0
             ? "calendar__input-wrapper--has-content"
             : ""
-        } ${isValid ? "" : "calendar__input-wrapper--has-error"}`}
+          } ${isValid || isPristine ? "" : "calendar__input-wrapper--has-error"}`}
       >
         <label htmlFor={name} className="calendar__label">
           {label}
@@ -400,8 +440,15 @@ const Calendar = ({
             type="text"
             id={name}
             name={name}
-            onFocus={() => setActive(true)}
-            onBlur={handleBlur}
+            onFocus={() => {
+              setActive(true);
+              setPristine(false);
+            }}
+            onBlur={() => {
+              setActive(false);
+              handleBlur();
+            }}
+            onKeyDown={handleInputKey}
             value={selectedDay ? selectedDay.formattedDate : ""}
             onChange={handleInputChange}
             className="calendar__input-text"
@@ -412,7 +459,7 @@ const Calendar = ({
             onClick={toggleDatePicker}
             className={`calendar__input-image ${
               isImageFocused ? "calendar__input-image--focused" : ""
-            }`}
+              }`}
             onFocus={() => setImageFocus(true)}
             onBlur={() => setImageFocus(false)}
             disabled={disabled}
@@ -423,11 +470,11 @@ const Calendar = ({
       <div
         className={`calendar__datepicker ${
           datepickerShowing ? "calendar__datepicker--showing" : ""
-        } ${
+          } ${
           datepickerPostion === "top"
             ? "calendar__datepicker--top"
             : "calendar__datepicker--bottom"
-        }`}
+          }`}
         ref={datepickerRef}
       >
         <div className="calendar__month-picker d-flex align-items-center justify-content-center">
@@ -467,17 +514,17 @@ const Calendar = ({
               }
               className={`calendar__day ${
                 !day.isMonthDay ? "calendar__day--blurred" : ""
-              } ${todayTime === day.dayTime ? "calendar__day--today" : ""} ${
+                } ${todayTime === day.dayTime ? "calendar__day--today" : ""} ${
                 (minDateTime !== null && day.dayTime < minDateTime) ||
-                (maxDateTime !== null && day.dayTime > maxDateTime)
+                  (maxDateTime !== null && day.dayTime > maxDateTime)
                   ? "calendar__day--blurred"
                   : ""
-              }
+                }
             ${
-              (selectedDay && selectedDay.time) === day.dayTime
-                ? "calendar__day--active"
-                : ""
-            }`}
+                (selectedDay && selectedDay.time) === day.dayTime
+                  ? "calendar__day--active"
+                  : ""
+                }`}
               type="button"
               key={day.dayTime}
               onClick={() => handleDayClick(day)}
@@ -501,7 +548,11 @@ Calendar.propTypes = {
   maxDate: PropTypes.string,
   minDate: PropTypes.string,
   disabled: PropTypes.bool,
-  required: PropTypes.bool
+  required: PropTypes.bool,
+  emptyDateMessage: PropTypes.string,
+  overMaxDateMessage: PropTypes.string,
+  underMinDateMessage: PropTypes.string,
+  invalidDateMessage: PropTypes.string,
 };
 
 Calendar.defaultProps = {

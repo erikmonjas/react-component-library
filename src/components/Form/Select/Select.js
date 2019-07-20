@@ -3,7 +3,16 @@ import PropTypes from 'prop-types';
 import './select.scss';
 import { FormContext } from '../../../hooks/formHook';
 
-const Select = ({ options, defaultValue = '', name, label, errorMessage, disabled, className }) => {
+const Select = ({
+  options,
+  defaultValue = '',
+  name,
+  label,
+  errorMessage,
+  disabled,
+  className,
+  required,
+}) => {
   const wrapper = useRef(null);
   const { handleChange, invalids } = useContext(FormContext);
 
@@ -21,7 +30,11 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
     setOptionIndex(value);
     validateState(value);
     handleChange({
-      [name]: { value: value, valid: validate(value) },
+      [name]: {
+        value: value,
+        required,
+        valid: validate(value)
+      },
     });
   };
 
@@ -47,6 +60,7 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
       const initialState = {
         [name]: {
           value: initialValue,
+          required,
           valid: validate(initialValue),
         },
       };
@@ -83,6 +97,11 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
     if (disabled) {
       return true;
     }
+
+    if (!required) {
+      return true
+    }
+
     if (!!options.find(option => option.value === value)) {
       return true;
     } else {
@@ -94,6 +113,11 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
     if (disabled) {
       return setValid(true);
     }
+
+    if (!required) {
+      return true
+    }
+
     if (!!options.find(option => option.value === incomingValue)) {
       return setValid(true);
     } else {
@@ -148,7 +172,7 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
       ref={wrapper}
       className={`select ${!valid ? 'select--has-error' : ''} ${isActive ? 'select--active' : ''} ${
         value.length > 0 ? 'select--has-content' : ''
-      } ${disabled ? 'select--disabled' : ''} ${className ? className : ''}`}
+        } ${disabled ? 'select--disabled' : ''} ${className ? className : ''}`}
       tabIndex={disabled ? '' : '0'}
       onFocus={() => {
         setActive(true);
@@ -179,7 +203,7 @@ const Select = ({ options, defaultValue = '', name, label, errorMessage, disable
               key={option.value}
               className={`select__option ${
                 index === currentValuePosition ? 'select__option--active' : ''
-              }`}
+                }`}
               role='option'
               aria-selected={index === currentValuePosition ? 'true' : 'false'}
               onClick={e => handleClick(e, option)}>
@@ -205,6 +229,7 @@ Select.propTypes = {
   name: PropTypes.string.isRequired,
   errorMessage: PropTypes.string,
   disabled: PropTypes.bool,
+  required: PropTypes.bool,
   className: PropTypes.string,
 };
 
@@ -212,6 +237,7 @@ Select.defaultProps = {
   label: '',
   errorMessage: '',
   disabled: false,
+  required: false,
   className: '',
 };
 
