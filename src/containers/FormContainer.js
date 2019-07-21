@@ -7,6 +7,7 @@ import RadioGroup from "../components/Form/Radio/RadioGroup";
 import Calendar from "../components/Form/Calendar/Calendar";
 import { FormContext } from "../hooks/formHook";
 import { timeToDate, todayTime } from "../utils/date";
+import InputDemo from '../demos/form/InputDemo';
 
 const FormDemo = () => {
   const submitAction = formValues => console.log("Valid", formValues);
@@ -31,7 +32,7 @@ const FormDemo = () => {
 
   return (
     <div className="mb-40">
-      <div className="form-demo">
+      <section id="form-demo">
         <h2 className="fz-24 font-weight-bold mb-20">Form</h2>
         <Form submitAction={submitAction} invalidAction={invalidAction}>
           <div className="row">
@@ -177,7 +178,10 @@ const FormDemo = () => {
             </button>
           </div>
         </Form>
-      </div>
+      </section>
+      <p className="default-paragraph mt-20">All controls are validated on blur and it must be taken into account that initially error messages aren't shown even if the default value isn't valid. This error message will be shown on blur or if the user tries to submit the form. While typing also the control is always set to valid.</p>
+      <p className="default-paragraph mt-20">Submit isn't allowed if the form contains any invalid field.</p>
+      <InputDemo />
     </div>
   );
 };

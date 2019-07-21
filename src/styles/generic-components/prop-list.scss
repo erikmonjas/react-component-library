@@ -1,0 +1,27 @@
+.prop-list {
+    li {
+        margin-left: 20px;
+        position: relative;
+        color: #969696;
+        margin-bottom: 10px;
+        line-height: 1.5;
+        &:before {
+            content: '-';
+            display: block;
+            position: absolute;
+            top: 0;
+            right: calc(100% + 5px);
+            color: dodgerblue;
+        }
+        strong {
+            color: dodgerblue;
+            font-weight: bold;
+        }
+        .code {
+            background-color: rgb(236, 236, 236);
+            font-family: monospace;
+            padding: 3px 5px;
+            border-radius: 3px;
+        }
+    }
+}
