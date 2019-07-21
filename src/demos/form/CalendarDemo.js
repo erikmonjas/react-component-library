@@ -71,47 +71,83 @@ const CalendarDemo = () => {
         <li>
           <strong>label</strong>{" "}
           <span className="code">string, not required</span>: text which will
-          appear on the select giving information about it.
+          appear on the calendar giving information about it.
         </li>
         <li>
           <strong>required</strong>{" "}
           <span className="code">boolean, not required</span>: determines
-          whether a select value must be compulsary provided or if it can be
+          whether a calendar value must be compulsarily provided or if it can be
           empty. If the value is empty and it's not required, validation won't
           be enforced, as soon as some value is received, validations must be
           passed.
         </li>
         <li>
-          <strong>options</strong>{" "}
-          <span className="code">array of objects, not required</span>: list of
-          options that will be available in the select. Each of them must be an
-          object in which <span className="code">text</span> will determine
-          which text will be shown for that option, while{" "}
-          <span className="code">value</span> sets which value will receive the
-          select when that option is chosen.
-        </li>
-        <li>
           <strong>defaultValue</strong>{" "}
           <span className="code">string, not required</span>: initial value for
-          the select.
+          the calendar.
         </li>
         <li>
           <strong>errorMessage</strong>{" "}
           <span className="code">string, not required</span>: message which will
-          appear under the select when validation isn't passed.
+          appear under the calendar when validation isn't passed.
         </li>
         <li>
           <strong>disabled</strong>{" "}
           <span className="code">boolean, not required</span>: determines if
-          select is disabled. By default it's{" "}
+          calendar is disabled. By default it's{" "}
           <span className="code">false</span>.
         </li>
         <li>
-          <strong>className</strong>{" "}
-          <span className="code">string, not required</span>: class that the
-          select will receive.
+          <strong>todaySelected</strong>{" "}
+          <span className="code">boolean, not required</span>: sets the initial
+          value to today's date.
+        </li>
+        <li>
+          <strong>format</strong> <span className="code">string, required</span>
+          : accepted format for the date. It must be one of the following:
+          <span className="d-block code mt-5">
+            dd/mm/yyyy, dd.mm.yyyy, dd-mm-yyyy, mm/dd/yyyy, mm.dd.yyyy,
+            mm-dd-yyyy, dd/mm/yy, dd.mm.yy, dd-mm-yy, mm/dd/yy, mm.dd.yy,
+            mm-dd-yy
+          </span>
+        </li>
+        <li>
+          <strong>maxDate</strong>{" "}
+          <span className="code">string, not required</span>: date after which
+          none can be selected. This date must be provided according to the
+          established format.
+        </li>
+        <li>
+          <strong>minDate</strong>{" "}
+          <span className="code">string, not required</span>: date before which
+          none can be selected. This date must be provided according to the
+          established format.
+        </li>
+        <li>
+          <strong>invalidDateMessage</strong>{" "}
+          <span className="code">string, not required</span>: custom message
+          shown when date contains a generic error.
+        </li>
+        <li>
+          <strong>overMaxDateMessage</strong>{" "}
+          <span className="code">string, not required</span>: custom message
+          shown when date is subsequent to the maximum date set.
+        </li>
+        <li>
+          <strong>underMinDateMessage</strong>{" "}
+          <span className="code">string, not required</span>: custom message
+          shown when date is previous to the minimum date set.
+        </li>
+        <li>
+          <strong>emptyDateMessage</strong>{" "}
+          <span className="code">string, not required</span>: custom message
+          shown when date isn't provided.
         </li>
       </ul>
+      <p className="default-paragraph mt-20">
+        The calendar has its own default messages, so these last four props are
+        completely optional.
+      </p>
     </section>
   );
 };

@@ -70,7 +70,7 @@ const InputDemo = () => {
         <li>
           <strong>required</strong>{" "}
           <span className="code">boolean, not required</span>: determines
-          whether an input value must be compulsary provided or if it can be
+          whether an input value must be compulasily provided or if it can be
           empty. If the value is empty and it's not required, validation won't
           be enforced, as soon as some value is received, validations must be
           passed.

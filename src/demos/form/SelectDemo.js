@@ -66,7 +66,7 @@ const SelectDemo = () => {
         <li>
           <strong>required</strong>{" "}
           <span className="code">boolean, not required</span>: determines
-          whether a select value must be compulsary provided or if it can be
+          whether a select value must be compulasily provided or if it can be
           empty. If the value is empty and it's not required, validation won't
           be enforced, as soon as some value is received, validations must be
           passed.
