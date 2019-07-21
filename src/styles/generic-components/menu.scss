@@ -24,6 +24,25 @@
   }
 }
 
+.github-link {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  a {
+    display: flex;
+    align-items: center;
+  }
+  img {
+    max-width: 20px;
+    display: block;
+    filter: invert(1);
+  }
+  span {
+    margin-top: 3px;
+    margin-left: 5px;
+  }
+}
+
 .home-logo {
   max-width: 120px;
 }

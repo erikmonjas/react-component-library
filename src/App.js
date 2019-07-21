@@ -30,6 +30,12 @@ const App = () => {
                 Tabs
               </NavLink>
             </li>
+            <li className="github-link">
+              <a href="#">
+                <img src="https://image.flaticon.com/icons/svg/25/25231.svg" />
+                <span>GitHub Project</span>
+              </a>
+            </li>
           </ul>
         </div>
         <div className="col-9">

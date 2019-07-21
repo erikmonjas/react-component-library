@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Route, Switch } from "react-router-dom";
 import FormContainer from "../containers/FormContainer";
 import TabsContainer from "../containers/TabsContainer";
 import HomeContainer from "../containers/HomeContainer";
@@ -8,15 +8,15 @@ import Logo from "../logo.svg";
 const Routes = () => {
   const [width, setWidth] = useState(window.innerWidth);
 
-  const getWidth = useCallback(() => {
+  const getWidth = () => {
     return setWidth(window.innerWidth);
-  });
+  };
 
   useEffect(() => {
     window.addEventListener("resize", () => {
       getWidth();
     });
-  }, [getWidth]);
+  }, []);
 
   return (
     <>

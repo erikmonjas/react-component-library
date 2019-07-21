@@ -16,7 +16,7 @@ const CheckboxDemo = () => {
 
   return (
     <section id="checkbox-demo">
-      <h2 className="mt-30 font-weight-bold fz-20 mb-20">Checkbox</h2>
+      <h2 className="mt-30 font-weight-bold fz-20">Checkbox</h2>
       <Form>
         <Checkbox
           name="checkboxExample"
