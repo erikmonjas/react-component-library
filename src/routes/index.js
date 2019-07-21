@@ -23,9 +23,9 @@ const Routes = () => {
       {width > 768 ? (
         <Switch>
           <Route path='/' exact component={HomeContainer} />
-          <Route component={HomeContainer} />
           <Route path='/form' exact component={FormContainer} />
           <Route path='/tabs' exact component={TabsContainer} />
+          <Route component={HomeContainer} />
         </Switch>
       ) : (
         <div className='under-width'>
