@@ -4,6 +4,7 @@ import InputDemo from "../demos/form/InputDemo";
 import SelectDemo from "../demos/form/SelectDemo";
 import RadioDemo from "../demos/form/RadioDemo";
 import CheckboxDemo from "../demos/form/CheckboxDemo";
+import CalendarDemo from "../demos/form/CalendarDemo";
 
 const FormDemo = () => {
   return (
@@ -26,6 +27,9 @@ const FormDemo = () => {
             <li>
               <a href="#checkbox-demo">Checkbox</a>
             </li>
+            <li>
+              <a href="#calendar-demo">Calendar</a>
+            </li>
           </ul>
         </nav>
       </div>
@@ -34,6 +38,7 @@ const FormDemo = () => {
       <SelectDemo />
       <RadioDemo />
       <CheckboxDemo />
+      <CalendarDemo />
     </div>
   );
 };

@@ -29,8 +29,11 @@ const Routes = () => {
       ) : (
         <div className="under-width">
           <div className="under-width__inner">
+            <h2 className="font-weight-bold fz-24 text-center mb-10">
+              Component Library
+            </h2>
             <img src={Logo} alt="logo" className="home-logo" />
-            <p className="pb-20">
+            <p className="mb-20 mt-10">
               Your current screen size is {window.innerWidth}px
             </p>
             <p>
