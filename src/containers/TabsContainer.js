@@ -4,7 +4,7 @@ import Tab from "../components/Tabs/Tab";
 
 const TabsContainer = () => {
   return (
-    <div className="tabs-demo">
+    <div className="tabs-demo mt-30">
       <h2 className="fz-24 mb-40 font-weight-bold">Tabs</h2>
       <Tabs
         className="mb-40"

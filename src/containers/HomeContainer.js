@@ -2,7 +2,7 @@ import React from "react";
 
 const HomeContainer = () => {
   return (
-    <div>
+    <div className="mt-30">
       <p className="default-paragraph">
         This is a React component library, made by{" "}
         <a

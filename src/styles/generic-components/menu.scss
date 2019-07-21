@@ -5,6 +5,8 @@
   color: #fff;
   min-height: 100vh;
   padding: 20px 0;
+  position: fixed;
+  width: calc(25% - 15px);
 }
 .menu__item {
   display: block;
