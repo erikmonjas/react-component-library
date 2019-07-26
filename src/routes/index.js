@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import FormContainer from "../containers/FormContainer";
 import TabsContainer from "../containers/TabsContainer";
 import HomeContainer from "../containers/HomeContainer";
+import ModalContainer from "../containers/ModalContainer";
 import Logo from "../logo.svg";
 
 const Routes = () => {
@@ -25,6 +26,7 @@ const Routes = () => {
           <Route path="/" exact component={HomeContainer} />
           <Route path="/form" exact component={FormContainer} />
           <Route path="/tabs" exact component={TabsContainer} />
+          <Route path="/modal" exact component={ModalContainer} />
         </Switch>
       ) : (
         <div className="under-width">

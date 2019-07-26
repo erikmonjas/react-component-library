@@ -30,6 +30,15 @@ const App = () => {
                 Tabs
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to="/modal"
+                className="menu__item"
+                activeClassName="menu__item--active"
+              >
+                Modal
+              </NavLink>
+            </li>
             <li className="github-link">
               <a href="#">
                 <img src="https://image.flaticon.com/icons/svg/25/25231.svg" />

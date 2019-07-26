@@ -8,6 +8,7 @@ const TabDemo = () => {
     <Tabs
       className="mb-40"
       tabList={[{ title: "Tab 0" }, { title: "Tab 1" }, { title: "Tab 2" }]}
+      defaultTab={1}
     >
       <Tab className="mt-20" order={0}>
         <p>I'm tab 0</p>
@@ -26,6 +27,7 @@ const TabDemo = () => {
       <Tabs
         className="mb-40"
         tabList={[{ title: "Tab 0" }, { title: "Tab 1" }, { title: "Tab 2" }]}
+        defaultTab={1}
       >
         <Tab className="mt-20" order={0}>
           <p>I'm tab 0</p>
@@ -55,6 +57,12 @@ const TabDemo = () => {
           should have its corresponding object here with the property{" "}
           <span className="code">title</span>, which will be the text that the
           tab button will show.
+        </li>
+        <li>
+          <strong>defaultTab</strong>{" "}
+          <span className="code">number, not required</span>: tab that's
+          initially selected. Its value must correspond with the order of one of
+          the elements in <span className="code">tabList</span>.
         </li>
         <li>
           <strong>order</strong>{" "}
