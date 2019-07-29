@@ -16,6 +16,15 @@ const Modal = ({ children, launcher }) => {
       });
   }, []);
 
+  useEffect(() => {
+    const modalInner = wrapper.current.querySelector(".modal__inner");
+    const modalContent = wrapper.current.querySelector(".modal__content");
+
+    if (modalInner.clientHeight - 70 < modalContent.clientHeight) {
+      modalInner.style.overflowY = "auto";
+    }
+  }, [isOpen]);
+
   return (
     <div className={`modal ${isOpen ? "" : "d-none"}`} ref={wrapper}>
       <div className="modal__background" />
@@ -23,7 +32,7 @@ const Modal = ({ children, launcher }) => {
         <span className="modal__close" onClick={() => setOpen(false)}>
           x
         </span>
-        {children}
+        <div className="modal__content">{children}</div>
       </div>
     </div>
   );
