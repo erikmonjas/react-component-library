@@ -21,7 +21,7 @@ const Modal = ({ children, launcher }) => {
     const modalContent = wrapper.current.querySelector(".modal__content");
 
     if (modalInner.clientHeight - 70 < modalContent.clientHeight) {
-      modalInner.style.overflowY = "auto";
+      modalContent.classList.add('modal__content--with-scroll');
     }
   }, [isOpen]);
 

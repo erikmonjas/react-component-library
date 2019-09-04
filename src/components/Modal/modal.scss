@@ -32,6 +32,7 @@ $componentName: modal;
   border-radius: 7px;
   padding: 20px;
   padding-top: 50px;
+  display: flex;
 }
 
 .#{$componentName}__close {
@@ -40,4 +41,20 @@ $componentName: modal;
   right: 20px;
   top: 20px;
   cursor: pointer;
+}
+
+.#{$componentName}__content {
+  max-height: 100%;
+  &::-webkit-scrollbar {
+   width: 3px;
+   height: 3px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: dodgerblue;
+    border-radius: 10px;
+  }
+  &--with-scroll{
+    padding-right: 10px;
+    overflow-y: auto;
+  }
 }
