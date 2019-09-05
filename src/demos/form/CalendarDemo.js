@@ -1,8 +1,8 @@
-import React from "react";
-import MarkDown from "markdown-to-jsx";
-import Form from "../../components/Form";
-import Calendar from "../../components/Form/Calendar/Calendar";
-import { timeToDate, todayTime } from "../../utils/date";
+import React from 'react';
+import MarkDown from 'markdown-to-jsx';
+import Form from '../../components/Form';
+import Calendar from '../../components/Form/Calendar/Calendar';
+import { timeToDate, todayTime } from '../../utils/date';
 
 const CalendarDemo = () => {
   const md = `
@@ -10,7 +10,8 @@ const CalendarDemo = () => {
       label="Date (dd/mm/yy)"
       name="calendarExample"
       defaultValue="10/07/19"
-      format="dd/mm/yy"
+      format="ddmmyy"
+      separator="/"
       minDate="06/07/19"
       maxDate="24/07/19"
       invalidDateMessage="Date not valid"
@@ -30,7 +31,7 @@ const CalendarDemo = () => {
               label="Date (dd/mm/yy)"
               name="calendarExample"
               defaultValue="10/07/19"
-              format="dd/mm/yy"
+              format="ddmmyy"
               minDate="06/07/19"
               maxDate="24/07/19"
               invalidDateMessage="Date not valid"
@@ -44,8 +45,8 @@ const CalendarDemo = () => {
               label="Date (mm/dd/yy)"
               name="calendarExample2"
               todaySelected
-              format="mm/dd/yy"
-              minDate={timeToDate("mm/dd/yy", todayTime)}
+              format="mmddyy"
+              minDate={timeToDate('mmddyy', todayTime, '/')}
             />
           </div>
         </div>
@@ -69,12 +70,12 @@ const CalendarDemo = () => {
           dots, etc.
         </li>
         <li>
-          <strong>label</strong>{" "}
+          <strong>label</strong>{' '}
           <span className="code">string, not required</span>: text which will
           appear on the calendar giving information about it.
         </li>
         <li>
-          <strong>required</strong>{" "}
+          <strong>required</strong>{' '}
           <span className="code">boolean, not required</span>: determines
           whether a calendar value must be compulsarily provided or if it can be
           empty. If the value is empty and it's not required, validation won't
@@ -82,23 +83,23 @@ const CalendarDemo = () => {
           passed.
         </li>
         <li>
-          <strong>defaultValue</strong>{" "}
+          <strong>defaultValue</strong>{' '}
           <span className="code">string, not required</span>: initial value for
           the calendar.
         </li>
         <li>
-          <strong>errorMessage</strong>{" "}
+          <strong>errorMessage</strong>{' '}
           <span className="code">string, not required</span>: message which will
           appear under the calendar when validation isn't passed.
         </li>
         <li>
-          <strong>disabled</strong>{" "}
+          <strong>disabled</strong>{' '}
           <span className="code">boolean, not required</span>: determines if
-          calendar is disabled. By default it's{" "}
+          calendar is disabled. By default it's{' '}
           <span className="code">false</span>.
         </li>
         <li>
-          <strong>todaySelected</strong>{" "}
+          <strong>todaySelected</strong>{' '}
           <span className="code">boolean, not required</span>: sets the initial
           value to today's date.
         </li>
@@ -106,40 +107,43 @@ const CalendarDemo = () => {
           <strong>format</strong> <span className="code">string, required</span>
           : accepted format for the date. It must be one of the following:
           <span className="d-block code mt-5">
-            dd/mm/yyyy, dd.mm.yyyy, dd-mm-yyyy, mm/dd/yyyy, mm.dd.yyyy,
-            mm-dd-yyyy, dd/mm/yy, dd.mm.yy, dd-mm-yy, mm/dd/yy, mm.dd.yy,
-            mm-dd-yy
+            ddmmyy, mmddyy, ddmmyyyy, mmddyyyy
           </span>
         </li>
         <li>
-          <strong>maxDate</strong>{" "}
+          <strong>separator</strong>{' '}
+          <span className="code">string, not required</span>: string that will
+          separate month, day, year.
+        </li>
+        <li>
+          <strong>maxDate</strong>{' '}
           <span className="code">string, not required</span>: date after which
           none can be selected. This date must be provided according to the
           established format.
         </li>
         <li>
-          <strong>minDate</strong>{" "}
+          <strong>minDate</strong>{' '}
           <span className="code">string, not required</span>: date before which
           none can be selected. This date must be provided according to the
           established format.
         </li>
         <li>
-          <strong>invalidDateMessage</strong>{" "}
+          <strong>invalidDateMessage</strong>{' '}
           <span className="code">string, not required</span>: custom message
           shown when date contains a generic error.
         </li>
         <li>
-          <strong>overMaxDateMessage</strong>{" "}
+          <strong>overMaxDateMessage</strong>{' '}
           <span className="code">string, not required</span>: custom message
           shown when date is subsequent to the maximum date set.
         </li>
         <li>
-          <strong>underMinDateMessage</strong>{" "}
+          <strong>underMinDateMessage</strong>{' '}
           <span className="code">string, not required</span>: custom message
           shown when date is previous to the minimum date set.
         </li>
         <li>
-          <strong>emptyDateMessage</strong>{" "}
+          <strong>emptyDateMessage</strong>{' '}
           <span className="code">string, not required</span>: custom message
           shown when date isn't provided.
         </li>

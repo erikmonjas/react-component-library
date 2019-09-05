@@ -132,17 +132,17 @@ const FormDemo = () => {
             <Calendar
               label="Date (dd/mm/yyyy)"
               name="calendar1"
-              format="dd/mm/yyyy"
+              format="ddmmyyyy"
               required
             />
           </div>
           <div className="col-4">
             <Calendar
-              label="Date (mm/dd/yy)"
+              label="Date (mmddyy)"
               name="calendar2"
               todaySelected
-              format="mm/dd/yy"
-              minDate={timeToDate("mm/dd/yy", todayTime)}
+              format="mmddyy"
+              minDate={timeToDate("mmddyy", todayTime)}
             />
           </div>
           <div className="col-4">
@@ -150,8 +150,8 @@ const FormDemo = () => {
               label="Date (dd/mm/yy)"
               name="calendar3"
               defaultValue="10/07/19"
-              format="dd/mm/yy"
-              maxDate={timeToDate("dd/mm/yy", todayTime)}
+              format="ddmmyy"
+              maxDate={timeToDate("ddmmyy", todayTime)}
             />
           </div>
           <div className="col-4">
@@ -159,7 +159,7 @@ const FormDemo = () => {
               label="Date (dd/mm/yy)"
               name="calendar4"
               defaultValue="10/07/19"
-              format="dd/mm/yy"
+              format="ddmmyy"
               minDate="06/07/19"
               maxDate="24/07/19"
               invalidDateMessage="Date not valid"
