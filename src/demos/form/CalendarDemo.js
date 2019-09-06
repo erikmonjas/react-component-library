@@ -105,15 +105,14 @@ const CalendarDemo = () => {
         </li>
         <li>
           <strong>format</strong> <span className="code">string, required</span>
-          : accepted format for the date. It must be one of the following:
-          <span className="d-block code mt-5">
-            ddmmyy, mmddyy, ddmmyyyy, mmddyyyy
-          </span>
+          : accepted format for the date. It must be one of the following:{' '}
+          <span className="code mt-5">ddmmyy, mmddyy, ddmmyyyy, mmddyyyy</span>
         </li>
         <li>
           <strong>separator</strong>{' '}
           <span className="code">string, not required</span>: string that will
-          separate month, day, year.
+          separate month, day, year. If you don't provide it, the default is
+          '/'.
         </li>
         <li>
           <strong>maxDate</strong>{' '}

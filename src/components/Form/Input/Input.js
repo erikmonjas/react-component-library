@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useContext, useCallback } from "react";
-import PropTypes from "prop-types";
-import "./input.scss";
-import { FormContext } from "../../../hooks/formHook";
+import React, { useEffect, useState, useContext, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import './input.scss';
+import { FormContext } from '../../../hooks/formHook';
 
 const Input = ({
   name,
@@ -20,7 +20,7 @@ const Input = ({
   const { handleChange, invalids } = useContext(FormContext);
 
   const getInitialValue = useCallback(
-    () => (defaultValue ? defaultValue : ""),
+    () => (defaultValue ? defaultValue : ''),
     [defaultValue]
   );
 
@@ -125,8 +125,8 @@ const Input = ({
   };
 
   const handleInputChange = e => {
-    if (type === "number") {
-      if (e.target.value === "" || numberRegEx.test(e.target.value)) {
+    if (type === 'number') {
+      if (e.target.value === '' || numberRegEx.test(e.target.value)) {
         inputActions(e.target.value);
       }
     } else {
@@ -150,11 +150,11 @@ const Input = ({
 
   return (
     <div
-      className={`input ${isActive ? "input--active" : ""}
-        ${currentValue.length > 0 ? "input--has-content" : ""}
-        ${!isValid ? "input--has-error" : ""} ${
-        disabled ? "input--disabled" : ""
-      } ${wrapperClassName ? wrapperClassName : ""}`}
+      className={`input ${isActive ? 'input--active' : ''}
+        ${currentValue.length > 0 ? 'input--has-content' : ''}
+        ${!isValid ? 'input--has-error' : ''} ${
+        disabled ? 'input--disabled' : ''
+      } ${wrapperClassName ? wrapperClassName : ''}`}
     >
       {label && (
         <label className={`input__label`} htmlFor={name}>
@@ -162,7 +162,7 @@ const Input = ({
         </label>
       )}
       <input
-        className={`input__input ${inputClassName ? inputClassName : ""}`}
+        className={`input__input ${inputClassName ? inputClassName : ''}`}
         type="text"
         disabled={disabled}
         id={name}
@@ -174,7 +174,7 @@ const Input = ({
         minLength={minLength}
         onBlur={handleBlur}
         onFocus={handleFocus}
-        onKeyPress={e => e.key === "Enter" && handleEnter()}
+        onKeyPress={e => e.key === 'Enter' && handleEnter()}
       />
       {!isValid && errorMessage && (
         <span className="input__error-message">{errorMessage}</span>
@@ -201,10 +201,10 @@ Input.propTypes = {
 Input.defaultProps = {
   required: false,
   validationFunction: () => true,
-  type: "text",
+  type: 'text',
   disabled: false,
-  inputClassName: "",
-  wrapperClassName: ""
+  inputClassName: '',
+  wrapperClassName: ''
 };
 
 export default Input;
