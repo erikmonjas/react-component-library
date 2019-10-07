@@ -38,6 +38,7 @@ $componentName: radio;
   position: absolute;
   width: 0;
   height: 0;
+  display: none;
 }
 
 .#{$componentName}__label {
@@ -54,10 +55,10 @@ $componentName: radio;
   border-radius: 50%;
   border: 2px solid #afafaf;
   &:after {
-    content: "";
+    content: '';
     display: block;
-    width: 11px;
-    height: 11px;
+    width: 10px;
+    height: 10px;
     background-color: dodgerblue;
     border-radius: 50%;
     position: absolute;
