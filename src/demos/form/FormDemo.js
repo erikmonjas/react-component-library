@@ -1,13 +1,13 @@
-import React from "react";
-import MarkDown from "markdown-to-jsx";
-import Form from "../../components/Form";
-import Input from "../../components/Form/Input/Input";
-import Select from "../../components/Form/Select/Select";
-import Checkbox from "../../components/Form/Checkbox/Checkbox";
-import RadioGroup from "../../components/Form/Radio/RadioGroup";
-import Calendar from "../../components/Form/Calendar/Calendar";
-import { FormContext } from "../../hooks/formHook";
-import { timeToDate, todayTime } from "../../utils/date";
+import React from 'react';
+import MarkDown from 'markdown-to-jsx';
+import Form from '../../components/Form';
+import Input from '../../components/Form/Input/Input';
+import Select from '../../components/Form/Select/Select';
+import Checkbox from '../../components/Form/Checkbox/Checkbox';
+import RadioGroup from '../../components/Form/Radio/RadioGroup';
+import Calendar from '../../components/Form/Calendar/Calendar';
+import { FormContext } from '../../hooks/formHook';
+import { timeToDate, todayTime } from '../../utils/date';
 
 const FormDemo = () => {
   const md = `
@@ -23,24 +23,24 @@ const FormDemo = () => {
         </Form>
     `;
 
-  const submitAction = formValues => console.log("Valid", formValues);
+  const submitAction = formValues => console.log('Valid', formValues);
 
-  const invalidAction = invalids => console.log("Invalid", invalids);
+  const invalidAction = invalids => console.log('Invalid', invalids);
 
-  const otherTextValidationFunction = value => value.includes("hi");
+  const otherTextValidationFunction = value => value.includes('hi');
 
   const numberValidationFunction = value => parseFloat(value) > 10.5;
 
   const selectOptions = [
-    { text: "Option 0", value: "0" },
-    { text: "Option 1", value: "1" },
-    { text: "Option 2", value: "2" }
+    { text: 'Option 0', value: '0' },
+    { text: 'Option 1', value: '1' },
+    { text: 'Option 2', value: '2' },
   ];
 
   const radioList = [
-    { text: "Option 0", value: "0" },
-    { text: "Option 1", value: "1" },
-    { text: "Option 2", value: "2" }
+    { text: 'Option 0', value: '0' },
+    { text: 'Option 1', value: '1' },
+    { text: 'Option 2', value: '2' },
   ];
   return (
     <section id='form-demo'>
@@ -52,7 +52,7 @@ const FormDemo = () => {
               name='text'
               label='Text'
               errorMessage='Error'
-              defaultValue={"Default value"}
+              defaultValue={'Default value'}
               minLength='5'
             />
           </div>
@@ -138,11 +138,11 @@ const FormDemo = () => {
           </div>
           <div className='col-4'>
             <Calendar
-              label='Date (mmddyy)'
+              label='Date (mm/dd/yy)'
               name='calendar2'
               todaySelected
               format='mmddyy'
-              minDate={timeToDate("mmddyy", todayTime)}
+              minDate={timeToDate('mmddyy', todayTime)}
             />
           </div>
           <div className='col-4'>
@@ -150,8 +150,8 @@ const FormDemo = () => {
               label='Date (dd/mm/yy)'
               name='calendar3'
               defaultValue='10/07/19'
-              format='dd/mm/yy'
-              maxDate={timeToDate("ddmmyy", todayTime)}
+              format='ddmmyy'
+              maxDate={timeToDate('ddmmyy', todayTime)}
             />
           </div>
           <div className='col-4'>
@@ -195,9 +195,9 @@ const FormDemo = () => {
         options={{
           overrides: {
             Form: {
-              component: Form
-            }
-          }
+              component: Form,
+            },
+          },
         }}
       />
       <p className='default-paragraph mt-20'>
@@ -212,16 +212,16 @@ const FormDemo = () => {
       </p>
       <ul className='prop-list mt-20'>
         <li>
-          <strong>submitAction</strong>{" "}
+          <strong>submitAction</strong>{' '}
           <span className='code'>function, required</span>: function that's
           executed when the form is successfully submitted. It receives all form
-          values as parameter. If{" "}
+          values as parameter. If{' '}
           <span className='font-weight-bold'>cross-field validation</span> is
           desired, here's the place to implement it, comparing the values of
           those fields delivered by the parameter.
         </li>
         <li>
-          <strong>invalidAction</strong>{" "}
+          <strong>invalidAction</strong>{' '}
           <span className='code'>function, required</span>: function that's
           executed when the form is contains invalid fields.
         </li>

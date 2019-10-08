@@ -61,7 +61,8 @@ $componentName: calendar;
 
 .#{$componentName}__day-name {
   width: 14.28%;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  font-size: 12px;
 }
 
 .#{$componentName}__day {
@@ -167,7 +168,7 @@ $componentName: calendar;
   right: 0;
   filter: contrast(0.1);
   cursor: pointer;
-  background-image: url("https://s3.amazonaws.com/ionic-marketplace/ionic-multi-date-picker/icon.png");
+  background-image: url('https://s3.amazonaws.com/ionic-marketplace/ionic-multi-date-picker/icon.png');
   background-size: 95%;
   background-position: center;
   &--focused {
