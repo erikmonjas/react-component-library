@@ -4,10 +4,10 @@ import React, {
   useCallback,
   useRef,
   useContext
-} from 'react';
-import PropTypes from 'prop-types';
-import './calendar.scss';
-import { FormContext } from '../../../hooks/formHook';
+} from "react";
+import PropTypes from "prop-types";
+import "./calendar.scss";
+import { FormContext } from "../../../hooks/formHook";
 import {
   timeToDate,
   dateToTime,
@@ -15,7 +15,7 @@ import {
   todayTime,
   currentMonth,
   currentYear
-} from '../../../utils/date';
+} from "../../../utils/date";
 
 const Calendar = ({
   name,
@@ -27,27 +27,27 @@ const Calendar = ({
   minDate,
   disabled,
   required,
-  invalidDateMessage = 'Invalid date',
+  invalidDateMessage = "Invalid date",
   overMaxDateMessage = `The date must be equal or previous to ${maxDate}`,
   underMinDateMessage = `The date must be equal or subsequent to ${minDate}`,
-  emptyDateMessage = 'Please, enter a date',
+  emptyDateMessage = "Please, enter a date",
   separator
 }) => {
   const { handleChange, invalids } = useContext(FormContext);
 
   const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
   ];
 
   const getInitialDay = () => {
@@ -62,7 +62,7 @@ const Calendar = ({
         formattedDate: defaultValue
       };
     } else {
-      return { time: null, formattedDate: '' };
+      return { time: null, formattedDate: "" };
     }
   };
 
@@ -85,8 +85,8 @@ const Calendar = ({
   const [selectedDay, setSelectedDay] = useState(getInitialDay());
   const [isActive, setActive] = useState(false);
   const [datepickerShowing, setDatepickerShowing] = useState(false);
-  const [datepickerPostion, setDatepickerPosition] = useState('bottom');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [datepickerPostion, setDatepickerPosition] = useState("bottom");
+  const [errorMessage, setErrorMessage] = useState("");
   const [isImageFocused, setImageFocus] = useState(false);
   const [isValid, setValid] = useState(true);
   const [isPristine, setPristine] = useState(true);
@@ -107,7 +107,7 @@ const Calendar = ({
     }
 
     if (!required && time === null && formattedDate.length === 0) {
-      setErrorMessage('');
+      setErrorMessage("");
       setValid(true);
       return true;
     }
@@ -132,7 +132,7 @@ const Calendar = ({
       return false;
     }
 
-    setErrorMessage('');
+    setErrorMessage("");
     setValid(true);
     return true;
   };
@@ -142,17 +142,17 @@ const Calendar = ({
       if (wrapper.current.contains(e.target)) {
         if (
           e.target.classList.length > 0 &&
-          (e.target.classList[0].includes('calendar__label') ||
-            e.target.classList[0].includes('calendar__input'))
+          (e.target.classList[0].includes("calendar__label") ||
+            e.target.classList[0].includes("calendar__input"))
         ) {
           setDatepickerShowing(false);
           setActive(true);
-          window.removeEventListener('click', handleClickOutside);
+          window.removeEventListener("click", handleClickOutside);
         }
       } else {
         setDatepickerShowing(false);
         setActive(false);
-        window.removeEventListener('click', handleClickOutside);
+        window.removeEventListener("click", handleClickOutside);
       }
     },
     [wrapper]
@@ -187,17 +187,17 @@ const Calendar = ({
 
   useEffect(() => {
     if (!!datepickerShowing) {
-      window.addEventListener('click', handleClickOutside);
+      window.addEventListener("click", handleClickOutside);
     }
   }, [datepickerShowing, handleClickOutside]);
 
   useEffect(() => {
     if (datepickerShowing) {
       const chosenDay = datepickerRef.current.querySelector(
-        '.calendar__day--active'
+        ".calendar__day--active"
       );
       const todayDay = datepickerRef.current.querySelector(
-        '.calendar__day--today'
+        ".calendar__day--today"
       );
 
       if (chosenDay) {
@@ -206,7 +206,7 @@ const Calendar = ({
         todayDay.focus();
       } else {
         datepickerRef.current
-          .querySelector('.calendar__day:not(.calendar__day--blurred)')
+          .querySelector(".calendar__day:not(.calendar__day--blurred)")
           .focus();
       }
     }
@@ -272,11 +272,11 @@ const Calendar = ({
 
   const toggleDatePicker = () => {
     if (getScrollLeft() + getVisibleDistanceToBottomLeft() > 325) {
-      setDatepickerPosition('bottom');
+      setDatepickerPosition("bottom");
     } else if (getDistanceToTopLeft() < 318) {
-      setDatepickerPosition('bottom');
+      setDatepickerPosition("bottom");
     } else {
-      setDatepickerPosition('top');
+      setDatepickerPosition("top");
     }
 
     setDatepickerShowing(!datepickerShowing);
@@ -319,7 +319,7 @@ const Calendar = ({
       time: dayTime,
       formattedDate: timeToDate(format, dayTime)
     };
-    setErrorMessage('');
+    setErrorMessage("");
     setValid(true);
     setSelectedDay(dayObject);
     handleChange({
@@ -331,13 +331,13 @@ const Calendar = ({
     });
     setDatepickerShowing(false);
     setActive(false);
-    window.removeEventListener('click', handleClickOutside);
+    window.removeEventListener("click", handleClickOutside);
   };
 
   const handleInputChange = e => {
-    setErrorMessage('');
+    setErrorMessage("");
     setValid(true);
-    setSelectedDay({ time: '', formattedDate: e.target.value.trim() });
+    setSelectedDay({ time: "", formattedDate: e.target.value.trim() });
   };
 
   const handleBlur = () => {
@@ -374,7 +374,7 @@ const Calendar = ({
         setDate(invalidObject, false);
       } else {
         if (required) {
-          setErrorMessage(invalidDateMessage);
+          setErrorMessage(emptyDateMessage);
           setValid(false);
           setDate(invalidObject, false);
         } else {
@@ -387,29 +387,21 @@ const Calendar = ({
       setValid(false);
       setDate(invalidObject, false);
     } else if (
-      (format === 'mm/dd/yyyy' && inputYear.length !== 4) ||
-      (format === 'mm.dd.yyyy' && inputYear.length !== 4) ||
-      (format === 'mm-dd-yyyy' && inputYear.length !== 4) ||
-      (format === 'dd/mm/yyyy' && inputYear.length !== 4) ||
-      (format === 'dd.mm.yyyy' && inputYear.length !== 4) ||
-      (format === 'dd-mm-yyyy' && inputYear.length !== 4)
+      (format === "mmddyyyy" && inputYear.length !== 4) ||
+      (format === "ddmmyyyy" && inputYear.length !== 4)
     ) {
       setErrorMessage(invalidDateMessage);
       setValid(false);
       setDate(invalidObject, false);
     } else if (
-      (format === 'mm/dd/yy' && inputYear.length !== 2) ||
-      (format === 'mm.dd.yy' && inputYear.length !== 2) ||
-      (format === 'mm-dd-yy' && inputYear.length !== 2) ||
-      (format === 'dd/mm/yy' && inputYear.length !== 2) ||
-      (format === 'dd.mm.yy' && inputYear.length !== 2) ||
-      (format === 'dd-mm-yy' && inputYear.length !== 2)
+      (format === "mmddyy" && inputYear.length !== 2) ||
+      (format === "ddmmyy" && inputYear.length !== 2)
     ) {
       setErrorMessage(invalidDateMessage);
       setValid(false);
       setDate(invalidObject, false);
     } else {
-      const length = format.substring(8, 10) === '' ? 8 : 10;
+      const length = format.substring(6, 8) === "" ? 8 : 10;
 
       const dayObject = {
         time: timeToSet,
@@ -421,61 +413,61 @@ const Calendar = ({
   };
 
   const handleDayKeyPress = (e, index) => {
-    const days = datepickerRef.current.querySelectorAll('.calendar__day');
-    if (e.key === 'ArrowRight') {
+    const days = datepickerRef.current.querySelectorAll(".calendar__day");
+    if (e.key === "ArrowRight") {
       if (!!days[index + 1]) {
-        if (days[index + 1].getAttribute('disabled') === null) {
+        if (days[index + 1].getAttribute("disabled") === null) {
           days[index + 1].focus();
         }
       } else {
-        if (days[0].getAttribute('disabled') === null) {
+        if (days[0].getAttribute("disabled") === null) {
           days[0].focus();
         }
       }
     }
-    if (e.key === 'ArrowLeft') {
+    if (e.key === "ArrowLeft") {
       if (!!days[index - 1]) {
-        if (days[index - 1].getAttribute('disabled') === null) {
+        if (days[index - 1].getAttribute("disabled") === null) {
           days[index - 1].focus();
         }
       } else {
-        if (days[days.length - 1].getAttribute('disabled') === null) {
+        if (days[days.length - 1].getAttribute("disabled") === null) {
           days[days.length - 1].focus();
         }
       }
     }
-    if (e.key === 'Tab') {
+    if (e.key === "Tab") {
       e.preventDefault();
-      datepickerRef.current.querySelector('.calendar__arrow--prev').focus();
+      datepickerRef.current.querySelector(".calendar__arrow--prev").focus();
     }
   };
 
   const handleInputKey = e => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleBlur();
     }
   };
 
   return (
     <div
-      className={`calendar ${disabled ? 'calendar--disabled' : ''}`}
+      className={`calendar ${disabled ? "calendar--disabled" : ""}`}
       ref={wrapper}
     >
       <div
         className={`calendar__input-wrapper ${
-          isActive ? 'calendar__input-wrapper--active' : ''
+          isActive ? "calendar__input-wrapper--active" : ""
         } ${
           selectedDay && selectedDay.formattedDate.length > 0
-            ? 'calendar__input-wrapper--has-content'
-            : ''
-        } ${isValid || isPristine ? '' : 'calendar__input-wrapper--has-error'}`}
+            ? "calendar__input-wrapper--has-content"
+            : ""
+        } ${isValid || isPristine ? "" : "calendar__input-wrapper--has-error"}`}
       >
-        <label htmlFor={name} className="calendar__label">
+        <label htmlFor={name} className='calendar__label'>
           {label}
         </label>
-        <div className="calendar__input">
+        <div className='calendar__input'>
           <input
-            type="text"
+            type='text'
             id={name}
             name={name}
             onFocus={() => {
@@ -487,38 +479,38 @@ const Calendar = ({
               handleBlur();
             }}
             onKeyDown={handleInputKey}
-            value={selectedDay ? selectedDay.formattedDate : ''}
+            value={selectedDay ? selectedDay.formattedDate : ""}
             onChange={handleInputChange}
-            className="calendar__input-text"
+            className='calendar__input-text'
             disabled={disabled}
           />
           <button
-            type="button"
+            type='button'
             onClick={toggleDatePicker}
             className={`calendar__input-image ${
-              isImageFocused ? 'calendar__input-image--focused' : ''
+              isImageFocused ? "calendar__input-image--focused" : ""
             }`}
             onFocus={() => setImageFocus(true)}
             onBlur={() => setImageFocus(false)}
             disabled={disabled}
           />
-          <span className="calendar__input-error-message">{errorMessage}</span>
+          <span className='calendar__input-error-message'>{errorMessage}</span>
         </div>
       </div>
       <div
         className={`calendar__datepicker ${
-          datepickerShowing ? 'calendar__datepicker--showing' : ''
+          datepickerShowing ? "calendar__datepicker--showing" : ""
         } ${
-          datepickerPostion === 'top'
-            ? 'calendar__datepicker--top'
-            : 'calendar__datepicker--bottom'
+          datepickerPostion === "top"
+            ? "calendar__datepicker--top"
+            : "calendar__datepicker--bottom"
         }`}
         ref={datepickerRef}
       >
-        <div className="calendar__month-picker d-flex align-items-center justify-content-center">
+        <div className='calendar__month-picker d-flex align-items-center justify-content-center'>
           <button
-            type="button"
-            className="calendar__arrow calendar__arrow--prev"
+            type='button'
+            className='calendar__arrow calendar__arrow--prev'
             onClick={prevMonth}
           >
             ❮
@@ -527,23 +519,23 @@ const Calendar = ({
             {monthNames[selectedMonth]} {selectedYear}
           </p>
           <button
-            type="button"
-            className="calendar__arrow calendar__arrow--next"
+            type='button'
+            className='calendar__arrow calendar__arrow--next'
             onClick={nextMonth}
           >
             ❯
           </button>
         </div>
-        <div className="calendar__day-names d-flex text-center">
-          <span className="calendar__day-name">Mon</span>
-          <span className="calendar__day-name">Tue</span>
-          <span className="calendar__day-name">Wed</span>
-          <span className="calendar__day-name">Thu</span>
-          <span className="calendar__day-name">Fri</span>
-          <span className="calendar__day-name">Sat</span>
-          <span className="calendar__day-name">Sun</span>
+        <div className='calendar__day-names d-flex text-center'>
+          <span className='calendar__day-name'>Mon</span>
+          <span className='calendar__day-name'>Tue</span>
+          <span className='calendar__day-name'>Wed</span>
+          <span className='calendar__day-name'>Thu</span>
+          <span className='calendar__day-name'>Fri</span>
+          <span className='calendar__day-name'>Sat</span>
+          <span className='calendar__day-name'>Sun</span>
         </div>
-        <div className="calendar__week-days d-flex flex-wrap">
+        <div className='calendar__week-days d-flex flex-wrap'>
           {selectedMonthDays.map((day, index) => (
             <button
               disabled={
@@ -551,24 +543,24 @@ const Calendar = ({
                 (maxDateTime !== null && day.dayTime > maxDateTime)
               }
               className={`calendar__day ${
-                !day.isMonthDay ? 'calendar__day--blurred' : ''
-              } ${todayTime === day.dayTime ? 'calendar__day--today' : ''} ${
+                !day.isMonthDay ? "calendar__day--blurred" : ""
+              } ${todayTime === day.dayTime ? "calendar__day--today" : ""} ${
                 (minDateTime !== null && day.dayTime < minDateTime) ||
                 (maxDateTime !== null && day.dayTime > maxDateTime)
-                  ? 'calendar__day--blurred'
-                  : ''
+                  ? "calendar__day--blurred"
+                  : ""
               }
             ${
               (selectedDay && selectedDay.time) === day.dayTime
-                ? 'calendar__day--active'
-                : ''
+                ? "calendar__day--active"
+                : ""
             }`}
-              type="button"
+              type='button'
               key={day.dayTime}
               onClick={() => handleDayClick(day)}
               onKeyDown={e => handleDayKeyPress(e, index)}
             >
-              <span className="calendar__day-inner">{day.dayDate}</span>
+              <span className='calendar__day-inner'>{day.dayDate}</span>
             </button>
           ))}
         </div>
@@ -596,12 +588,12 @@ Calendar.propTypes = {
 
 Calendar.defaultProps = {
   todaySelected: false,
-  defaultValue: '',
-  maxDate: '',
-  minDate: '',
+  defaultValue: "",
+  maxDate: "",
+  minDate: "",
   disabled: false,
   required: false,
-  separator: '/'
+  separator: "/"
 };
 
 export default Calendar;
