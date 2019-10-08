@@ -2,19 +2,19 @@
 
 describe('Radio component', () => {
   beforeEach(() => {
-    cy.visit('/form');
-  });
+    cy.visit('/form')
+  })
 
   it('initial value', () => {
     cy.get('form:first .radio-group .radio')
       .eq(2)
-      .should('have.class', 'radio--selected');
-  });
+      .should('have.class', 'radio--selected')
+  })
 
   it('accessibility', () => {
     cy.get('form:first .radio-group')
       .focus()
-      .type('{downarrow}');
-    cy.get('.radio-group .radio:first').should('have.class', 'radio--selected');
-  });
-});
+      .type('{downarrow}')
+    cy.get('.radio-group .radio:first').should('have.class', 'radio--selected')
+  })
+})

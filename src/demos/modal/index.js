@@ -1,6 +1,6 @@
-import React from 'react';
-import MarkDown from 'markdown-to-jsx';
-import Modal from '../../components/Modal';
+import React from 'react'
+import MarkDown from 'markdown-to-jsx'
+import Modal from '../../components/Modal'
 
 const ModalDemo = () => {
   const md = `
@@ -10,7 +10,7 @@ const ModalDemo = () => {
     <Modal launcher="modal-launcher">
       <p>Hi, Im' a modal!</p>
     </Modal>
-  `;
+  `
   return (
     <>
       <h2 className='fz-24 mb-40 font-weight-bold mt-30'>Modal</h2>
@@ -51,7 +51,7 @@ const ModalDemo = () => {
         </li>
       </ul>
     </>
-  );
-};
+  )
+}
 
-export default ModalDemo;
+export default ModalDemo

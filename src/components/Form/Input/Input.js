@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import './input.scss';
-import { FormContext } from '../../../hooks/formHook';
+import React, { useEffect, useState, useContext, useCallback } from 'react'
+import PropTypes from 'prop-types'
+import './input.scss'
+import { FormContext } from '../../../hooks/formHook'
 
 const Input = ({
   name,
@@ -15,57 +15,57 @@ const Input = ({
   type,
   disabled,
   wrapperClassName,
-  inputClassName
+  inputClassName,
 }) => {
-  const { handleChange, invalids } = useContext(FormContext);
+  const { handleChange, invalids } = useContext(FormContext)
 
   const getInitialValue = useCallback(
-    () => (defaultValue ? defaultValue : ''),
+    () => (defaultValue || ''),
     [defaultValue]
-  );
+  )
 
-  const [currentValue, setCurrentValue] = useState(getInitialValue());
-  const [isValid, setValid] = useState(true);
-  const [isActive, setActive] = useState(false);
+  const [currentValue, setCurrentValue] = useState(getInitialValue())
+  const [isValid, setValid] = useState(true)
+  const [isActive, setActive] = useState(false)
 
-  const numberRegEx = /^\d*\.?(?:\d{1,2})?$/;
+  const numberRegEx = /^\d*\.?(?:\d{1,2})?$/
 
   const validate = useCallback(
     value => {
       if (disabled) {
-        return true;
+        return true
       }
 
       if (required && !value.length) {
-        return false;
+        return false
       }
 
       if (value.length < parseInt(minLength)) {
         if (required) {
-          return false;
+          return false
         } else {
           if (value.length > 0) {
-            return false;
+            return false
           }
         }
       }
 
       if (required || value.length > 0) {
-        return validationFunction(value);
+        return validationFunction(value)
       }
 
-      return true;
+      return true
     },
     [disabled, required, minLength, validationFunction]
-  );
+  )
 
   const inputActions = value => {
-    setCurrentValue(value);
-    setValid(true);
+    setCurrentValue(value)
+    setValid(true)
     handleChange({
-      [name]: { value: value, required: required, valid: validate(value) }
-    });
-  };
+      [name]: { value: value, required: required, valid: validate(value) },
+    })
+  }
 
   useEffect(() => {
     if (!disabled) {
@@ -73,97 +73,97 @@ const Input = ({
         [name]: {
           value: getInitialValue(),
           required: required,
-          valid: validate(getInitialValue())
-        }
-      };
+          valid: validate(getInitialValue()),
+        },
+      }
 
-      handleChange(initialState);
+      handleChange(initialState)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    const inputInvalid = invalids.find(invalid => invalid[name]);
+    const inputInvalid = invalids.find(invalid => invalid[name])
     if (!!inputInvalid && inputInvalid.hasOwnProperty(name)) {
-      setValid(false);
+      setValid(false)
     }
-  }, [invalids, name]);
+  }, [invalids, name])
 
   const validateState = value => {
     handleChange({
       [name]: {
         value: currentValue,
         required: required,
-        valid: validate(currentValue)
-      }
-    });
+        valid: validate(currentValue),
+      },
+    })
 
     if (disabled) {
-      return setValid(true);
+      return setValid(true)
     }
 
     if (required && !currentValue.length) {
-      return setValid(false);
+      return setValid(false)
     }
 
     if (currentValue.length < parseInt(minLength)) {
       if (required) {
-        return setValid(false);
+        return setValid(false)
       } else {
         if (currentValue.length > 0) {
-          return setValid(false);
+          return setValid(false)
         }
       }
     }
 
     if (required || value.length > 0) {
       if (!validationFunction(value)) {
-        return setValid(false);
+        return setValid(false)
       }
     }
 
-    return setValid(true);
-  };
+    return setValid(true)
+  }
 
   const handleInputChange = e => {
     if (type === 'number') {
       if (e.target.value === '' || numberRegEx.test(e.target.value)) {
-        inputActions(e.target.value);
+        inputActions(e.target.value)
       }
     } else {
-      inputActions(e.target.value);
+      inputActions(e.target.value)
     }
-  };
+  }
 
   const handleEnter = () => {
-    validate(currentValue);
-    validateState(currentValue);
-  };
+    validate(currentValue)
+    validateState(currentValue)
+  }
 
   const handleFocus = () => {
-    setActive(true);
-  };
+    setActive(true)
+  }
 
   const handleBlur = () => {
-    validateState(currentValue);
-    setActive(false);
-  };
+    validateState(currentValue)
+    setActive(false)
+  }
 
   return (
     <div
       className={`input ${isActive ? 'input--active' : ''}
         ${currentValue.length > 0 ? 'input--has-content' : ''}
         ${!isValid ? 'input--has-error' : ''} ${
-        disabled ? 'input--disabled' : ''
-      } ${wrapperClassName ? wrapperClassName : ''}`}
+      disabled ? 'input--disabled' : ''
+    } ${wrapperClassName || ''}`}
     >
       {label && (
-        <label className={`input__label`} htmlFor={name}>
+        <label className={'input__label'} htmlFor={name}>
           {label}
         </label>
       )}
       <input
-        className={`input__input ${inputClassName ? inputClassName : ''}`}
-        type="text"
+        className={`input__input ${inputClassName || ''}`}
+        type='text'
         disabled={disabled}
         id={name}
         name={name}
@@ -177,11 +177,11 @@ const Input = ({
         onKeyPress={e => e.key === 'Enter' && handleEnter()}
       />
       {!isValid && errorMessage && (
-        <span className="input__error-message">{errorMessage}</span>
+        <span className='input__error-message'>{errorMessage}</span>
       )}
     </div>
-  );
-};
+  )
+}
 
 Input.propTypes = {
   name: PropTypes.string.isRequired,
@@ -195,8 +195,8 @@ Input.propTypes = {
   type: PropTypes.string,
   disabled: PropTypes.bool,
   wrapperClassName: PropTypes.string,
-  inputClassName: PropTypes.string
-};
+  inputClassName: PropTypes.string,
+}
 
 Input.defaultProps = {
   required: false,
@@ -204,7 +204,7 @@ Input.defaultProps = {
   type: 'text',
   disabled: false,
   inputClassName: '',
-  wrapperClassName: ''
-};
+  wrapperClassName: '',
+}
 
-export default Input;
+export default Input

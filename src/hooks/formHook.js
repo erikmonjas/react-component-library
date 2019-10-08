@@ -1,52 +1,52 @@
-import React, { useReducer } from "react";
-import PropTypes from "prop-types";
-import { formValuesReducer, formInvalidsReducer } from "./formReducer";
+import React, { useReducer } from 'react'
+import PropTypes from 'prop-types'
+import { formValuesReducer, formInvalidsReducer } from './formReducer'
 
-export const FormContext = React.createContext({});
+export const FormContext = React.createContext({})
 
 const useFormHook = ({ initialValues = {}, invalidAction, submitAction }) => {
-  const [formValues, dispatch] = useReducer(formValuesReducer, initialValues);
-  const [invalids, dispatchInvalids] = useReducer(formInvalidsReducer, []);
+  const [formValues, dispatch] = useReducer(formValuesReducer, initialValues)
+  const [invalids, dispatchInvalids] = useReducer(formInvalidsReducer, [])
 
   const handleChange = mutation => {
-    dispatch({ type: "FORM_CHANGE", payload: mutation });
-  };
+    dispatch({ type: 'FORM_CHANGE', payload: mutation })
+  }
 
   const handleSubmit = e => {
-    e.preventDefault();
+    e.preventDefault()
 
     const invalidKeys = Object.keys(formValues).filter(element => {
       if (formValues[element].valid === false) {
-        return element;
+        return element
       } else {
-        return false;
+        return false
       }
-    });
+    })
 
     const newInvalids = invalidKeys.map(invalid => {
-      return { [invalid]: formValues[invalid] };
-    });
+      return { [invalid]: formValues[invalid] }
+    })
 
-    dispatchInvalids({ type: "FORM_CHECK", payload: newInvalids });
+    dispatchInvalids({ type: 'FORM_CHECK', payload: newInvalids })
 
     if (newInvalids.length > 0) {
-      invalidAction(newInvalids);
+      invalidAction(newInvalids)
     } else {
-      submitAction(formValues);
+      submitAction(formValues)
     }
-  };
+  }
 
-  return { handleSubmit, handleChange, formValues, invalids };
-};
+  return { handleSubmit, handleChange, formValues, invalids }
+}
 
 useFormHook.PropTypes = {
   initialValues: PropTypes.object,
   invalidAction: PropTypes.func.isRequired,
-  submitAction: PropTypes.func.isRequired
-};
+  submitAction: PropTypes.func.isRequired,
+}
 
 useFormHook.defaultProps = {
-  initialValues: {}
-};
+  initialValues: {},
+}
 
-export default useFormHook;
+export default useFormHook

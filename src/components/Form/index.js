@@ -1,11 +1,11 @@
-import React from 'react';
-import useFormHook, { FormContext } from '../../hooks/formHook';
+import React from 'react'
+import useFormHook, { FormContext } from '../../hooks/formHook'
 
 const Form = ({ children, submitAction, invalidAction, ...rest }) => {
   const { handleSubmit, formValues, invalids, handleChange } = useFormHook({
     submitAction,
     invalidAction,
-  });
+  })
 
   return (
     <FormContext.Provider value={{ formValues, invalids, handleChange }}>
@@ -13,7 +13,7 @@ const Form = ({ children, submitAction, invalidAction, ...rest }) => {
         {children}
       </form>
     </FormContext.Provider>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form

@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import './radio.scss';
-import { FormContext } from '../../../hooks/formHook';
+import React, { useState, useContext, useEffect } from 'react'
+import PropTypes from 'prop-types'
+import './radio.scss'
+import { FormContext } from '../../../hooks/formHook'
 
 const RadioGroup = ({
   radioList,
@@ -10,10 +10,10 @@ const RadioGroup = ({
   groupClassName,
   radioClassName,
 }) => {
-  const { handleChange } = useContext(FormContext);
+  const { handleChange } = useContext(FormContext)
 
-  const [currentRadio, setCurrentRadio] = useState(defaultRadio);
-  const [isActive, setActive] = useState(false);
+  const [currentRadio, setCurrentRadio] = useState(defaultRadio)
+  const [isActive, setActive] = useState(false)
 
   useEffect(() => {
     const initialState = {
@@ -22,40 +22,40 @@ const RadioGroup = ({
         required: false,
         valid: true,
       },
-    };
+    }
 
-    handleChange(initialState);
-  }, []);
+    handleChange(initialState)
+  }, [])
 
   const handleClick = value => {
-    setCurrentRadio(value);
+    setCurrentRadio(value)
     handleChange({
       [name]: {
         value: value,
         required: false,
         valid: true,
       },
-    });
-  };
+    })
+  }
 
   const handleKeyPress = e => {
-    const currentRadioIndex = radioList.findIndex(radio => radio.value === currentRadio);
+    const currentRadioIndex = radioList.findIndex(radio => radio.value === currentRadio)
 
     if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
       currentRadioIndex === 0
         ? handleClick(radioList[radioList.length - 1].value)
-        : handleClick(radioList[currentRadioIndex - 1].value);
+        : handleClick(radioList[currentRadioIndex - 1].value)
     } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
       currentRadioIndex === radioList.length - 1
         ? handleClick(radioList[0].value)
-        : handleClick(radioList[currentRadioIndex + 1].value);
+        : handleClick(radioList[currentRadioIndex + 1].value)
     }
-  };
+  }
 
   return (
     <div
       role='radiogroup'
-      className={`radio-group ${groupClassName ? groupClassName : ''}`}
+      className={`radio-group ${groupClassName || ''}`}
       tabIndex='0'
       onFocus={() => setActive(true)}
       onBlur={() => setActive(false)}
@@ -64,7 +64,7 @@ const RadioGroup = ({
         <div
           className={`radio ${currentRadio === value ? 'radio--selected' : ''} ${
             isActive && currentRadio === value ? 'radio--active' : ''
-          } ${radioClassName ? radioClassName : ''}`}
+          } ${radioClassName || ''}`}
           key={value}>
           <input
             type='radio'
@@ -81,8 +81,8 @@ const RadioGroup = ({
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
 RadioGroup.propTypes = {
   radioList: PropTypes.arrayOf(
@@ -95,11 +95,11 @@ RadioGroup.propTypes = {
   defaultRadio: PropTypes.string,
   groupClassName: PropTypes.string,
   radioClassName: PropTypes.string,
-};
+}
 
 RadioGroup.defaultProps = {
   groupClassName: '',
   radioClassName: '',
-};
+}
 
-export default RadioGroup;
+export default RadioGroup

@@ -4,10 +4,10 @@ import React, {
   useCallback,
   useRef,
   useContext,
-} from 'react';
-import PropTypes from 'prop-types';
-import './calendar.scss';
-import { FormContext } from '../../../hooks/formHook';
+} from 'react'
+import PropTypes from 'prop-types'
+import './calendar.scss'
+import { FormContext } from '../../../hooks/formHook'
 import {
   timeToDate,
   dateToTime,
@@ -15,7 +15,7 @@ import {
   todayTime,
   currentMonth,
   currentYear,
-} from '../../../utils/date';
+} from '../../../utils/date'
 
 const Calendar = ({
   name,
@@ -33,7 +33,7 @@ const Calendar = ({
   emptyDateMessage = 'Please, enter a date',
   separator,
 }) => {
-  const { handleChange, invalids } = useContext(FormContext);
+  const { handleChange, invalids } = useContext(FormContext)
 
   const monthNames = [
     'January',
@@ -48,107 +48,107 @@ const Calendar = ({
     'October',
     'November',
     'December',
-  ];
+  ]
 
   const getInitialDay = () => {
     if (todaySelected) {
       return {
         time: todayTime,
         formattedDate: timeToDate(format, todayTime, separator),
-      };
+      }
     } else if (defaultValue.length > 0) {
       return {
         time: dateToTime(format, defaultValue),
         formattedDate: defaultValue,
-      };
+      }
     } else {
-      return { time: null, formattedDate: '' };
+      return { time: null, formattedDate: '' }
     }
-  };
+  }
 
   const getInitial = what => {
-    const currentWhat = what === 'year' ? currentYear : currentMonth;
+    const currentWhat = what === 'year' ? currentYear : currentMonth
     if (todaySelected) {
-      return currentWhat;
+      return currentWhat
     } else if (defaultValue.length > 0) {
       return what === 'year'
         ? new Date(dateToTime(format, defaultValue)).getFullYear()
-        : new Date(dateToTime(format, defaultValue)).getMonth();
+        : new Date(dateToTime(format, defaultValue)).getMonth()
     } else {
-      return currentWhat;
+      return currentWhat
     }
-  };
+  }
 
   const getLimitDateTime = date => {
     if (date.length > 0) {
-      return dateToTime(format, date);
+      return dateToTime(format, date)
     } else {
-      return null;
+      return null
     }
-  };
+  }
 
-  const wrapper = useRef(null);
-  const datepickerRef = useRef(null);
+  const wrapper = useRef(null)
+  const datepickerRef = useRef(null)
 
-  const minDateTime = getLimitDateTime(minDate);
-  const maxDateTime = getLimitDateTime(maxDate);
+  const minDateTime = getLimitDateTime(minDate)
+  const maxDateTime = getLimitDateTime(maxDate)
 
-  const [selectedMonth, setSelectedMonth] = useState(getInitial('month'));
-  const [selectedYear, setSelectedYear] = useState(getInitial('year'));
-  const [selectedDay, setSelectedDay] = useState(getInitialDay());
-  const [isActive, setActive] = useState(false);
-  const [datepickerShowing, setDatepickerShowing] = useState(false);
-  const [datepickerPostion, setDatepickerPosition] = useState('bottom');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isImageFocused, setImageFocus] = useState(false);
-  const [isValid, setValid] = useState(true);
-  const [isPristine, setPristine] = useState(true);
+  const [selectedMonth, setSelectedMonth] = useState(getInitial('month'))
+  const [selectedYear, setSelectedYear] = useState(getInitial('year'))
+  const [selectedDay, setSelectedDay] = useState(getInitialDay())
+  const [isActive, setActive] = useState(false)
+  const [datepickerShowing, setDatepickerShowing] = useState(false)
+  const [datepickerPostion, setDatepickerPosition] = useState('bottom')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [isImageFocused, setImageFocus] = useState(false)
+  const [isValid, setValid] = useState(true)
+  const [isPristine, setPristine] = useState(true)
 
   const validate = ({ time, formattedDate }) => {
     if (disabled) {
-      setValid(true);
-      return true;
+      setValid(true)
+      return true
     }
 
     if (required && time === null) {
-      const calendarInvalid = invalids.find(invalid => invalid[name]);
+      const calendarInvalid = invalids.find(invalid => invalid[name])
       if (!isPristine || !!calendarInvalid) {
-        setErrorMessage(emptyDateMessage);
+        setErrorMessage(emptyDateMessage)
       }
-      setValid(false);
-      return false;
+      setValid(false)
+      return false
     }
 
     if (!required && time === null && formattedDate.length === 0) {
-      setErrorMessage('');
-      setValid(true);
-      return true;
+      setErrorMessage('')
+      setValid(true)
+      return true
     }
 
     if (!!minDate && time < minDateTime) {
-      setValid(false);
+      setValid(false)
       if (!isPristine) {
         time === null
           ? setErrorMessage(invalidDateMessage)
-          : setErrorMessage(underMinDateMessage);
+          : setErrorMessage(underMinDateMessage)
       }
-      return false;
+      return false
     }
 
     if (!!maxDate && time > maxDateTime) {
-      setValid(false);
+      setValid(false)
       if (!isPristine) {
         time === null
           ? setErrorMessage(invalidDateMessage)
-          : setErrorMessage(overMaxDateMessage);
+          : setErrorMessage(overMaxDateMessage)
       }
-      return false;
+      return false
     }
 
-    setErrorMessage('');
-    setValid(true);
-    return true;
-  };
+    setErrorMessage('')
+    setValid(true)
+    return true
+  }
 
   const handleClickOutside = useCallback(
     e => {
@@ -158,18 +158,18 @@ const Calendar = ({
           (e.target.classList[0].includes('calendar__label') ||
             e.target.classList[0].includes('calendar__input'))
         ) {
-          setDatepickerShowing(false);
-          setActive(true);
-          window.removeEventListener('click', handleClickOutside);
+          setDatepickerShowing(false)
+          setActive(true)
+          window.removeEventListener('click', handleClickOutside)
         }
       } else {
-        setDatepickerShowing(false);
-        setActive(false);
-        window.removeEventListener('click', handleClickOutside);
+        setDatepickerShowing(false)
+        setActive(false)
+        window.removeEventListener('click', handleClickOutside)
       }
     },
     [wrapper]
-  );
+  )
 
   useEffect(() => {
     if (!disabled) {
@@ -179,287 +179,282 @@ const Calendar = ({
           required,
           valid: validate(selectedDay),
         },
-      };
+      }
 
-      handleChange(initialState);
+      handleChange(initialState)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    const calendarInvalid = invalids.find(invalid => invalid[name]);
+    const calendarInvalid = invalids.find(invalid => invalid[name])
     if (!!calendarInvalid && calendarInvalid.hasOwnProperty(name)) {
-      setPristine(false);
-      validate(selectedDay);
+      setPristine(false)
+      validate(selectedDay)
     }
-  }, [invalids, name, selectedDay]);
+  }, [invalids, name, selectedDay])
 
   useEffect(() => {
-    if (!disabled) {
+    if (datepickerShowing) {
+      window.addEventListener('click', handleClickOutside)
     }
-  }, [disabled]);
-
-  useEffect(() => {
-    if (!!datepickerShowing) {
-      window.addEventListener('click', handleClickOutside);
-    }
-  }, [datepickerShowing, handleClickOutside]);
+  }, [datepickerShowing, handleClickOutside])
 
   useEffect(() => {
     if (datepickerShowing) {
       const chosenDay = datepickerRef.current.querySelector(
         '.calendar__day--active'
-      );
+      )
       const todayDay = datepickerRef.current.querySelector(
         '.calendar__day--today'
-      );
+      )
 
       if (chosenDay) {
-        chosenDay.focus();
+        chosenDay.focus()
       } else if (todayDay) {
-        todayDay.focus();
+        todayDay.focus()
       } else {
         datepickerRef.current
           .querySelector('.calendar__day:not(.calendar__day--blurred)')
-          .focus();
+          .focus()
       }
     }
-  }, [datepickerShowing, datepickerRef]);
+  }, [datepickerShowing, datepickerRef])
 
   const getDaysInMonth = (month, year) => {
-    const initialDate = new Date(year, month, 1);
-    const initialDatePositon = initialDate.getDay();
-    let initialDateNumber = 0;
-    const monthDays = new Date(year, month + 1, 0).getDate();
+    const initialDate = new Date(year, month, 1)
+    const initialDatePositon = initialDate.getDay()
+    let initialDateNumber = 0
+    const monthDays = new Date(year, month + 1, 0).getDate()
     const daysUntilEndingSunday =
       new Date(year, month, monthDays).getDay() === 0
         ? 0
-        : 7 - new Date(year, month, monthDays).getDay();
-    const endingDateNumber = monthDays + daysUntilEndingSunday;
+        : 7 - new Date(year, month, monthDays).getDay()
+    const endingDateNumber = monthDays + daysUntilEndingSunday
 
     if (initialDatePositon > 1) {
-      initialDateNumber = -(initialDatePositon - 2);
+      initialDateNumber = -(initialDatePositon - 2)
     } else if (initialDatePositon === 0) {
-      initialDateNumber = -5;
+      initialDateNumber = -5
     } else {
-      initialDateNumber = 1;
+      initialDateNumber = 1
     }
 
-    let days = [];
+    const days = []
 
     while (initialDateNumber <= endingDateNumber) {
-      const dateBase = new Date(year, month, initialDateNumber);
+      const dateBase = new Date(year, month, initialDateNumber)
       days.push({
         dayDate: dateBase.getDate(),
         dayMonth: dateBase.getMonth(),
         dayYear: dateBase.getFullYear(),
         dayTime: dateBase.getTime(),
         isMonthDay: initialDateNumber >= 1 && initialDateNumber <= monthDays,
-      });
+      })
 
-      initialDateNumber = initialDateNumber + 1;
+      initialDateNumber = initialDateNumber + 1
     }
-    return days;
-  };
+    return days
+  }
 
   const [selectedMonthDays, setMonthDays] = useState(
     getDaysInMonth(selectedMonth, selectedYear)
-  );
+  )
 
   const getScrollLeft = () => {
-    return document.body.offsetHeight - window.pageYOffset - window.innerHeight;
-  };
+    return document.body.offsetHeight - window.pageYOffset - window.innerHeight
+  }
 
   const getVisibleDistanceToBottomLeft = () => {
     return (
       window.innerHeight -
       document.getElementById(name).getBoundingClientRect().y
-    );
-  };
+    )
+  }
 
   const getDistanceToTopLeft = () => {
     return (
       window.pageYOffset +
       document.getElementById(name).getBoundingClientRect().y
-    );
-  };
+    )
+  }
 
   const toggleDatePicker = () => {
     if (getScrollLeft() + getVisibleDistanceToBottomLeft() > 325) {
-      setDatepickerPosition('bottom');
+      setDatepickerPosition('bottom')
     } else if (getDistanceToTopLeft() < 318) {
-      setDatepickerPosition('bottom');
+      setDatepickerPosition('bottom')
     } else {
-      setDatepickerPosition('top');
+      setDatepickerPosition('top')
     }
 
-    setDatepickerShowing(!datepickerShowing);
-  };
+    setDatepickerShowing(!datepickerShowing)
+  }
 
   const prevMonth = () => {
-    let newMonth, newYear;
+    let newMonth, newYear
     if (selectedMonth > 0) {
-      newMonth = selectedMonth - 1;
-      newYear = selectedYear;
-      setSelectedMonth(newMonth);
+      newMonth = selectedMonth - 1
+      newYear = selectedYear
+      setSelectedMonth(newMonth)
     } else {
-      newMonth = 11;
-      newYear = selectedYear - 1;
-      setSelectedMonth(newMonth);
-      setSelectedYear(newYear);
+      newMonth = 11
+      newYear = selectedYear - 1
+      setSelectedMonth(newMonth)
+      setSelectedYear(newYear)
     }
 
-    setMonthDays(getDaysInMonth(newMonth, newYear));
-  };
+    setMonthDays(getDaysInMonth(newMonth, newYear))
+  }
 
   const nextMonth = () => {
-    let newMonth, newYear;
+    let newMonth, newYear
     if (selectedMonth < 11) {
-      newMonth = selectedMonth + 1;
-      newYear = selectedYear;
-      setSelectedMonth(selectedMonth + 1);
+      newMonth = selectedMonth + 1
+      newYear = selectedYear
+      setSelectedMonth(selectedMonth + 1)
     } else {
-      newMonth = 0;
-      newYear = selectedYear + 1;
-      setSelectedMonth(0);
-      setSelectedYear(selectedYear + 1);
+      newMonth = 0
+      newYear = selectedYear + 1
+      setSelectedMonth(0)
+      setSelectedYear(selectedYear + 1)
     }
 
-    setMonthDays(getDaysInMonth(newMonth, newYear));
-  };
+    setMonthDays(getDaysInMonth(newMonth, newYear))
+  }
 
   const handleDayClick = ({ dayTime }) => {
     const dayObject = {
       time: dayTime,
       formattedDate: timeToDate(format, dayTime),
-    };
-    setErrorMessage('');
-    setValid(true);
-    setSelectedDay(dayObject);
+    }
+    setErrorMessage('')
+    setValid(true)
+    setSelectedDay(dayObject)
     handleChange({
       [name]: {
         value: dayObject,
         required,
         valid: validate(dayObject),
       },
-    });
-    setDatepickerShowing(false);
-    setActive(false);
-    window.removeEventListener('click', handleClickOutside);
-  };
+    })
+    setDatepickerShowing(false)
+    setActive(false)
+    window.removeEventListener('click', handleClickOutside)
+  }
 
   const handleInputChange = e => {
-    setErrorMessage('');
-    setValid(true);
-    setSelectedDay({ time: '', formattedDate: e.target.value.trim() });
-  };
+    setErrorMessage('')
+    setValid(true)
+    setSelectedDay({ time: '', formattedDate: e.target.value.trim() })
+  }
 
   const handleBlur = () => {
     const setDate = (object, valid) => {
-      setSelectedDay(object);
+      setSelectedDay(object)
       handleChange({
         [name]: {
           value: object,
           required,
           valid,
         },
-      });
-    };
+      })
+    }
 
-    const inputYear = selectedDay.formattedDate.substring(6, 10);
+    const inputYear = selectedDay.formattedDate.substring(6, 10)
 
-    const day = getYearMonthDay(format, selectedDay.formattedDate).day;
-    const month = getYearMonthDay(format, selectedDay.formattedDate).month;
-    const year = getYearMonthDay(format, selectedDay.formattedDate).year;
+    const day = getYearMonthDay(format, selectedDay.formattedDate).day
+    const month = getYearMonthDay(format, selectedDay.formattedDate).month
+    const year = getYearMonthDay(format, selectedDay.formattedDate).year
 
-    const monthDays = new Date(year, month + 1, 0).getDate();
+    const monthDays = new Date(year, month + 1, 0).getDate()
 
-    const timeToSet = new Date(year, month, day).getTime();
+    const timeToSet = new Date(year, month, day).getTime()
 
     const invalidObject = {
       time: null,
       formattedDate: selectedDay.formattedDate,
-    };
+    }
 
     if (isNaN(timeToSet)) {
       if (selectedDay.formattedDate.length > 0) {
-        setErrorMessage(invalidDateMessage);
-        setValid(false);
-        setDate(invalidObject, false);
+        setErrorMessage(invalidDateMessage)
+        setValid(false)
+        setDate(invalidObject, false)
       } else {
         if (required) {
-          setErrorMessage(emptyDateMessage);
-          setValid(false);
-          setDate(invalidObject, false);
+          setErrorMessage(emptyDateMessage)
+          setValid(false)
+          setDate(invalidObject, false)
         } else {
-          setValid(true);
-          setDate(invalidObject, true);
+          setValid(true)
+          setDate(invalidObject, true)
         }
       }
     } else if (day > monthDays || day < 1 || month > 11 || month < 0) {
-      setErrorMessage(invalidDateMessage);
-      setValid(false);
-      setDate(invalidObject, false);
+      setErrorMessage(invalidDateMessage)
+      setValid(false)
+      setDate(invalidObject, false)
     } else if (
       (format === 'mmddyyyy' && inputYear.length !== 4) ||
       (format === 'ddmmyyyy' && inputYear.length !== 4)
     ) {
-      setErrorMessage(invalidDateMessage);
-      setValid(false);
-      setDate(invalidObject, false);
+      setErrorMessage(invalidDateMessage)
+      setValid(false)
+      setDate(invalidObject, false)
     } else if (
       (format === 'mmddyy' && inputYear.length !== 2) ||
       (format === 'ddmmyy' && inputYear.length !== 2)
     ) {
-      setErrorMessage(invalidDateMessage);
-      setValid(false);
-      setDate(invalidObject, false);
+      setErrorMessage(invalidDateMessage)
+      setValid(false)
+      setDate(invalidObject, false)
     } else {
-      const length = format.substring(6, 8) === '' ? 8 : 10;
+      const length = format.substring(6, 8) === '' ? 8 : 10
 
       const dayObject = {
         time: timeToSet,
         formattedDate: selectedDay.formattedDate.trim().substring(0, length),
-      };
+      }
 
-      setDate(dayObject, validate(dayObject));
+      setDate(dayObject, validate(dayObject))
     }
-  };
+  }
 
   const handleDayKeyPress = (e, index) => {
-    const days = datepickerRef.current.querySelectorAll('.calendar__day');
+    const days = datepickerRef.current.querySelectorAll('.calendar__day')
     if (e.key === 'ArrowRight') {
-      if (!!days[index + 1]) {
+      if (days[index + 1]) {
         if (days[index + 1].getAttribute('disabled') === null) {
-          days[index + 1].focus();
+          days[index + 1].focus()
         }
       } else {
         if (days[0].getAttribute('disabled') === null) {
-          days[0].focus();
+          days[0].focus()
         }
       }
     }
     if (e.key === 'ArrowLeft') {
-      if (!!days[index - 1]) {
+      if (days[index - 1]) {
         if (days[index - 1].getAttribute('disabled') === null) {
-          days[index - 1].focus();
+          days[index - 1].focus()
         }
       } else {
         if (days[days.length - 1].getAttribute('disabled') === null) {
-          days[days.length - 1].focus();
+          days[days.length - 1].focus()
         }
       }
     }
     if (e.key === 'Tab') {
-      e.preventDefault();
-      datepickerRef.current.querySelector('.calendar__arrow--prev').focus();
+      e.preventDefault()
+      datepickerRef.current.querySelector('.calendar__arrow--prev').focus()
     }
-  };
+  }
 
   const handleInputKey = e => {
     if (e.key === 'Enter') {
-      handleBlur();
+      handleBlur()
     }
-  };
+  }
 
   return (
     <div
@@ -484,12 +479,12 @@ const Calendar = ({
             id={name}
             name={name}
             onFocus={() => {
-              setActive(true);
+              setActive(true)
             }}
             onBlur={() => {
-              setPristine(false);
-              setActive(false);
-              handleBlur();
+              setPristine(false)
+              setActive(false)
+              handleBlur()
             }}
             onKeyDown={handleInputKey}
             value={selectedDay ? selectedDay.formattedDate : ''}
@@ -564,9 +559,9 @@ const Calendar = ({
                   : ''
               }
             ${
-              (selectedDay && selectedDay.time) === day.dayTime
-                ? 'calendar__day--active'
-                : ''
+            (selectedDay && selectedDay.time) === day.dayTime
+              ? 'calendar__day--active'
+              : ''
             }`}
               type='button'
               key={day.dayTime}
@@ -579,8 +574,8 @@ const Calendar = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 Calendar.propTypes = {
   label: PropTypes.string.isRequired,
@@ -597,7 +592,7 @@ Calendar.propTypes = {
   underMinDateMessage: PropTypes.string,
   invalidDateMessage: PropTypes.string,
   separator: PropTypes.string,
-};
+}
 
 Calendar.defaultProps = {
   todaySelected: false,
@@ -607,6 +602,6 @@ Calendar.defaultProps = {
   disabled: false,
   required: false,
   separator: '/',
-};
+}
 
-export default Calendar;
+export default Calendar

@@ -1,30 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './modal.scss';
+import React, { useState, useEffect, useRef } from 'react'
+import './modal.scss'
 
 const Modal = ({ children, launcher }) => {
-  const [isOpen, setOpen] = useState(false);
-  const wrapper = useRef(null);
+  const [isOpen, setOpen] = useState(false)
+  const wrapper = useRef(null)
 
   useEffect(() => {
     document.getElementById(launcher).addEventListener('click', () => {
-      setOpen(true);
-    });
+      setOpen(true)
+    })
     wrapper.current
       .querySelector('.modal__background')
       .addEventListener('click', () => {
-        setOpen(false);
-      });
-  }, []);
+        setOpen(false)
+      })
+  }, [])
 
   useEffect(() => {
-    const modalContent = wrapper.current.querySelector('.modal__content');
+    const modalContent = wrapper.current.querySelector('.modal__content')
 
     if (modalContent.clientHeight < modalContent.scrollHeight - 1) {
-      modalContent.classList.add('modal__content--with-scroll');
+      modalContent.classList.add('modal__content--with-scroll')
     } else {
-      modalContent.classList.remove('modal__content--with-scroll');
+      modalContent.classList.remove('modal__content--with-scroll')
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   return (
     <div className={`modal ${isOpen ? '' : 'd-none'}`} ref={wrapper}>
@@ -36,7 +36,7 @@ const Modal = ({ children, launcher }) => {
         <div className='modal__content'>{children}</div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

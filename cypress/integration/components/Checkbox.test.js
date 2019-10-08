@@ -2,20 +2,20 @@
 
 describe('Checkbox component', () => {
   beforeEach(() => {
-    cy.visit('/form');
-  });
+    cy.visit('/form')
+  })
 
   it('initial value, selected', () => {
     cy.get('#otherCheckbox')
       .parent()
-      .should('not.have.class', 'checkbox--checked');
+      .should('not.have.class', 'checkbox--checked')
 
     cy.get('#otherCheckbox')
       .siblings('label')
       .focus()
       .parent()
-      .should('have.class', 'checkbox--active');
-  });
+      .should('have.class', 'checkbox--active')
+  })
 
   it('accessibility, change value, error message', () => {
     cy.get('#otherCheckbox')
@@ -23,7 +23,7 @@ describe('Checkbox component', () => {
       .focus()
       .type('{enter}')
       .parent()
-      .should('have.class', 'checkbox--checked');
+      .should('have.class', 'checkbox--checked')
 
     cy.get('#otherCheckbox')
       .siblings('label')
@@ -34,10 +34,10 @@ describe('Checkbox component', () => {
       .children('label')
       .blur()
       .parent()
-      .should('have.class', 'checkbox--has-error');
+      .should('have.class', 'checkbox--has-error')
 
     cy.get('#otherCheckbox')
       .siblings('.checkbox__error-message')
-      .should('exist');
-  });
-});
+      .should('exist')
+  })
+})

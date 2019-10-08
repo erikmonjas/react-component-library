@@ -1,26 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './tabs.scss';
-import useTabHook, { TabContext } from '../../hooks/tabHook';
+import React from 'react'
+import PropTypes from 'prop-types'
+import './tabs.scss'
+import useTabHook, { TabContext } from '../../hooks/tabHook'
 
 const Tabs = ({ tabList, children, className, defaultTab }) => {
-  const { currentTab, handleTabChange } = useTabHook({ defaultTab });
+  const { currentTab, handleTabChange } = useTabHook({ defaultTab })
 
-  const displacement = 100 / tabList.length;
+  const displacement = 100 / tabList.length
 
   const lineStyle = {
     width: 100 / tabList.length + '%',
     left: `${currentTab * displacement}%`,
-  };
+  }
 
   const slideContainerStyle = {
     width: 100 * tabList.length + '%',
     transform: `translateX(${-((100 / tabList.length) * currentTab)}%)`,
-  };
+  }
 
   return (
     <TabContext.Provider value={currentTab}>
-      <div className={`tabs ${className ? className : ''}`}>
+      <div className={`tabs ${className || ''}`}>
         <div className='tabs__button-wrapper'>
           {tabList.map((tabButton, index) => (
             <button
@@ -39,8 +39,8 @@ const Tabs = ({ tabList, children, className, defaultTab }) => {
         </div>
       </div>
     </TabContext.Provider>
-  );
-};
+  )
+}
 
 Tabs.propTypes = {
   defaultTab: PropTypes.number,
@@ -50,11 +50,11 @@ Tabs.propTypes = {
     }),
   ).isRequired,
   className: PropTypes.string,
-};
+}
 
 Tabs.defaultProps = {
   className: '',
   defaultTab: 0,
-};
+}
 
-export default Tabs;
+export default Tabs
