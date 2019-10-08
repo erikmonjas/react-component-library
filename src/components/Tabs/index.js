@@ -26,7 +26,9 @@ const Tabs = ({ tabList, children, className, defaultTab }) => {
             <button
               key={index}
               onClick={() => handleTabChange(index)}
-              className={`tabs__button ${currentTab === index && 'tabs__button--active'}`}>
+              className={`tabs__button ${currentTab === index &&
+                'tabs__button--active'}`}
+            >
               {tabButton.title}
             </button>
           ))}
@@ -47,9 +49,10 @@ Tabs.propTypes = {
   tabList: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string,
-    }),
+    })
   ).isRequired,
   className: PropTypes.string,
+  children: PropTypes.any,
 }
 
 Tabs.defaultProps = {

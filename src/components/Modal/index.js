@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
 import './modal.scss'
 
 const Modal = ({ children, launcher }) => {
@@ -40,3 +41,8 @@ const Modal = ({ children, launcher }) => {
 }
 
 export default Modal
+
+Modal.propTypes = {
+  children: PropTypes.any,
+  launcher: PropTypes.string.isRequired,
+}

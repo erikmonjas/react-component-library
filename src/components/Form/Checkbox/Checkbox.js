@@ -3,7 +3,15 @@ import PropTypes from 'prop-types'
 import './checkbox.scss'
 import { FormContext } from '../../../hooks/formHook'
 
-const Checkbox = ({ name, label, defaultChecked, required, disabled, errorMessage, className }) => {
+const Checkbox = ({
+  name,
+  label,
+  defaultChecked,
+  required,
+  disabled,
+  errorMessage,
+  className,
+}) => {
   const { handleChange, invalids } = useContext(FormContext)
 
   const [checked, setChecked] = useState(defaultChecked)
@@ -78,11 +86,12 @@ const Checkbox = ({ name, label, defaultChecked, required, disabled, errorMessag
 
   return (
     <div
-      className={`checkbox ${!isValid && !isActive ? 'checkbox--has-error' : ''} ${
-        isActive ? 'checkbox--active' : ''
-      } ${checked ? 'checkbox--checked' : ''} ${disabled ? 'checkbox--disabled' : ''} ${
-        className || ''
-      }`}>
+      className={`checkbox ${
+        !isValid && !isActive ? 'checkbox--has-error' : ''
+      } ${isActive ? 'checkbox--active' : ''} ${
+        checked ? 'checkbox--checked' : ''
+      } ${disabled ? 'checkbox--disabled' : ''} ${className || ''}`}
+    >
       <input
         type='checkbox'
         id={name}
@@ -99,18 +108,21 @@ const Checkbox = ({ name, label, defaultChecked, required, disabled, errorMessag
         tabIndex={disabled ? '-1' : '0'}
         onFocus={() => setActive(true)}
         onBlur={() => setActive(false)}
-        onKeyPress={handleKeyPress}>
+        onKeyPress={handleKeyPress}
+      >
         {label}
         <span className='checkbox__square' />
       </label>
-      {!isValid && errorMessage && <p className='checkbox__error-message'>{errorMessage}</p>}
+      {!isValid && errorMessage && (
+        <p className='checkbox__error-message'>{errorMessage}</p>
+      )}
     </div>
   )
 }
 
 export default Checkbox
 
-Checkbox.prototypes = {
+Checkbox.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   defaultChecked: PropTypes.bool,

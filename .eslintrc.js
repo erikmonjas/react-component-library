@@ -92,5 +92,6 @@ module.exports = {
     'key-spacing': ['warn', { afterColon: true }],
     'keyword-spacing': ['warn', { before: true, after: true }],
     'react/no-unescaped-entities': 0,
+    'react/no-children-prop': 0,
   },
-};
+}

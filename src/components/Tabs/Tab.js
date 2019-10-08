@@ -7,9 +7,10 @@ const Tab = ({ order, children, className }) => {
 
   return (
     <div
-      className={`tabs__slide ${currentTab === order ? 'tabs__slide--active' : ''} ${
-        className || ''
-      }`}>
+      className={`tabs__slide ${
+        currentTab === order ? 'tabs__slide--active' : ''
+      } ${className || ''}`}
+    >
       {children}
     </div>
   )
@@ -18,6 +19,7 @@ const Tab = ({ order, children, className }) => {
 Tab.propTypes = {
   order: PropTypes.number.isRequired,
   className: PropTypes.string,
+  children: PropTypes.any,
 }
 
 Tab.defaultProps = {
