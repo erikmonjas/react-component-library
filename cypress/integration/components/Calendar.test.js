@@ -109,5 +109,40 @@ describe("Calendar component", () => {
       .eq(3)
       .find(".calendar__input-error-message")
       .should("have.text", "Min date not reached");
+
+    cy.get("#calendar4")
+      .focus()
+      .clear()
+      .type("09/07/19")
+      .blur()
+      .focus()
+      .blur()
+      .get(".calendar")
+      .eq(3)
+      .find(".calendar__input-error-message")
+      .should("have.text", "");
+
+    cy.get("#calendar4")
+      .focus()
+      .clear()
+      .type("09/10/19")
+      .blur()
+      .focus()
+      .blur()
+      .get(".calendar")
+      .eq(3)
+      .find(".calendar__input-error-message")
+      .should("have.text", "Max date exceeded");
+
+    cy.get("#calendar4")
+      .focus()
+      .clear()
+      .blur()
+      .focus()
+      .blur()
+      .get(".calendar")
+      .eq(3)
+      .find(".calendar__input-error-message")
+      .should("have.text", "");
   });
 });

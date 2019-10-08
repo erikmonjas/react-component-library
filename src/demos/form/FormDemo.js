@@ -43,140 +43,140 @@ const FormDemo = () => {
     { text: "Option 2", value: "2" }
   ];
   return (
-    <section id="form-demo">
-      <h2 className="fz-24 font-weight-bold mb-20">Form</h2>
+    <section id='form-demo'>
+      <h2 className='fz-24 font-weight-bold mb-20'>Form</h2>
       <Form submitAction={submitAction} invalidAction={invalidAction}>
-        <div className="row">
-          <div className="col-12 col-md-4">
+        <div className='row'>
+          <div className='col-12 col-md-4'>
             <Input
-              name="text"
-              label="Text"
-              errorMessage="Error"
+              name='text'
+              label='Text'
+              errorMessage='Error'
               defaultValue={"Default value"}
-              minLength="5"
+              minLength='5'
             />
           </div>
-          <div className="col-12 col-md-4">
+          <div className='col-12 col-md-4'>
             <Input
-              name="otherText"
-              label="Other text"
-              minLength="4"
-              errorMessage="Error"
+              name='otherText'
+              label='Other text'
+              minLength='4'
+              errorMessage='Error'
               validationFunction={otherTextValidationFunction}
             />
           </div>
-          <div className="col-12 col-md-4">
+          <div className='col-12 col-md-4'>
             <Input
-              name="requiredText"
-              label="Required text"
+              name='requiredText'
+              label='Required text'
               required
-              minLength="4"
-              errorMessage="Error"
+              minLength='4'
+              errorMessage='Error'
               validationFunction={otherTextValidationFunction}
             />
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-12 col-md-4">
+        <div className='row'>
+          <div className='col-12 col-md-4'>
             <Input
               required
-              name="number"
-              label="Number"
-              errorMessage="Error"
-              type="number"
+              name='number'
+              label='Number'
+              errorMessage='Error'
+              type='number'
               validationFunction={numberValidationFunction}
             />
           </div>
-          <div className="col-12 col-md-4">
+          <div className='col-12 col-md-4'>
             <Select
-              label="Initial text"
+              label='Initial text'
               options={selectOptions}
-              name="select"
-              errorMessage="Error select"
+              name='select'
+              errorMessage='Error select'
               required
             />
           </div>
-          <div className="col-12 col-md-4">
+          <div className='col-12 col-md-4'>
             <Select
-              label="Initial text"
+              label='Initial text'
               options={selectOptions}
-              name="disabledSelect"
-              errorMessage="Error select"
-              defaultValue="1"
+              name='disabledSelect'
+              errorMessage='Error select'
+              defaultValue='1'
               disabled
             />
           </div>
         </div>
 
-        <div className="row mb-15">
-          <div className="col-4">
+        <div className='row mb-15'>
+          <div className='col-4'>
             <RadioGroup
               radioList={radioList}
-              name="radioGroup"
-              defaultRadio="2"
+              name='radioGroup'
+              defaultRadio='2'
             />
           </div>
-          <div className="col-4">
+          <div className='col-4'>
             <Checkbox
-              name="otherCheckbox"
-              label="Checkbox text"
-              errorMessage="This checkbox is required"
+              name='otherCheckbox'
+              label='Checkbox text'
+              errorMessage='This checkbox is required'
               required
             />
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-4">
+        <div className='row'>
+          <div className='col-4'>
             <Calendar
-              label="Date (dd/mm/yyyy)"
-              name="calendar1"
-              format="ddmmyyyy"
+              label='Date (dd/mm/yyyy)'
+              name='calendar1'
+              format='ddmmyyyy'
               required
             />
           </div>
-          <div className="col-4">
+          <div className='col-4'>
             <Calendar
-              label="Date (mmddyy)"
-              name="calendar2"
+              label='Date (mmddyy)'
+              name='calendar2'
               todaySelected
-              format="mmddyy"
+              format='mmddyy'
               minDate={timeToDate("mmddyy", todayTime)}
             />
           </div>
-          <div className="col-4">
+          <div className='col-4'>
             <Calendar
-              label="Date (dd/mm/yy)"
-              name="calendar3"
-              defaultValue="10/07/19"
-              format="ddmmyy"
+              label='Date (dd/mm/yy)'
+              name='calendar3'
+              defaultValue='10/07/19'
+              format='dd/mm/yy'
               maxDate={timeToDate("ddmmyy", todayTime)}
             />
           </div>
-          <div className="col-4">
+          <div className='col-4'>
             <Calendar
-              label="Date (dd/mm/yy)"
-              name="calendar4"
-              defaultValue="10/07/19"
-              format="ddmmyy"
-              minDate="06/07/19"
-              maxDate="24/07/19"
-              invalidDateMessage="Date not valid"
-              overMaxDateMessage="Max date exceeded"
-              underMinDateMessage="Min date not reached"
-              emptyDateMessage="Enter a date"
+              label='Date (dd/mm/yy)'
+              name='calendar4'
+              defaultValue='10/07/19'
+              format='ddmmyy'
+              minDate='06/07/19'
+              maxDate='24/07/19'
+              invalidDateMessage='Date not valid'
+              overMaxDateMessage='Max date exceeded'
+              underMinDateMessage='Min date not reached'
+              emptyDateMessage='Enter a date'
             />
           </div>
         </div>
 
-        <div className="d-flex justify-content-end">
+        <div className='d-flex justify-content-end'>
           <FormContext.Consumer>
             {value => (
               <>
                 <button
-                  type="button"
-                  className="button"
+                  type='button'
+                  className='button'
                   onClick={() => console.log(value.formValues)}
                 >
                   Log values
@@ -184,13 +184,13 @@ const FormDemo = () => {
               </>
             )}
           </FormContext.Consumer>
-          <button type="submit" className="button ml-10" formNoValidate>
+          <button type='submit' className='button ml-10' formNoValidate>
             Submit
           </button>
         </div>
       </Form>
       <MarkDown
-        className="code-block mt-20"
+        className='code-block mt-20'
         children={md}
         options={{
           overrides: {
@@ -200,29 +200,29 @@ const FormDemo = () => {
           }
         }}
       />
-      <p className="default-paragraph mt-20">
+      <p className='default-paragraph mt-20'>
         All controls are validated on blur and it must be taken into account
         that initially error messages aren't shown even if the default value
         isn't valid. This error message will be shown on blur or if the user
         tries to submit the form. While typing also the control is always set to
         valid.
       </p>
-      <p className="default-paragraph mt-20">
+      <p className='default-paragraph mt-20'>
         Submit isn't allowed if the form contains any invalid field.
       </p>
-      <ul className="prop-list mt-20">
+      <ul className='prop-list mt-20'>
         <li>
           <strong>submitAction</strong>{" "}
-          <span className="code">function, required</span>: function that's
+          <span className='code'>function, required</span>: function that's
           executed when the form is successfully submitted. It receives all form
           values as parameter. If{" "}
-          <span className="font-weight-bold">cross-field validation</span> is
+          <span className='font-weight-bold'>cross-field validation</span> is
           desired, here's the place to implement it, comparing the values of
           those fields delivered by the parameter.
         </li>
         <li>
           <strong>invalidAction</strong>{" "}
-          <span className="code">function, required</span>: function that's
+          <span className='code'>function, required</span>: function that's
           executed when the form is contains invalid fields.
         </li>
       </ul>

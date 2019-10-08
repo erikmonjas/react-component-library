@@ -66,6 +66,26 @@ const Calendar = ({
     }
   };
 
+  const getInitialMonth = () => {
+    if (todaySelected) {
+      return currentMonth;
+    } else if (defaultValue.length > 0) {
+      return new Date(dateToTime(format, defaultValue)).getMonth();
+    } else {
+      return currentMonth;
+    }
+  };
+
+  const getInitialYear = () => {
+    if (todaySelected) {
+      return currentYear;
+    } else if (defaultValue.length > 0) {
+      return new Date(dateToTime(format, defaultValue)).getFullYear();
+    } else {
+      return currentYear;
+    }
+  };
+
   const getLimitDateTime = date => {
     if (date.length > 0) {
       return dateToTime(format, date);
@@ -80,8 +100,8 @@ const Calendar = ({
   const minDateTime = getLimitDateTime(minDate);
   const maxDateTime = getLimitDateTime(maxDate);
 
-  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
-  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [selectedMonth, setSelectedMonth] = useState(getInitialMonth());
+  const [selectedYear, setSelectedYear] = useState(getInitialYear());
   const [selectedDay, setSelectedDay] = useState(getInitialDay());
   const [isActive, setActive] = useState(false);
   const [datepickerShowing, setDatepickerShowing] = useState(false);
@@ -287,12 +307,12 @@ const Calendar = ({
     if (selectedMonth > 0) {
       newMonth = selectedMonth - 1;
       newYear = selectedYear;
-      setSelectedMonth(selectedMonth - 1);
+      setSelectedMonth(newMonth);
     } else {
       newMonth = 11;
       newYear = selectedYear - 1;
-      setSelectedMonth(11);
-      setSelectedYear(selectedYear - 1);
+      setSelectedMonth(newMonth);
+      setSelectedYear(newYear);
     }
 
     setMonthDays(getDaysInMonth(newMonth, newYear));
