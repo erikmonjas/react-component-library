@@ -1,5 +1,6 @@
 {
   "name": "component-library",
+  "homepage": "https://erikmonjas.github.io/react-component-library",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
