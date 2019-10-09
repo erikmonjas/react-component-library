@@ -9,9 +9,13 @@ const App = () => {
       <div className='row mr-0'>
         <div className='col-3'>
           <ul className='menu'>
-            <Link to='/'>
+            <Link to='/' className='atom-link d-flex'>
               <img src={Logo} alt='logo' className='home-logo' />
             </Link>
+            <h1>
+              React Component Library{' '}
+              <span className='d-block'>by Érik Monjas</span>
+            </h1>
             <li>
               <NavLink
                 to='/form'
@@ -40,7 +44,7 @@ const App = () => {
               </NavLink>
             </li>
             <li className='github-link'>
-              <a href='#'>
+              <a href='https://github.com/erikmonjas/react-component-library/tree/master'>
                 <img src='https://image.flaticon.com/icons/svg/25/25231.svg' />
                 <span>GitHub Project</span>
               </a>
