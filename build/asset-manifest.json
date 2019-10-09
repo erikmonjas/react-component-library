@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/react-component-library/static/css/main.126c488a.chunk.css",
+    "main.js": "/react-component-library/static/js/main.06b098b8.chunk.js",
+    "main.js.map": "/react-component-library/static/js/main.06b098b8.chunk.js.map",
+    "runtime~main.js": "/react-component-library/static/js/runtime~main.aa3fa71d.js",
+    "runtime~main.js.map": "/react-component-library/static/js/runtime~main.aa3fa71d.js.map",
+    "static/js/2.ef803dbf.chunk.js": "/react-component-library/static/js/2.ef803dbf.chunk.js",
+    "static/js/2.ef803dbf.chunk.js.map": "/react-component-library/static/js/2.ef803dbf.chunk.js.map",
+    "index.html": "/react-component-library/index.html",
+    "precache-manifest.aab61b2b5617fba1ac6abccbed251815.js": "/react-component-library/precache-manifest.aab61b2b5617fba1ac6abccbed251815.js",
+    "service-worker.js": "/react-component-library/service-worker.js",
+    "static/css/main.126c488a.chunk.css.map": "/react-component-library/static/css/main.126c488a.chunk.css.map",
+    "static/media/logo.svg": "/react-component-library/static/media/logo.ee7cd8ed.svg"
+  }
+}
