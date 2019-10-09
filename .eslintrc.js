@@ -3,6 +3,11 @@ module.exports = {
     browser: true,
     es6: true,
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   extends: ['standard', 'plugin:react/recommended'],
   globals: {
     Atomics: 'readonly',
