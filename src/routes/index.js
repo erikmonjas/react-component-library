@@ -27,6 +27,7 @@ const Routes = () => {
           <Route path='/form' exact component={FormContainer} />
           <Route path='/tabs' exact component={TabsContainer} />
           <Route path='/modal' exact component={ModalContainer} />
+          <Route component={HomeContainer} />
         </Switch>
       ) : (
         <div className='under-width'>
