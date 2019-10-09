@@ -42,6 +42,7 @@ $media-sizes: (
 $colors: (
   white: #ffffff,
   black: #000000,
+  dodgerblue: dodgerblue,
 );
 
 @each $color, $code in $colors {
